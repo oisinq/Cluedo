@@ -1,3 +1,5 @@
+import java.awt.*;
+
 public class Cluedo {
 
     public static void main(String args[]) throws Exception {
@@ -6,7 +8,7 @@ public class Cluedo {
 //        GUI  myMouseJFrame = new GUI();
 //        myMouseJFrame.generateGUI();
 
-        new Board();
+        new ShapeTest();
 
     }
 }
