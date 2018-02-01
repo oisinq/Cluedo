@@ -64,16 +64,10 @@ public class ShapeTest extends JFrame implements MouseListener {
 
         // Original code to draw image over another image
         // We can use layering by setting a higher integer value when adding a label
-        /* BufferedImage chip = ImageIO.read(new File("resources/chip.png"));
-        JLabel chipImage = new JLabel(new ImageIcon(chip));
-        Chip.add(chipImage);
-        Dimension ChipSize =new Dimension(10,10);
-        Chip.setPreferredSize(ChipSize);
-        Chip.setBounds(100,100,ChipSize.width, ChipSize.height);
-        board.add( Chip, new Integer(11));
-        */
         
-        JTextArea infoField = new JTextArea(5, 15);
+        
+        
+        JTextArea infoField = new JTextArea(10, 15);
         infoField.setEditable(false);
         infoField.setText("Command 1\nCommand 2\nCommand 3\nCommand 4\nCommand 5\nCommand 6\nCommand 7");
         JTextField userInput = new JTextField();
@@ -82,11 +76,12 @@ public class ShapeTest extends JFrame implements MouseListener {
         panel.add(board, "Center");
         panel.add(userInput, "South");
         add(panel);
-        setVisible(true);
+        
         board.addMouseListener(this);
-
+        
         System.out.println(infoField.getWidth());
         System.out.println(userInput.getHeight());
+        setVisible(true);
     }
 
     public static void main(String a[]) throws IOException {
@@ -103,14 +98,16 @@ public class ShapeTest extends JFrame implements MouseListener {
             e.printStackTrace();
         }
 
+        super.paintComponents(g);
+
         g.drawImage(myPicture, 0, 22, null);
 
         drawCounters(g);
 
         drawImage(g);
-
-
+        
     }
+   
 
     public void drawCounters(Graphics g) {
         g.setColor(Color.red);
