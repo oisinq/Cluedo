@@ -74,8 +74,9 @@ public class GUI  extends JFrame /* implements MouseListener */ {
 //
 //    }
 
-    public void paint(Graphics g){
-        super.paint(g);
-        g.drawOval(xLocation,yLocation, 11*2,11*2);
-    }
+//    public void paint(Graphics g){
+//        super.paint(g);
+//        g.drawOval(xLocation,yLocation, 11*2,11*2);
+//    }
+
 }
