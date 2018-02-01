@@ -29,12 +29,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 
-public class ShapeTest extends JFrame{
+public class ShapeTest extends JFrame implements MouseListener {
     public ShapeTest() throws IOException {
         JPanel panel = new JPanel();
         //JPanel board = new JPanel();
@@ -43,7 +45,7 @@ public class ShapeTest extends JFrame{
         JPanel Chip = new JPanel();
         
         panel.setLayout(new BorderLayout());
-        setSize(1000, 800);
+        setSize(835, 670);
         Dimension boardSize =new Dimension( 700,640);
         setTitle("Cluedo");
         //setLocationRelativeTo(0,0);
@@ -80,6 +82,10 @@ public class ShapeTest extends JFrame{
         panel.add(userInput, "South");
         add(panel);
         setVisible(true);
+        board.addMouseListener(this);
+
+        System.out.println(infoField.getWidth());
+        System.out.println(userInput.getHeight());
         
               
 //        panel.setOpaque(false); // background of parent will be painted first
@@ -94,8 +100,78 @@ public class ShapeTest extends JFrame{
         new ShapeTest();
     }
     
+//    public void paint(Graphics g){
+//       g.drawRect(200, 100, 100, 200); // FOR RECT
+//       setBackground(new Color(255, 0, 0, 127));
+//    }
+
+
+
     public void paint(Graphics g){
-       g.drawRect(200, 100, 100, 200); // FOR RECT
-       setBackground(new Color(255, 0, 0, 127));
+        BufferedImage myPicture = null;
+        try {
+            myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        int cellWidth = myPicture.getWidth(null);
+
+        int cellHeight = myPicture.getHeight(null);
+
+
+        int dy = (0 % 2) * cellHeight;
+        g.drawImage(myPicture, 0, dy, cellWidth, dy+cellHeight, 0, 0, cellWidth, cellHeight, null);
+
+
+        g.setColor(Color.red);
+        g.fillOval(204, 576, 22, 22);
+
+        g.setColor(Color.yellow);
+        g.fillOval(45, 414, 22, 22);
+
+        g.setColor(Color.BLUE);
+        g.fillOval(572, 460, 22, 22);
+
+        g.setColor(Color.cyan);
+        g.fillOval(572, 162, 22, 22);
+
+        g.setColor(Color.white);
+        g.fillOval(249, 26, 22, 22);
+
+        g.setColor(Color.green);
+        g.fillOval(365, 26, 22, 22);
+
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int xLocation = e.getX();
+        int yLocation = e.getY();
+        System.out.println("(" + xLocation + ", " + yLocation + ")");
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        int xLocation = e.getX();
+        int yLocation = e.getY();
+        System.out.println("(" + xLocation + ", " + yLocation + ")");
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
