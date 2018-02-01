@@ -29,6 +29,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -55,22 +56,11 @@ public class ShapeTest extends JFrame implements MouseListener {
         
         
         
-        BufferedImage myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
-        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-        background.add(picLabel);
-        background.setPreferredSize(boardSize);
-        background.setBounds(0,0,boardSize.width, boardSize.height);
-        board.add(background, new Integer(10));//change the  int number to move through layers , larger number= more to front
-
-        // Original code to draw image over another image
-        // We can use layering by setting a higher integer value when adding a label
-        
-        
-        
         JTextArea infoField = new JTextArea(10, 15);
         infoField.setEditable(false);
         infoField.setText("Command 1\nCommand 2\nCommand 3\nCommand 4\nCommand 5\nCommand 6\nCommand 7");
         JTextField userInput = new JTextField();
+        userInput.setText("Enter messages here!");
         JScrollPane scrollPane = new JScrollPane(infoField);
         panel.add(scrollPane, "East");
         panel.add(board, "Center");
@@ -82,6 +72,20 @@ public class ShapeTest extends JFrame implements MouseListener {
         System.out.println(infoField.getWidth());
         System.out.println(userInput.getHeight());
         setVisible(true);
+        
+      //all this is text manipulation that will need to be moved
+        @SuppressWarnings("serial")//come back to this maybe
+		Action action = new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+            	 String InputtedText =userInput.getText();//takes info from the field
+                 infoField.setText(InputtedText);//puts it into the pael
+                 userInput.setText("");//wipes the field after 
+            }
+        };
+        userInput.addActionListener( action );//sets a button(enter) to activate the above listener
     }
 
     public static void main(String a[]) throws IOException {
