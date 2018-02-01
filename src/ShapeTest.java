@@ -62,7 +62,8 @@ public class ShapeTest extends JFrame implements MouseListener {
         background.setBounds(0,0,boardSize.width, boardSize.height);
         board.add(background, new Integer(10));//change the  int number to move through layers , larger number= more to front
 
-       //all this puts up the image of the chip
+        // Original code to draw image over another image
+        // We can use layering by setting a higher integer value when adding a label
         /* BufferedImage chip = ImageIO.read(new File("resources/chip.png"));
         JLabel chipImage = new JLabel(new ImageIcon(chip));
         Chip.add(chipImage);
@@ -86,25 +87,11 @@ public class ShapeTest extends JFrame implements MouseListener {
 
         System.out.println(infoField.getWidth());
         System.out.println(userInput.getHeight());
-        
-              
-//        panel.setOpaque(false); // background of parent will be painted first
-//        panel.setBackground( new Color(255, 0, 0, 20) );
-
-
-        int xLocation = 292;
-        int yLocation = 582;
     }
 
     public static void main(String a[]) throws IOException {
         new ShapeTest();
     }
-    
-//    public void paint(Graphics g){
-//       g.drawRect(200, 100, 100, 200); // FOR RECT
-//       setBackground(new Color(255, 0, 0, 127));
-//    }
-
 
 
     public void paint(Graphics g){
@@ -116,34 +103,43 @@ public class ShapeTest extends JFrame implements MouseListener {
             e.printStackTrace();
         }
 
-        int cellWidth = myPicture.getWidth(null);
+        g.drawImage(myPicture, 0, 22, null);
 
-        int cellHeight = myPicture.getHeight(null);
+        drawCounters(g);
 
-
-        int dy = (0 % 2) * cellHeight;
-        g.drawImage(myPicture, 0, dy, cellWidth, dy+cellHeight, 0, 0, cellWidth, cellHeight, null);
+        drawImage(g);
 
 
+    }
+
+    public void drawCounters(Graphics g) {
         g.setColor(Color.red);
-        g.fillOval(204, 576, 22, 22);
+        g.fillOval(204, 598, 22, 22);
 
         g.setColor(Color.yellow);
-        g.fillOval(45, 414, 22, 22);
+        g.fillOval(45, 436, 22, 22);
 
         g.setColor(Color.BLUE);
-        g.fillOval(572, 460, 22, 22);
+        g.fillOval(572, 482, 22, 22);
 
         g.setColor(Color.cyan);
-        g.fillOval(572, 162, 22, 22);
+        g.fillOval(572, 184, 22, 22);
 
         g.setColor(Color.white);
-        g.fillOval(249, 26, 22, 22);
+        g.fillOval(249, 46, 22, 22);
 
         g.setColor(Color.green);
-        g.fillOval(365, 26, 22, 22);
+        g.fillOval(365, 46, 22, 22);
+    }
 
+    public void drawImage(Graphics g) {
+        BufferedImage chip = null;
+        try {
+            chip = ImageIO.read(new File("resources/chip.png"));
+        } catch (IOException e){
 
+        }
+        g.drawImage(chip, 50, 50, null);
     }
 
     @Override
@@ -155,9 +151,7 @@ public class ShapeTest extends JFrame implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        int xLocation = e.getX();
-        int yLocation = e.getY();
-        System.out.println("(" + xLocation + ", " + yLocation + ")");
+
     }
 
     @Override
