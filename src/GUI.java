@@ -1,30 +1,3 @@
-//import javax.imageio.ImageIO;
-//import javax.swing.*;
-//import java.awt.*;
-//import java.awt.image.BufferedImage;
-//import java.io.File;
-//import java.io.IOException;
-//
-//
-//public class ShapeTest extends JFrame{
-//    public ShapeTest(){
-//        setSize(400,400);
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        setLocationRelativeTo(null);
-//        setVisible(true);
-//    }
-//
-//    public static void main(String a[]){
-//        new ShapeTest();
-//    }
-//
-//    public void paint(Graphics g){
-//        g.drawOval(40, 40, 60, 60); //FOR CIRCLE
-//        g.drawRect(80, 30, 200, 200); // FOR SQUARE
-//        g.drawRect(200, 100, 100, 200); // FOR RECT
-//    }
-//}
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -39,44 +12,44 @@ import java.io.IOException;
 
 public class GUI extends JFrame implements MouseListener {
 
+   // These components store where the counters are drawn - only temporary variables until we add them to the player cl
     int redY = 599;
     int whiteY = 47;
     int blueX = 572;
     int yellowX = 44;
 
+    // This method creates the graphic interface for the program
     public GUI() throws IOException {
-        JPanel panel = new JPanel();
 
+        JPanel panel = new JPanel();
         JLayeredPane board = new JLayeredPane();
 
-        
+        // We use BorderLayout to easily have multiple components in the same panel
         panel.setLayout(new BorderLayout());
         setSize(835, 690);
-      //  Dimension boardSize =new Dimension( 700,60);
         setTitle("Cluedo");
-        //setLocationRelativeTo(0,0);
+        // Places the frame in the centre of the screen
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-      //  board.setPreferredSize( boardSize );
-        
-        
-        
+
         JTextArea infoField = new JTextArea(10, 15);
+        // I setEditable to false so that the user can't edit the text on the right-hand size
         infoField.setEditable(false);
         infoField.setLineWrap(true);
-        infoField.setText("Command 1\nCommand 2\nCommand 3\nCommand 4\nCommand 5\nCommand 6\nCommand 7");
+        // I place the infoField inside a scrollpane so that the textArea doesn't fill up
+        JScrollPane scrollPane = new JScrollPane(infoField);
+
         JTextField userInput = new JTextField();
         userInput.setText("Enter messages here!");
-        JScrollPane scrollPane = new JScrollPane(infoField);
         panel.add(scrollPane, "East");
         panel.add(board, "Center");
         panel.add(userInput, "South");
         add(panel);
-        
+
+        // This lets us know when the board is clicked
         board.addMouseListener(this);
-        
-        System.out.println(infoField.getWidth());
-        System.out.println(userInput.getHeight());
+
         setVisible(true);
         
       //all this is text manipulation that will need to be moved
@@ -97,7 +70,7 @@ public class GUI extends JFrame implements MouseListener {
                  userInput.setText("");//wipes the field after 
             }
         };
-        userInput.addActionListener( action );//sets a button(enter) to activate the above listener
+        userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
     }
 
     public static void main(String a[]) throws IOException {
@@ -123,8 +96,11 @@ public class GUI extends JFrame implements MouseListener {
         drawImage(g);
         
     }
-   
 
+
+    /**
+     * This draws all of the pointers on the map
+     */
     public void drawCounters(Graphics g) {
         g.setColor(Color.red);
         g.fillOval(205, redY, 20, 20);
@@ -145,6 +121,9 @@ public class GUI extends JFrame implements MouseListener {
         g.fillOval(365, whiteY, 20, 20);
     }
 
+    /**
+     * Draws an image onto the map - will be used for weapons
+     */
     public void drawImage(Graphics g) {
         BufferedImage chip = null;
         try {
@@ -157,9 +136,11 @@ public class GUI extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        // These get the location of where the mouse was clicked and prints it
         int xLocation = e.getX();
         int yLocation = e.getY();
         System.out.println("(" + xLocation + ", " + yLocation + ")");
+        // This moves each of the counters - this is just for testing
         redY = redY - 23;
         whiteY = whiteY + 23;
         blueX -= 23;
