@@ -32,6 +32,9 @@ public class GUI extends JFrame implements MouseListener {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        BufferedImage myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+        board.add(picLabel);
 
         JTextArea infoField = new JTextArea(10, 15);
         // I setEditable to false so that the user can't edit the text on the right-hand size
@@ -46,11 +49,14 @@ public class GUI extends JFrame implements MouseListener {
         panel.add(board, "Center");
         panel.add(userInput, "South");
         add(panel);
+//        Counter component = new Counter();
+//        add(component);
 
         // This lets us know when the board is clicked
         board.addMouseListener(this);
 
         setVisible(true);
+
         
       //all this is text manipulation that will need to be moved
         @SuppressWarnings("serial")//come back to this maybe
@@ -73,27 +79,23 @@ public class GUI extends JFrame implements MouseListener {
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
     }
 
-    public static void main(String a[]) throws IOException {
-        new GUI();
-    }
-
 
     public void paint(Graphics g){
-        BufferedImage myPicture = null;
-        try {
-            myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        super.paintComponents(g);
-
-        g.drawImage(myPicture, 0, 22, null);
-
-        drawCounters(g);
-
-        drawImage(g);
+//        BufferedImage myPicture = null;
+//        try {
+//            myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//
+//        super.paintComponents(g);
+//
+//        g.drawImage(myPicture, 0, 22, null);
+//
+//        drawCounters(g);
+//
+//        drawImage(g);
         
     }
 
