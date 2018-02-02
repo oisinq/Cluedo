@@ -38,6 +38,12 @@ import java.io.IOException;
 
 
 public class ShapeTest extends JFrame implements MouseListener {
+
+    int redY = 599;
+    int whiteY = 47;
+    int blueX = 572;
+    int yellowX = 44;
+
     public ShapeTest() throws IOException {
         JPanel panel = new JPanel();
         //JPanel board = new JPanel();
@@ -46,8 +52,8 @@ public class ShapeTest extends JFrame implements MouseListener {
         JPanel Chip = new JPanel();
         
         panel.setLayout(new BorderLayout());
-        setSize(835, 670);
-        Dimension boardSize =new Dimension( 700,640);
+        setSize(835, 685);
+        Dimension boardSize =new Dimension( 700,60);
         setTitle("Cluedo");
         //setLocationRelativeTo(0,0);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -58,6 +64,7 @@ public class ShapeTest extends JFrame implements MouseListener {
         
         JTextArea infoField = new JTextArea(10, 15);
         infoField.setEditable(false);
+        infoField.setLineWrap(true);
         infoField.setText("Command 1\nCommand 2\nCommand 3\nCommand 4\nCommand 5\nCommand 6\nCommand 7");
         JTextField userInput = new JTextField();
         userInput.setText("Enter messages here!");
@@ -80,8 +87,8 @@ public class ShapeTest extends JFrame implements MouseListener {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-            	 String InputtedText =userInput.getText();//takes info from the field
-                 infoField.setText(InputtedText);//puts it into the pael
+            	 String inputtedText =userInput.getText();//takes info from the field
+                 infoField.setText("> " + inputtedText);//puts it into the pael
                  userInput.setText("");//wipes the field after 
             }
         };
@@ -115,22 +122,22 @@ public class ShapeTest extends JFrame implements MouseListener {
 
     public void drawCounters(Graphics g) {
         g.setColor(Color.red);
-        g.fillOval(204, 598, 22, 22);
+        g.fillOval(205, redY, 20, 20);
 
         g.setColor(Color.yellow);
-        g.fillOval(45, 436, 22, 22);
+        g.fillOval(yellowX, 437, 20, 20);
 
         g.setColor(Color.BLUE);
-        g.fillOval(572, 482, 22, 22);
+        g.fillOval(blueX, 483, 20, 20);
 
         g.setColor(Color.cyan);
-        g.fillOval(572, 184, 22, 22);
+        g.fillOval(blueX, 184, 20, 20);
 
         g.setColor(Color.white);
-        g.fillOval(249, 46, 22, 22);
+        g.fillOval(250, whiteY, 20, 20);
 
         g.setColor(Color.green);
-        g.fillOval(365, 46, 22, 22);
+        g.fillOval(365, whiteY, 20, 20);
     }
 
     public void drawImage(Graphics g) {
@@ -148,6 +155,11 @@ public class ShapeTest extends JFrame implements MouseListener {
         int xLocation = e.getX();
         int yLocation = e.getY();
         System.out.println("(" + xLocation + ", " + yLocation + ")");
+        redY = redY - 23;
+        whiteY = whiteY + 23;
+        blueX -= 23;
+        yellowX += 23;
+        repaint();
     }
 
     @Override
