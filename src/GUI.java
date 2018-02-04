@@ -146,13 +146,30 @@ public class GUI extends JFrame implements MouseListener {
     }
 
     public void drawImage(Graphics g) {
-        BufferedImage chip = null;
+        
+        BufferedImage gun = null;
+        BufferedImage rope = null;
+        BufferedImage wrench=null;
+        BufferedImage lead_Pipe= null;
+        BufferedImage candlestick=null;
+        BufferedImage dagger=null;
+        
         try {
-            chip = ImageIO.read(new File("resources/chip.png"));
+            dagger = ImageIO.read(new File("resources/dagger.png"));
+            rope = ImageIO.read(new File("resources/rope.png"));
+            wrench = ImageIO.read(new File("resources/wrench.png"));
+            lead_Pipe =  ImageIO.read(new File("resources/lead_pipe.png"));
+            gun = ImageIO.read(new File("resources/revolver.png"));
+            candlestick = ImageIO.read(new File("resources/candlestick.png"));
         } catch (IOException e){
 
         }
-        g.drawImage(chip, 50, 50, null);
+        g.drawImage(dagger, 120,150,40,40, null);
+        g.drawImage(rope, 500,120,40,40, null);
+        g.drawImage(wrench, 120,150,40,40, null);
+        g.drawImage(gun, 470,300,40,40, null);
+        g.drawImage(lead_Pipe, 470,375,40,40, null);
+        g.drawImage(candlestick, 250,500,40,40, null);
     }
 
     @Override
