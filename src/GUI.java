@@ -32,9 +32,9 @@ public class GUI extends JFrame implements MouseListener {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        BufferedImage myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
-        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-        board.add(picLabel);
+//        BufferedImage myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
+//        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+//        board.add(picLabel);
 
         JTextArea infoField = new JTextArea(10, 15);
         // I setEditable to false so that the user can't edit the text on the right-hand size
@@ -81,21 +81,21 @@ public class GUI extends JFrame implements MouseListener {
 
 
     public void paint(Graphics g){
-//        BufferedImage myPicture = null;
-//        try {
-//            myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//
-//        super.paintComponents(g);
-//
-//        g.drawImage(myPicture, 0, 22, null);
-//
-//        drawCounters(g);
-//
-//        drawImage(g);
+        BufferedImage myPicture = null;
+        try {
+            myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        super.paintComponents(g);
+
+        g.drawImage(myPicture, 0, 22, null);
+
+        drawCounters(g);
+
+        drawImage(g);
         
     }
 
@@ -147,7 +147,7 @@ public class GUI extends JFrame implements MouseListener {
         }
         g.drawImage(dagger, 120,150,40,40, null);
         g.drawImage(rope, 500,120,40,40, null);
-        g.drawImage(wrench, 120,150,40,40, null);
+        g.drawImage(wrench, 172,303,40,40, null);
         g.drawImage(gun, 470,300,40,40, null);
         g.drawImage(lead_Pipe, 470,375,40,40, null);
         g.drawImage(candlestick, 250,500,40,40, null);
