@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class GUI extends JFrame implements MouseListener {
 
-   // These components store where the counters are drawn - only temporary variables until we add them to the player cl
+   // These components store where the counters are drawn - only temporary variables until we add them to the player class
     int redY = 599;
     int whiteY = 47;
     int blueX = 572;
