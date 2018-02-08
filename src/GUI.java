@@ -4,6 +4,7 @@
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -11,12 +12,52 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 
 public class GUI extends JFrame  implements MouseListener {
 
     Counter redCounter, yellowCounter, blueCounter, cyanCounter, greenCounter, whiteCounter;
+    Weapons Gun, Rope,Wrench,Dagger,LeadPipe,CandleStick;
+    int dagger;
+    /*
+    g.drawImage(dagger, 120,150,40,40, null);
+    g.drawImage(rope, 500,120,40,40, null);
+    g.drawImage(wrench, 172,303,40,40, null);
+    g.drawImage(gun, 470,300,40,40, null);
+    g.drawImage(lead_Pipe, 470,375,40,40, null);
+    g.drawImage(candlestick, 250,500,40,40, null);
+}
+    */
+    int[] wepLoc= {120,150} ;
+    Random rand= new Random();
+    int chance = rand.nextInt(60)%6+1;{
+    //System.out.println("");
+    
+    
+    //whiteCounter.setXY(365, 48);
+    //char grade = 'C';{
 
+    switch(chance) {
+       case 1 :
+          
+          break;
+       case 2 :
+       case 3 :
+          System.out.println("Well done");
+          break;
+       case 4 :
+          System.out.println("You passed");
+       case 5 :
+          System.out.println("Better try again");
+          break;
+       case 6 :
+           System.out.println("Better try again");
+           break;
+       default :
+          System.out.println("Invalid grade");
+    }
+    }
 
     // This method creates the graphic interface for the program
     public GUI() {
@@ -45,7 +86,6 @@ public class GUI extends JFrame  implements MouseListener {
         redCounter.setXY(204, 598);
         board.add(redCounter);
 
-
         yellowCounter = new Counter();
         yellowCounter.setXY(44, 437);
         board.add(yellowCounter);
@@ -65,7 +105,38 @@ public class GUI extends JFrame  implements MouseListener {
         whiteCounter = new Counter();
         whiteCounter.setXY(365, 47);
         board.add(whiteCounter);
-
+        
+        //weapon objects are created below
+        Gun = new Weapons();
+        Gun.SetImageFile("resources/revolver.png");
+        Gun.setXY(500, 150);
+        board.add(Gun);
+        
+        Rope = new Weapons();
+        Rope.SetImageFile("resources/rope.png");
+        Rope.setXY(150, 150);
+        board.add(Rope);
+        
+        Dagger = new Weapons();
+        Dagger.SetImageFile("resources/dagger.png");
+        Dagger.setXY(200, 200);
+        board.add(Dagger);
+        
+        Wrench = new Weapons();
+        Wrench.SetImageFile("resources/wrench.png");
+        Wrench.setXY(150, 20);
+        board.add(Wrench);
+        
+        CandleStick = new Weapons();
+        CandleStick.SetImageFile("resources/candlestick.png");
+        CandleStick.setXY(0, 0);
+        board.add(CandleStick);
+        
+        LeadPipe = new Weapons();
+        LeadPipe.SetImageFile("resources/lead_pipe.png");
+        LeadPipe.setXY(200, 400);
+        board.add(LeadPipe);
+        
         add(scrollPane, "East");
         add(userInput, "South");
         add(board, "Center");
@@ -122,7 +193,8 @@ public class GUI extends JFrame  implements MouseListener {
         greenCounter.paintComponent(g);
         whiteCounter.setColor(Color.WHITE);
         whiteCounter.paintComponent(g);
-
+        
+        
         drawImage(g);
     }
 
@@ -162,31 +234,14 @@ public class GUI extends JFrame  implements MouseListener {
 
     public void drawImage(Graphics g) {
 
-        BufferedImage gun = null;
-        BufferedImage rope = null;
-        BufferedImage wrench=null;
-        BufferedImage lead_Pipe= null;
-        BufferedImage candlestick=null;
-        BufferedImage dagger=null;
-
-        try {
-            dagger = ImageIO.read(new File("resources/dagger.png"));
-            rope = ImageIO.read(new File("resources/rope.png"));
-            wrench = ImageIO.read(new File("resources/wrench.png"));
-            lead_Pipe =  ImageIO.read(new File("resources/lead_pipe.png"));
-            gun = ImageIO.read(new File("resources/revolver.png"));
-            candlestick = ImageIO.read(new File("resources/candlestick.png"));
-        } catch (IOException e){
-
-        }
-        g.drawImage(dagger, 120,150,40,40, null);
-        g.drawImage(rope, 500,120,40,40, null);
-        g.drawImage(wrench, 172,303,40,40, null);
-        g.drawImage(gun, 470,300,40,40, null);
-        g.drawImage(lead_Pipe, 470,375,40,40, null);
-        g.drawImage(candlestick, 250,500,40,40, null);
+    	Gun.paintComponent(g);
+    	Rope.paintComponent(g);
+    	Dagger.paintComponent(g);
+    	Wrench.paintComponent(g);
+    	CandleStick.paintComponent(g);
+    	LeadPipe.paintComponent(g);
     }
-
+	
     public static void main (String args[]) {
         new GUI();
     }
