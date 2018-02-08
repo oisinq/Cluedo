@@ -34,4 +34,20 @@ public class Counter extends JComponent {
         return yLocation;
     }
 
+    public void moveUp(int steps) {
+        setXY(xLocation, yLocation - (23 * steps));
+    }
+
+    public void moveDown(int steps) {
+        setXY(xLocation, yLocation + (23 * steps));
+    }
+
+    public void moveLeft(int steps) {
+        setXY(xLocation - (23 * steps), yLocation);
+    }
+
+    public void moveRight(int steps) {
+        setXY(xLocation + (23 * steps), yLocation);
+    }
+
 }

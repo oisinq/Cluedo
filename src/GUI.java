@@ -126,22 +126,6 @@ public class GUI extends JFrame  implements MouseListener {
         drawImage(g);
     }
 
-    public void moveUp(Counter counter, int steps) {
-        counter.setXY(counter.getX(), counter.getY() - (23 * steps));
-    }
-
-    public void moveDown(Counter counter, int steps) {
-        counter.setXY(counter.getX(), counter.getY() + (23 * steps));
-    }
-
-    public void moveLeft(Counter counter, int steps) {
-        counter.setXY(counter.getX() - (23 * steps), counter.getY());
-    }
-
-    public void moveRight(Counter counter, int steps) {
-        counter.setXY(counter.getX() + (23 * steps), counter.getY());
-    }
-
     @Override
     public void mouseClicked(MouseEvent e) {
         // These get the location of where the mouse was clicked and prints it
@@ -149,10 +133,10 @@ public class GUI extends JFrame  implements MouseListener {
         int yLocation = e.getY();
         System.out.println("(" + xLocation + ", " + yLocation + ")");
         //    redCounter.setXY(redCounter.getX(), redCounter.getY()-23);
-        moveUp(redCounter, 1);
-        moveDown(whiteCounter, 1);
-        moveLeft(cyanCounter, 1);
-        moveRight(yellowCounter, 1);
+        redCounter.moveUp(1);
+        whiteCounter.moveDown(1);
+        cyanCounter.moveLeft(1);
+        yellowCounter.moveRight(1);
         repaint();
     }
 
