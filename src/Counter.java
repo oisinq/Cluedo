@@ -12,18 +12,9 @@ public class Counter extends JComponent {
  //   @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-//        xLocation = x;
-//        yLocation = y;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(c);
+       g2.setColor(c);
         Shape circle = new Ellipse2D.Double(xLocation, yLocation, 20, 20);
         g2.fill(circle);
-    //    g2.fillOval(xLocation, yLocation, 20, 20);
-   //     super.paintComponent(g);
-    }
-
-    public void paint(Graphics g) {
-
     }
 
     public void setXY(int x, int y) {
@@ -33,6 +24,14 @@ public class Counter extends JComponent {
 
     public void setColor(Color c) {
         this.c = c;
+    }
+
+    public int getX() {
+        return xLocation;
+    }
+
+    public int getY() {
+        return yLocation;
     }
 
 }
