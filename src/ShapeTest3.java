@@ -2,9 +2,9 @@
  * This file is not currently used by the program - it's an attempt to use components for the counters instead of drawing onto the board
  */
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,35 +13,28 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class ShapeTest extends JFrame  implements MouseListener {
+public class ShapeTest3 extends JFrame  implements MouseListener {
 
     Counter redCounter, yellowCounter, blueCounter, cyanCounter, greenCounter, whiteCounter;
 
 
-
     // This method creates the graphic interface for the program
-    public ShapeTest() {
+    public ShapeTest3() throws IOException {
 
- //       JLayeredPane panel = new JLayeredPane();
-        JPanel board = new BoardFrame();
-        JPanel panel = new JPanel();
-
+        //       JLayeredPane panel = new JLayeredPane();
+        JPanel board = new JPanel();
 
         // We use BorderLayout to easily have multiple components in the same panel
-        panel.setLayout(new BorderLayout());
-        panel.setSize(835, 690);
+        setLayout(new BorderLayout());
+        setSize(835, 690);
         setTitle("Cluedo");
         // Places the frame in the centre of the screen
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-
-
 //        BufferedImage myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
 //        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
 //        board.add(picLabel);
-
-
 
         JTextArea infoField = new JTextArea(10, 15);
         // I setEditable to false so that the user can't edit the text on the right-hand size
@@ -57,33 +50,9 @@ public class ShapeTest extends JFrame  implements MouseListener {
         redCounter.setOpaque(false);
         board.add(redCounter);
 
-//        yellowCounter = new Counter();
-//        yellowCounter.setOpaque(false);
-//        board.add(yellowCounter);
-//
-//        greenCounter = new Counter();
-//        greenCounter.setOpaque(false);
-//        board.add(greenCounter);
-//
-//        cyanCounter = new Counter();
-//        cyanCounter.setOpaque(false);
-//        board.add(cyanCounter);
-//
-//        whiteCounter = new Counter();
-//        whiteCounter.setOpaque(false);
-//        board.add(whiteCounter);
-//
-//        blueCounter = new Counter();
-//        blueCounter.setOpaque(false);
-//        board.add(blueCounter);
-
-
-        panel.add(scrollPane, "East");
-        panel.add(userInput, "South");
-        panel.add(board, "Center");
-
-        add(panel);
-
+        add(scrollPane, "East");
+        add(userInput, "South");
+        add(board, "Center");
 
 
         addMouseListener(this);
@@ -91,33 +60,28 @@ public class ShapeTest extends JFrame  implements MouseListener {
         setVisible(true);
     }
 
-//    public void paint(Graphics g){
-//        super.paint(g);
-////        BufferedImage myPicture = null;
-////        try {
-////            myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
-////        } catch (IOException e) {
-////            // TODO Auto-generated catch block
-////            e.printStackTrace();
-////        }
-////
-////        g.drawImage(myPicture, 0, 22, null);
-//
-//        redCounter.setXY(204, 599);
-//        redCounter.setColor(Color.RED);
-//    //    redCounter.paintComponent(g);
-//
-////        yellowCounter.setXY(44, 437);
-////        yellowCounter.setColor(Color.YELLOW);
-//    //    yellowCounter.paintComponent(g);
-//
-////        redCounter.paintComponent(g, 204, 599, Color.RED);
-////        yellowCounter.paintComponent(g, 44, 437, Color.yellow);
-////        blueCounter.paintComponent(g, 572, 484, Color.blue);
-////        cyanCounter.paintComponent(g, 572, 185, Color.cyan);
-////        whiteCounter.paintComponent(g, 250, 48, Color.white);
-////        greenCounter.paintComponent(g, 365, 48, Color.green);
-//    }
+    public void paint(Graphics g){
+        super.paint(g);
+        BufferedImage myPicture = null;
+        try {
+            myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        g.drawImage(myPicture, 0, 22, null);
+
+        redCounter.setXY(204, 599);
+        redCounter.setColor(Color.RED);
+        redCounter.paintComponent(g);
+//        redCounter.paintComponent(g, 204, 599, Color.RED);
+//        yellowCounter.paintComponent(g, 44, 437, Color.yellow);
+//        blueCounter.paintComponent(g, 572, 484, Color.blue);
+//        cyanCounter.paintComponent(g, 572, 185, Color.cyan);
+//        whiteCounter.paintComponent(g, 250, 48, Color.white);
+//        greenCounter.paintComponent(g, 365, 48, Color.green);
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -125,8 +89,6 @@ public class ShapeTest extends JFrame  implements MouseListener {
         int xLocation = e.getX();
         int yLocation = e.getY();
         System.out.println("(" + xLocation + ", " + yLocation + ")");
-        redCounter.setXY(200, 200);
-
         // This moves each of the counters - this is just for testing
 //        redY = redY - 23;
 //        whiteY = whiteY + 23;
@@ -154,10 +116,10 @@ public class ShapeTest extends JFrame  implements MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
-    
+
 
 
     public static void main (String args[]) throws Exception {
-        new ShapeTest();
+        new ShapeTest3();
     }
 }
