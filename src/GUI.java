@@ -13,51 +13,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class GUI extends JFrame  implements MouseListener {
 
     Counter redCounter, yellowCounter, blueCounter, cyanCounter, greenCounter, whiteCounter;
     Weapons Gun, Rope,Wrench,Dagger,LeadPipe,CandleStick;
-    int dagger;
-    /*
-    g.drawImage(dagger, 120,150,40,40, null);
-    g.drawImage(rope, 500,120,40,40, null);
-    g.drawImage(wrench, 172,303,40,40, null);
-    g.drawImage(gun, 470,300,40,40, null);
-    g.drawImage(lead_Pipe, 470,375,40,40, null);
-    g.drawImage(candlestick, 250,500,40,40, null);
-}
-    */
-    int[] wepLoc= {120,150} ;
-    Random rand= new Random();
-    int chance = rand.nextInt(60)%6+1;{
-    //System.out.println("");
     
-    
-    //whiteCounter.setXY(365, 48);
-    //char grade = 'C';{
-
-    switch(chance) {
-       case 1 :
-          
-          break;
-       case 2 :
-       case 3 :
-          System.out.println("Well done");
-          break;
-       case 4 :
-          System.out.println("You passed");
-       case 5 :
-          System.out.println("Better try again");
-          break;
-       case 6 :
-           System.out.println("Better try again");
-           break;
-       default :
-          System.out.println("Invalid grade");
-    }
-    }
 
     // This method creates the graphic interface for the program
     public GUI() {
@@ -109,38 +72,33 @@ public class GUI extends JFrame  implements MouseListener {
         //weapon objects are created below
         Gun = new Weapons();
         Gun.SetImageFile("resources/revolver.png");
-        Gun.setXY(500, 150);
         board.add(Gun);
         
         Rope = new Weapons();
         Rope.SetImageFile("resources/rope.png");
-        Rope.setXY(150, 150);
         board.add(Rope);
         
         Dagger = new Weapons();
         Dagger.SetImageFile("resources/dagger.png");
-        Dagger.setXY(200, 200);
         board.add(Dagger);
         
         Wrench = new Weapons();
         Wrench.SetImageFile("resources/wrench.png");
-        Wrench.setXY(150, 20);
         board.add(Wrench);
         
         CandleStick = new Weapons();
         CandleStick.SetImageFile("resources/candlestick.png");
-        CandleStick.setXY(0, 0);
         board.add(CandleStick);
         
         LeadPipe = new Weapons();
         LeadPipe.SetImageFile("resources/lead_pipe.png");
-        LeadPipe.setXY(200, 400);
         board.add(LeadPipe);
-        
+        WeaponLocationAssigner();
         add(scrollPane, "East");
         add(userInput, "South");
         add(board, "Center");
 
+       
 
         addMouseListener(this);
 
@@ -242,6 +200,38 @@ public class GUI extends JFrame  implements MouseListener {
     	LeadPipe.paintComponent(g);
     }
 	
+    
+    public void WeaponLocationAssigner(){//this randomly allocates a location to weapons on each game launch
+    	//array of valid locations of weapons each array will contain an XY coordinate
+    	int[][] wepLocation=new int [] []{
+    				{120,150},
+    				{500,120},
+    				{172,303},
+    				{470,300},
+    				{470,375},
+    				{250,500}};
+    				
+    	Random rnd = ThreadLocalRandom.current();//creates random numbers
+        for (int i = wepLocation.length -1; i > 0; i--)//run this loop for the length of the array
+        {
+          int index = rnd.nextInt(i+1);
+          int a = wepLocation[index][0];//a and b are placeholders for values in the original array
+          int b = wepLocation[index][1];
+          wepLocation[index][0] = wepLocation[i][0];//the original values get replaced with a random other value
+          wepLocation[index][1]= wepLocation[i][1];
+          wepLocation[i][0] = a;//the replaced values move to where their replacement had been
+          wepLocation[i][1] = b;
+        }
+
+        LeadPipe.setXY(wepLocation[0][0],wepLocation[0][1]);
+ 	   	CandleStick.setXY(wepLocation[1][0],wepLocation[1][1]);
+        Wrench.setXY(wepLocation[2][0],wepLocation[2][1]);
+        Dagger.setXY(wepLocation[3][0], wepLocation[3][1]);
+        Rope.setXY(wepLocation[4][0], wepLocation[4][1]);
+        Gun.setXY(wepLocation[5][0], wepLocation[5][1]);
+   
+      }
+    
     public static void main (String args[]) {
         new GUI();
     }
