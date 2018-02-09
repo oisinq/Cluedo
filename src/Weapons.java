@@ -66,8 +66,8 @@ public class Weapons extends JComponent {
     public int getY() {
         return yLocation;
     }
-
-    /*public void moveUp(int steps) {
+    //movement for the weapons
+    public void moveUp(int steps) {
         setXY(xLocation, yLocation - (23 * steps));
     }
 
@@ -82,7 +82,7 @@ public class Weapons extends JComponent {
     public void moveRight(int steps) {
         setXY(xLocation + (23 * steps), yLocation);
     }
-    */
+    
     
     
 }

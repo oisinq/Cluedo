@@ -229,6 +229,11 @@ public class GUI extends JFrame  implements MouseListener {
         whiteCounter.moveDown(1);
         cyanCounter.moveLeft(1);
         yellowCounter.moveRight(1);
+        //below code will make weapons move
+        Dagger.moveUp(1);
+        Gun.moveDown(1);
+        Rope.moveLeft(1);
+        Wrench.moveRight(1);
         repaint();
     }
 
@@ -270,7 +275,10 @@ public class GUI extends JFrame  implements MouseListener {
     				{500,120},
     				{172,303},
     				{470,300},
-    				{470,375},
+    				{120,500},
+    				{438,550},
+    				{550,410},
+    				{300,100},
     				{250,500}};
     				
     	Random rnd = ThreadLocalRandom.current();//creates random numbers
@@ -284,7 +292,7 @@ public class GUI extends JFrame  implements MouseListener {
           wepLocation[i][0] = a;//the replaced values move to where their replacement had been
           wepLocation[i][1] = b;
         }
-
+        //allocate the new random positions to the items
         LeadPipe.setXY(wepLocation[0][0],wepLocation[0][1]);
  	   	CandleStick.setXY(wepLocation[1][0],wepLocation[1][1]);
         Wrench.setXY(wepLocation[2][0],wepLocation[2][1]);
