@@ -1,6 +1,13 @@
-/**
- * This file is not currently used by the program - it's an attempt to use components for the counters instead of drawing onto the board
- */
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -107,20 +114,75 @@ public class GUI extends JFrame  implements MouseListener {
 
         //all this is text manipulation that will need to be moved
         @SuppressWarnings("serial")//come back to this maybe
-                Action action = new AbstractAction()
+    	Action action = new AbstractAction()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                String inputtedText =userInput.getText();//takes info from the field
-                userInput.setText("");//wipes the field after
-                // if(inputtedText.equals("/help")){
-                //	infoField.setText("help will go here!");
-                //}
-                //else{
-                infoField.setText("> " + inputtedText);//puts it into the panel
-                //}
-                userInput.setText("");//wipes the field after
+            
+            	 String inputtedText =userInput.getText();//takes info from the field
+                 userInput.setText("");//wipes the field after 
+                 
+                 infoField.append(">" +inputtedText + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");//puts it into the panel
+                 String[] splitStr = inputtedText.split("\\s+");
+                 if(splitStr[0].equals("Move"))
+                 {
+                	 Counter temp = null;
+                	
+                	 if(splitStr[1].equals("Red"))
+                	 {
+                    	 temp=redCounter;
+                	 }
+
+                	 else if(splitStr[1].equals("Yellow"))
+                	 {
+                    	
+                		 temp = yellowCounter;
+                	 }
+
+                	 else if(splitStr[1].equals("Blue"))
+                	 {
+                		 temp = blueCounter;
+                	 }
+
+                	 else if(splitStr[1].equals("Cyan"))
+                	 {
+                		 temp = cyanCounter;
+                	 }
+
+                	 else if(splitStr[1].equals("Green"))
+                	 {
+                    	temp = greenCounter;
+                	 }
+
+                	 else if(splitStr[1].equals("White"))
+                	 {
+                		 temp = whiteCounter;
+                	 }
+                	 if(splitStr[2].equals("Up"))
+                	 {
+                		
+						temp.moveUp(Integer.parseInt(splitStr[3]));
+                	 }
+                	 else if(splitStr[2].equals("Down"))
+                	 {
+                		 temp.moveDown(Integer.parseInt(splitStr[3]));
+                	 }
+                	 else if(splitStr[2].equals("Left"))
+                	 {
+                		 temp.moveLeft(Integer.parseInt(splitStr[3]));
+                	 }
+                	 else if(splitStr[2].equals("Right"))
+                	 {
+                		 temp.moveRight(Integer.parseInt(splitStr[3]));
+                	 }
+                	 repaint();
+                 }
+                 else if(inputtedText.equals("Help"))
+                 {
+                	 infoField.setText("Commands: \nMove\n ");
+                 }
+               
             }
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
