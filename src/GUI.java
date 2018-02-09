@@ -1,6 +1,13 @@
-/**
- * This file is not currently used by the program - it's an attempt to use components for the counters instead of drawing onto the board
- */
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -78,20 +85,182 @@ public class GUI extends JFrame  implements MouseListener {
 
         //all this is text manipulation that will need to be moved
         @SuppressWarnings("serial")//come back to this maybe
-                Action action = new AbstractAction()
+    	Action action = new AbstractAction()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                String inputtedText =userInput.getText();//takes info from the field
-                userInput.setText("");//wipes the field after
-                // if(inputtedText.equals("/help")){
-                //	infoField.setText("help will go here!");
-                //}
-                //else{
-                infoField.setText("> " + inputtedText);//puts it into the panel
-                //}
-                userInput.setText("");//wipes the field after
+            
+            	 String inputtedText =userInput.getText();//takes info from the field
+                 userInput.setText("");//wipes the field after 
+            	
+                 infoField.setText("> " + inputtedText);//puts it into the panel
+                 String[] splitStr = inputtedText.split("\\s+");
+                 if(splitStr[0].equals("Move"))
+                 {
+                	
+                	 if(splitStr[1].equals("Red"))
+                	 {
+                    	
+                		 if(splitStr[2].equals("Up"))
+                		 {
+                			
+                			 redCounter.moveUp(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Down"))
+                		 {
+                			 redCounter.moveDown(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Left"))
+                		 {
+                			 redCounter.moveLeft(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Right"))
+                		 {
+                			 redCounter.moveRight(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                	 }
+
+                	 else if(splitStr[1].equals("Yellow"))
+                	 {
+                    	
+                		 if(splitStr[2].equals("Up"))
+                		 {
+                			
+                			 yellowCounter.moveUp(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Down"))
+                		 {
+                			 yellowCounter.moveDown(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Left"))
+                		 {
+                			 yellowCounter.moveLeft(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Right"))
+                		 {
+                			 yellowCounter.moveRight(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                	 }
+
+                	 else if(splitStr[1].equals("Blue"))
+                	 {
+                    	
+                		 if(splitStr[2].equals("Up"))
+                		 {
+                			
+                			 blueCounter.moveUp(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Down"))
+                		 {
+                			 blueCounter.moveDown(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Left"))
+                		 {
+                			 blueCounter.moveLeft(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Right"))
+                		 {
+                			 blueCounter.moveRight(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                	 }
+
+                	 else if(splitStr[1].equals("Cyan"))
+                	 {
+                    	
+                		 if(splitStr[2].equals("Up"))
+                		 {
+                			
+                			 cyanCounter.moveUp(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Down"))
+                		 {
+                			 cyanCounter.moveDown(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Left"))
+                		 {
+                			 cyanCounter.moveLeft(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Right"))
+                		 {
+                			 cyanCounter.moveRight(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                	 }
+
+                	 else if(splitStr[1].equals("Green"))
+                	 {
+                    	
+                		 if(splitStr[2].equals("Up"))
+                		 {
+                			
+                			 greenCounter.moveUp(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Down"))
+                		 {
+                			 greenCounter.moveDown(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Left"))
+                		 {
+                			 greenCounter.moveLeft(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Right"))
+                		 {
+                			 greenCounter.moveRight(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                	 }
+
+                	 else if(splitStr[1].equals("White"))
+                	 {
+                    	
+                		 if(splitStr[2].equals("Up"))
+                		 {
+                			
+                			 whiteCounter.moveUp(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Down"))
+                		 {
+                			 whiteCounter.moveDown(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Left"))
+                		 {
+                			 whiteCounter.moveLeft(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                		 else if(splitStr[2].equals("Right"))
+                		 {
+                			 whiteCounter.moveRight(Integer.parseInt(splitStr[3]));
+                			 repaint();
+                		 }
+                	 }
+                	 //Call movement function
+                 }
+                 else if(inputtedText.equals("Help"))
+                 {
+                	 infoField.setText("Commands: \nMove\n ");
+                 }
+               
             }
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
