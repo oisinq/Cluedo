@@ -165,7 +165,7 @@ public class GUI extends JFrame  implements MouseListener {
             	 String inputtedText =userInput.getText();//takes info from the field
                  userInput.setText("");//wipes the field after 
                  
-                 infoField.setText("> " + inputtedText);//puts it into the panel
+                 infoField.append(">" +inputtedText + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");//puts it into the panel
                  String[] splitStr = inputtedText.split("\\s+");
                  if(splitStr[0].equals("Move"))
                  {
