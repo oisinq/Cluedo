@@ -164,168 +164,61 @@ public class GUI extends JFrame  implements MouseListener {
             
             	 String inputtedText =userInput.getText();//takes info from the field
                  userInput.setText("");//wipes the field after 
-            	
+                 
                  infoField.setText("> " + inputtedText);//puts it into the panel
                  String[] splitStr = inputtedText.split("\\s+");
                  if(splitStr[0].equals("Move"))
                  {
+                	 Counter temp = null;
                 	
                 	 if(splitStr[1].equals("Red"))
                 	 {
-                    	
-                		 if(splitStr[2].equals("Up"))
-                		 {
-                			
-                			 redCounter.moveUp(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Down"))
-                		 {
-                			 redCounter.moveDown(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Left"))
-                		 {
-                			 redCounter.moveLeft(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Right"))
-                		 {
-                			 redCounter.moveRight(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
+                    	 temp=redCounter;
                 	 }
 
                 	 else if(splitStr[1].equals("Yellow"))
                 	 {
                     	
-                		 if(splitStr[2].equals("Up"))
-                		 {
-                			
-                			 yellowCounter.moveUp(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Down"))
-                		 {
-                			 yellowCounter.moveDown(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Left"))
-                		 {
-                			 yellowCounter.moveLeft(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Right"))
-                		 {
-                			 yellowCounter.moveRight(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
+                		 temp = yellowCounter;
                 	 }
 
                 	 else if(splitStr[1].equals("Blue"))
                 	 {
-                    	
-                		 if(splitStr[2].equals("Up"))
-                		 {
-                			
-                			 blueCounter.moveUp(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Down"))
-                		 {
-                			 blueCounter.moveDown(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Left"))
-                		 {
-                			 blueCounter.moveLeft(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Right"))
-                		 {
-                			 blueCounter.moveRight(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
+                		 temp = blueCounter;
                 	 }
 
                 	 else if(splitStr[1].equals("Cyan"))
                 	 {
-                    	
-                		 if(splitStr[2].equals("Up"))
-                		 {
-                			
-                			 cyanCounter.moveUp(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Down"))
-                		 {
-                			 cyanCounter.moveDown(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Left"))
-                		 {
-                			 cyanCounter.moveLeft(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Right"))
-                		 {
-                			 cyanCounter.moveRight(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
+                		 temp = cyanCounter;
                 	 }
 
                 	 else if(splitStr[1].equals("Green"))
                 	 {
-                    	
-                		 if(splitStr[2].equals("Up"))
-                		 {
-                			
-                			 greenCounter.moveUp(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Down"))
-                		 {
-                			 greenCounter.moveDown(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Left"))
-                		 {
-                			 greenCounter.moveLeft(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Right"))
-                		 {
-                			 greenCounter.moveRight(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
+                    	temp = greenCounter;
                 	 }
 
                 	 else if(splitStr[1].equals("White"))
                 	 {
-                    	
-                		 if(splitStr[2].equals("Up"))
-                		 {
-                			
-                			 whiteCounter.moveUp(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Down"))
-                		 {
-                			 whiteCounter.moveDown(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Left"))
-                		 {
-                			 whiteCounter.moveLeft(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
-                		 else if(splitStr[2].equals("Right"))
-                		 {
-                			 whiteCounter.moveRight(Integer.parseInt(splitStr[3]));
-                			 repaint();
-                		 }
+                		 temp = whiteCounter;
                 	 }
-                	 //Call movement function
+                	 if(splitStr[2].equals("Up"))
+                	 {
+                		
+						temp.moveUp(Integer.parseInt(splitStr[3]));
+                	 }
+                	 else if(splitStr[2].equals("Down"))
+                	 {
+                		 temp.moveDown(Integer.parseInt(splitStr[3]));
+                	 }
+                	 else if(splitStr[2].equals("Left"))
+                	 {
+                		 temp.moveLeft(Integer.parseInt(splitStr[3]));
+                	 }
+                	 else if(splitStr[2].equals("Right"))
+                	 {
+                		 temp.moveRight(Integer.parseInt(splitStr[3]));
+                	 }
+                	 repaint();
                  }
                  else if(inputtedText.equals("Help"))
                  {
