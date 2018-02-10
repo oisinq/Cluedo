@@ -1,56 +1,28 @@
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings("serial")
 public class Weapons extends JComponent {
 
-    int xLocation, yLocation;
-   
-    
-    //BufferedImage gun = null;
-    BufferedImage rope = null;
-    BufferedImage wrench=null;
-    BufferedImage lead_Pipe= null;
-    BufferedImage candlestick=null;
-    BufferedImage dagger=null;
+    int xLocation, yLocation;//the values for the image coordinates
+	BufferedImage Image;//this will hold the image of the weapon once its passed in
 
 
-	BufferedImage Image;
-
- //   @Override
-    public void paintComponent(Graphics g) {
-    	 //try {
-            // dagger = ImageIO.read(new File("resources/dagger.png"));
-             //rope = ImageIO.read(new File("resources/rope.png"));
-             //wrench = ImageIO.read(new File("resources/wrench.png"));
-             //lead_Pipe =  ImageIO.read(new File("resources/lead_pipe.png"));
-             //BufferedImage gun = ImageIO.read(new File("resources/revolver.png"));
-             //candlestick = ImageIO.read(new File("resources/candlestick.png"));
-        // } catch (IOException e){
-
-         //}
-    	 //g.drawImage(dagger, x,y,40,40, null);
-         //g.drawImage(rope, 500,120,40,40, null);
-         //g.drawImage(wrench, 172,303,40,40, null);
-         //g.drawImage(gun, 470,300,40,40, null);
-         //g.drawImage(lead_Pipe, 470,375,40,40, null);
-         //g.drawImage(candlestick, 250,500,40,40, null);
+    public void paintComponent(Graphics g) {//this paints the image at a set size of 40 by 40 pixels 
+    										//xLoxation and yLocation get filled in in the GUI class
     	 g.drawImage(Image,xLocation,yLocation,40,40,null);
     }
 
-    public void setXY(int x, int y) {
+    public void setXY(int x, int y) {//sets the XY coordinates of the Image
         xLocation = x;
         yLocation = y;
     }
 
-   public void SetImageFile(String location){
+   public void SetImageFile(String location){//this sets the file location of the image
 	   try {
 		this.Image=ImageIO.read(new File(location));
 	} catch (IOException e) {
@@ -59,11 +31,11 @@ public class Weapons extends JComponent {
 	}
    }
 
-    public int getX() {
+    public int getX() {//returns the x coordinate of the image
         return xLocation;
     }
 
-    public int getY() {
+    public int getY() {//returns the y coordinate of the image
         return yLocation;
     }
     //movement for the weapons
