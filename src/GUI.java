@@ -3,19 +3,6 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,10 +10,12 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-public class GUI extends JFrame  implements MouseListener {
+public class GUI extends JFrame {
 
-    Counter redCounter, yellowCounter, blueCounter, cyanCounter, greenCounter, whiteCounter;
-    Weapons Gun, Rope,Wrench,Dagger,LeadPipe,CandleStick;
+    private Counter redCounter, yellowCounter, blueCounter, cyanCounter, greenCounter, whiteCounter;
+    private Weapons Gun, Rope,Wrench,Dagger,LeadPipe,CandleStick;
+    JTextArea infoField;
+    JTextField userInput;
     
 
     // This method creates the graphic interface for the program
@@ -42,14 +31,14 @@ public class GUI extends JFrame  implements MouseListener {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        JTextArea infoField = new JTextArea(10, 15);
+        infoField = new JTextArea(10, 15);
         // I setEditable to false so that the user can't edit the text on the right-hand size
         infoField.setEditable(false);
         infoField.setLineWrap(true);
         // I place the infoField inside a scrollpane so that the textArea doesn't fill up
         JScrollPane scrollPane = new JScrollPane(infoField);
 
-        JTextField userInput = new JTextField();
+        userInput = new JTextField();
         userInput.setText("Enter messages here!");
 
         redCounter = new Counter();
@@ -105,10 +94,6 @@ public class GUI extends JFrame  implements MouseListener {
         add(userInput, "South");
         add(board, "Center");
 
-       
-
-        addMouseListener(this);
-
         setVisible(true);
 
 
@@ -119,70 +104,7 @@ public class GUI extends JFrame  implements MouseListener {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-            
-            	 String inputtedText =userInput.getText();//takes info from the field
-                 userInput.setText("");//wipes the field after 
-                 
-                 infoField.append(">" +inputtedText + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");//puts it into the panel
-                 String[] splitStr = inputtedText.split("\\s+");
-                 if(splitStr[0].equals("Move"))
-                 {
-                	 Counter temp = null;
-                	
-                	 if(splitStr[1].equals("Red"))
-                	 {
-                    	 temp=redCounter;
-                	 }
-
-                	 else if(splitStr[1].equals("Yellow"))
-                	 {
-                    	
-                		 temp = yellowCounter;
-                	 }
-
-                	 else if(splitStr[1].equals("Blue"))
-                	 {
-                		 temp = blueCounter;
-                	 }
-
-                	 else if(splitStr[1].equals("Cyan"))
-                	 {
-                		 temp = cyanCounter;
-                	 }
-
-                	 else if(splitStr[1].equals("Green"))
-                	 {
-                    	temp = greenCounter;
-                	 }
-
-                	 else if(splitStr[1].equals("White"))
-                	 {
-                		 temp = whiteCounter;
-                	 }
-                	 if(splitStr[2].equals("Up"))
-                	 {
-                		
-						temp.moveUp(Integer.parseInt(splitStr[3]));
-                	 }
-                	 else if(splitStr[2].equals("Down"))
-                	 {
-                		 temp.moveDown(Integer.parseInt(splitStr[3]));
-                	 }
-                	 else if(splitStr[2].equals("Left"))
-                	 {
-                		 temp.moveLeft(Integer.parseInt(splitStr[3]));
-                	 }
-                	 else if(splitStr[2].equals("Right"))
-                	 {
-                		 temp.moveRight(Integer.parseInt(splitStr[3]));
-                	 }
-                	 repaint();
-                 }
-                 else if(inputtedText.equals("Help"))
-                 {
-                	 infoField.setText("Commands: \nMove\n ");
-                 }
-               
+                interpretInput();
             }
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
@@ -216,45 +138,6 @@ public class GUI extends JFrame  implements MouseListener {
         
         
         drawImage(g);
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // These get the location of where the mouse was clicked and prints it
-        int xLocation = e.getX();
-        int yLocation = e.getY();
-        System.out.println("(" + xLocation + ", " + yLocation + ")");
-        //    redCounter.setXY(redCounter.getX(), redCounter.getY()-23);
-        redCounter.moveUp(1);
-        whiteCounter.moveDown(1);
-        cyanCounter.moveLeft(1);
-        yellowCounter.moveRight(1);
-        //below code will make weapons move
-        Dagger.moveUp(1);
-        Gun.moveDown(1);
-        Rope.moveLeft(1);
-        Wrench.moveRight(1);
-        repaint();
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 
     public void drawImage(Graphics g) {
@@ -301,8 +184,59 @@ public class GUI extends JFrame  implements MouseListener {
         Gun.setXY(wepLocation[5][0], wepLocation[5][1]);
    
       }
-    
-    public static void main (String args[]) {
-        new GUI();
-    }
+
+      public void interpretInput() {
+          String inputtedText =userInput.getText();//takes info from the field
+          userInput.setText("");//wipes the field after
+
+          infoField.append(">" +inputtedText+"\n");//puts it into the panel
+          String[] splitStr = inputtedText.split("\\s+");
+          if(splitStr[0].toLowerCase().equals("move"))
+          {
+              Counter temp = null;
+
+              switch (splitStr[1].toLowerCase()) {
+                  case "red":
+                      temp = redCounter;
+                      break;
+                  case "yellow":
+
+                      temp = yellowCounter;
+                      break;
+                  case "blue":
+                      temp = blueCounter;
+                      break;
+                  case "cyan":
+                      temp = cyanCounter;
+                      break;
+                  case "green":
+                      temp = greenCounter;
+                      break;
+                  case "white":
+                      temp = whiteCounter;
+                      break;
+              }
+
+              switch (splitStr[2].toLowerCase()) {
+                  case "up":
+                      temp.moveUp(Integer.parseInt(splitStr[3]));
+                      break;
+                  case "down":
+                      temp.moveDown(Integer.parseInt(splitStr[3]));
+                      break;
+                  case "left":
+                      temp.moveLeft(Integer.parseInt(splitStr[3]));
+                      break;
+                  case "right":
+                      temp.moveRight(Integer.parseInt(splitStr[3]));
+                      break;
+              }
+
+              repaint();
+          }
+          else if(inputtedText.toLowerCase().equals("help"))
+          {
+              infoField.setText("Commands: \nmove\n - move (colour) (direction) (steps)");
+          }
+      }
 }

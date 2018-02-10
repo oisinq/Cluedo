@@ -1,10 +1,8 @@
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
-public class Counter extends JComponent {
+public class Counter extends JComponent implements BoardPiece {
 
     int xLocation, yLocation;
     Color c;
