@@ -200,58 +200,58 @@ public class GUI extends JFrame {
       public void initialiseWeapons() {
           //weapon objects are created below
           Gun = new Weapon();
-          Gun.SetImageFile("resources/revolver.png");
+          Gun.SetImageFile("/revolver.PNG");
           board.add(Gun);
 
           Rope = new Weapon();
-          Rope.SetImageFile("resources/rope.png");
+          Rope.SetImageFile("/rope.PNG");
           board.add(Rope);
 
           Dagger = new Weapon();
-          Dagger.SetImageFile("resources/dagger.png");
+          Dagger.SetImageFile("/dagger.PNG");
           board.add(Dagger);
 
           Wrench = new Weapon();
-          Wrench.SetImageFile("resources/wrench.png");
+          Wrench.SetImageFile("/wrench.PNG");
           board.add(Wrench);
 
           CandleStick = new Weapon();
-          CandleStick.SetImageFile("resources/candlestick.png");
+          CandleStick.SetImageFile("/candlestick.PNG");
           board.add(CandleStick);
 
           LeadPipe = new Weapon();
-          LeadPipe.SetImageFile("resources/lead_pipe.png");
+          LeadPipe.SetImageFile("/lead_pipe.PNG");
           board.add(LeadPipe);
       }
 
       public void initialiseCounters() {
           redCounter = new Counter();
-          redCounter.setXY(204, 598);
+          redCounter.setXY(204, 601);
           redCounter.setColor(Color.RED);
           board.add(redCounter);
 
           yellowCounter = new Counter();
-          yellowCounter.setXY(44, 437);
+          yellowCounter.setXY(44, 440);
           yellowCounter.setColor(Color.YELLOW);
           board.add(yellowCounter);
 
           blueCounter = new Counter();
-          blueCounter.setXY(572, 484);
+          blueCounter.setXY(572, 487);
           blueCounter.setColor(Color.BLUE);
           board.add(blueCounter);
 
           cyanCounter = new Counter();
-          cyanCounter.setXY(572, 185);
+          cyanCounter.setXY(572, 188);
           cyanCounter.setColor(Color.CYAN);
           board.add(cyanCounter);
 
           greenCounter = new Counter();
-          greenCounter.setXY(250, 47);
+          greenCounter.setXY(250, 50);
           greenCounter.setColor(Color.GREEN);
           board.add(greenCounter);
 
           whiteCounter = new Counter();
-          whiteCounter.setXY(365, 47);
+          whiteCounter.setXY(365, 50);
           whiteCounter.setColor(Color.WHITE);
           board.add(whiteCounter);
       }

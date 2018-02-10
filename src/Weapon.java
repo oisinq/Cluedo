@@ -2,7 +2,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
@@ -14,7 +13,9 @@ public class Weapon extends JComponent implements BoardPiece {
 
     public void paintComponent(Graphics g) {//this paints the image at a set size of 40 by 40 pixels 
     										//xLoxation and yLocation get filled in in the GUI class
-    	 g.drawImage(Image,xLocation,yLocation,40,40,null);
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+    	 g2.drawImage(Image,xLocation,yLocation,40,40,null);
     }
 
     public void setXY(int x, int y) {//sets the XY coordinates of the Image
@@ -24,7 +25,7 @@ public class Weapon extends JComponent implements BoardPiece {
 
    public void SetImageFile(String location){//this sets the file location of the image
 	   try {
-		this.Image=ImageIO.read(new File(location));
+           Image = ImageIO.read(this.getClass().getResource(location));
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		//e.printStackTrace();
