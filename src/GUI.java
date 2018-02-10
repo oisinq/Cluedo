@@ -146,8 +146,14 @@ public class GUI extends JFrame {
           String inputtedText =userInput.getText();//takes info from the field
           userInput.setText("");//wipes the field after
 
-          infoField.append(">" +inputtedText+"\n");//puts it into the panel
+          infoField.append("\n>" +inputtedText+"\n");//puts it into the panel
           String[] splitStr = inputtedText.split("\\s+");// Splits the inputted string into an array based spaces
+          if(inputtedText.toLowerCase().equals("help"))
+          {
+              infoField.setText("Commands: \nMove Player Piece\n - move (colour) (direction) (steps)\n\nMove Weapons\n - move (weapon name) (direction) (steps)\n\nItem Names\n-Dagger, CandleStick, Pistol, Rope, Wrench, LeadPipe");
+          }
+          else  if(splitStr.length==4)
+          {
           if(splitStr[0].toLowerCase().equals("move"))// If the first word is move in any format
           {
               BoardPiece temp = null;// Holds the name of the player counter chosen
@@ -207,17 +213,21 @@ public class GUI extends JFrame {
                       break;
                   default:
                 	  infoField.append("\nInvalid direction chosen\n");
-                  
-             
-            
+              
               }
+          
+        
+            
+              
 
               repaint();// Repaints the board with the new location of the pieces
           }
-          else if(inputtedText.toLowerCase().equals("help"))
+          else 
           {
-              infoField.setText("Commands: \nMove Player Piece\n - move (colour) (direction) (steps)\n\nMove Weapons\n - move (weapon name) (direction) (steps)\n\nItem Names\n-Dagger, CandleStick, Pistol, Rope, Wrench, LeadPipe");
+        	  infoField.append("\nInvalid command entered. Try again!");
           }
+          }
+        
       }
 
       public void initialiseWeapons() {
