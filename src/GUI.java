@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -13,15 +12,18 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GUI extends JFrame {
 
     private Counter redCounter, yellowCounter, blueCounter, cyanCounter, greenCounter, whiteCounter;
-    private Weapons Gun, Rope,Wrench,Dagger,LeadPipe,CandleStick;
+    private Weapon Gun, Rope,Wrench,Dagger,LeadPipe,CandleStick;
+    JPanel board;
     JTextArea infoField;
     JTextField userInput;
-    
+    JScrollPane scrollPane;
+    BufferedImage boardImage;
+
 
     // This method creates the graphic interface for the program
     public GUI() {
 
-        JPanel board = new JPanel();
+        board = new JPanel();
 
         // We use BorderLayout to easily have multiple components in the same panel
         setLayout(new BorderLayout());
@@ -31,68 +33,30 @@ public class GUI extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        boardImage = null;
+        try {
+            boardImage= ImageIO.read(this.getClass().getResource("cluedo_board.jpg"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         infoField = new JTextArea(10, 15);
         // I setEditable to false so that the user can't edit the text on the right-hand size
         infoField.setEditable(false);
         infoField.setLineWrap(true);
         // I place the infoField inside a scrollpane so that the textArea doesn't fill up
-        JScrollPane scrollPane = new JScrollPane(infoField);
+        scrollPane = new JScrollPane(infoField);
 
         userInput = new JTextField();
         userInput.setText("Enter messages here!");
 
-        redCounter = new Counter();
-        redCounter.setXY(204, 598);
-        board.add(redCounter);
+        initialiseCounters();
+        initialiseWeapons();
 
-        yellowCounter = new Counter();
-        yellowCounter.setXY(44, 437);
-        board.add(yellowCounter);
-
-        blueCounter = new Counter();
-        blueCounter.setXY(572, 484);
-        board.add(blueCounter);
-
-        cyanCounter = new Counter();
-        cyanCounter.setXY(572, 185);
-        board.add(cyanCounter);
-
-        greenCounter = new Counter();
-        greenCounter.setXY(250, 47);
-        board.add(greenCounter);
-
-        whiteCounter = new Counter();
-        whiteCounter.setXY(365, 47);
-        board.add(whiteCounter);
-        
-        //weapon objects are created below
-        Gun = new Weapons();
-        Gun.SetImageFile("resources/revolver.png");
-        board.add(Gun);
-        
-        Rope = new Weapons();
-        Rope.SetImageFile("resources/rope.png");
-        board.add(Rope);
-        
-        Dagger = new Weapons();
-        Dagger.SetImageFile("resources/dagger.png");
-        board.add(Dagger);
-        
-        Wrench = new Weapons();
-        Wrench.SetImageFile("resources/wrench.png");
-        board.add(Wrench);
-        
-        CandleStick = new Weapons();
-        CandleStick.SetImageFile("resources/candlestick.png");
-        board.add(CandleStick);
-        
-        LeadPipe = new Weapons();
-        LeadPipe.SetImageFile("resources/lead_pipe.png");
-        board.add(LeadPipe);
         WeaponLocationAssigner();
-        add(scrollPane, "East");
-        add(userInput, "South");
-        add(board, "Center");
+
+        addComponents();
 
         setVisible(true);
 
@@ -110,37 +74,30 @@ public class GUI extends JFrame {
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
     }
 
+    /**
+     * This method runs when we setVisible(true) and when we repaint()
+     */
     public void paint(Graphics g){
+        // This line insures that the other components of the JFrame are visible
         super.paint(g);
-        BufferedImage myPicture = null;
-        try {
-            myPicture = ImageIO.read(new File("resources/cluedo_board.jpg"));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
-        g.drawImage(myPicture, 0, 22, null);
+        Graphics2D g2 = (Graphics2D) g;
+
+        g2.drawImage(boardImage, 0, 25,this);
 
 
-        redCounter.setColor(Color.RED);
         redCounter.paintComponent(g);
-        yellowCounter.setColor(Color.YELLOW);
         yellowCounter.paintComponent(g);
-        blueCounter.setColor(Color.BLUE);
         blueCounter.paintComponent(g);
-        cyanCounter.setColor(Color.CYAN);
         cyanCounter.paintComponent(g);
-        greenCounter.setColor(Color.GREEN);
         greenCounter.paintComponent(g);
-        whiteCounter.setColor(Color.WHITE);
         whiteCounter.paintComponent(g);
-        
-        
-        drawImage(g);
+
+
+        drawWeapons(g);
     }
 
-    public void drawImage(Graphics g) {
+    public void drawWeapons(Graphics g) {
 
     	Gun.paintComponent(g);
     	Rope.paintComponent(g);
@@ -149,8 +106,8 @@ public class GUI extends JFrame {
     	CandleStick.paintComponent(g);
     	LeadPipe.paintComponent(g);
     }
-	
-    
+
+
     public void WeaponLocationAssigner(){//this randomly allocates a location to weapons on each game launch
     	//array of valid locations of weapons each array will contain an XY coordinate
     	int[][] wepLocation=new int [] []{
@@ -163,7 +120,7 @@ public class GUI extends JFrame {
     				{550,410},
     				{300,100},
     				{250,500}};
-    				
+
     	Random rnd = ThreadLocalRandom.current();//creates random numbers
         for (int i = wepLocation.length -1; i > 0; i--)//run this loop for the length of the array
         {
@@ -182,7 +139,7 @@ public class GUI extends JFrame {
         Dagger.setXY(wepLocation[3][0], wepLocation[3][1]);
         Rope.setXY(wepLocation[4][0], wepLocation[4][1]);
         Gun.setXY(wepLocation[5][0], wepLocation[5][1]);
-   
+
       }
 
       public void interpretInput() {
@@ -238,5 +195,71 @@ public class GUI extends JFrame {
           {
               infoField.setText("Commands: \nmove\n - move (colour) (direction) (steps)");
           }
+      }
+
+      public void initialiseWeapons() {
+          //weapon objects are created below
+          Gun = new Weapon();
+          Gun.SetImageFile("resources/revolver.png");
+          board.add(Gun);
+
+          Rope = new Weapon();
+          Rope.SetImageFile("resources/rope.png");
+          board.add(Rope);
+
+          Dagger = new Weapon();
+          Dagger.SetImageFile("resources/dagger.png");
+          board.add(Dagger);
+
+          Wrench = new Weapon();
+          Wrench.SetImageFile("resources/wrench.png");
+          board.add(Wrench);
+
+          CandleStick = new Weapon();
+          CandleStick.SetImageFile("resources/candlestick.png");
+          board.add(CandleStick);
+
+          LeadPipe = new Weapon();
+          LeadPipe.SetImageFile("resources/lead_pipe.png");
+          board.add(LeadPipe);
+      }
+
+      public void initialiseCounters() {
+          redCounter = new Counter();
+          redCounter.setXY(204, 598);
+          redCounter.setColor(Color.RED);
+          board.add(redCounter);
+
+          yellowCounter = new Counter();
+          yellowCounter.setXY(44, 437);
+          yellowCounter.setColor(Color.YELLOW);
+          board.add(yellowCounter);
+
+          blueCounter = new Counter();
+          blueCounter.setXY(572, 484);
+          blueCounter.setColor(Color.BLUE);
+          board.add(blueCounter);
+
+          cyanCounter = new Counter();
+          cyanCounter.setXY(572, 185);
+          cyanCounter.setColor(Color.CYAN);
+          board.add(cyanCounter);
+
+          greenCounter = new Counter();
+          greenCounter.setXY(250, 47);
+          greenCounter.setColor(Color.GREEN);
+          board.add(greenCounter);
+
+          whiteCounter = new Counter();
+          whiteCounter.setXY(365, 47);
+          whiteCounter.setColor(Color.WHITE);
+          board.add(whiteCounter);
+      }
+
+      public void addComponents() {
+
+          add(scrollPane, "East");
+          add(userInput, "South");
+          add(board, "Center");
       }
 }

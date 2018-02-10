@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class Weapons extends JComponent implements BoardPiece {
+public class Weapon extends JComponent implements BoardPiece {
 
     int xLocation, yLocation;//the values for the image coordinates
 	BufferedImage Image;//this will hold the image of the weapon once its passed in
