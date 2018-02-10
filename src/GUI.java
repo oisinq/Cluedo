@@ -151,7 +151,7 @@ public class GUI extends JFrame {
           if(splitStr[0].toLowerCase().equals("move"))// If the first word is move in any format
           {
               Counter temp = null;// Holds the name of the player counter chosen
-              Weapons hold = null;// Holds the name of the weapon chosen
+              Weapon hold = null;// Holds the name of the weapon chosen
               int check = 2;// When check is set to 1 it specifies that a player counter has been chosen and when it had been set to zero it specifies a weapon has been chosen
               switch (splitStr[1].toLowerCase()) {// Checks the counter or weapon chosen
                   case "red":
