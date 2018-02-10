@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GUI extends JFrame {
 
     private Counter redCounter, yellowCounter, blueCounter, cyanCounter, greenCounter, whiteCounter;
-    private Weapon Gun, Rope,Wrench,Dagger,LeadPipe,CandleStick;
+    private Weapon Pistol, Rope,Wrench,Dagger,LeadPipe,CandleStick;
     JPanel board;
     JTextArea infoField;
     JTextField userInput;
@@ -99,7 +99,7 @@ public class GUI extends JFrame {
 
     public void drawWeapons(Graphics g) {
 
-    	Gun.paintComponent(g);
+    	Pistol.paintComponent(g);
     	Rope.paintComponent(g);
     	Dagger.paintComponent(g);
     	Wrench.paintComponent(g);
@@ -138,7 +138,7 @@ public class GUI extends JFrame {
         Wrench.setXY(wepLocation[2][0],wepLocation[2][1]);
         Dagger.setXY(wepLocation[3][0], wepLocation[3][1]);
         Rope.setXY(wepLocation[4][0], wepLocation[4][1]);
-        Gun.setXY(wepLocation[5][0], wepLocation[5][1]);
+        Pistol.setXY(wepLocation[5][0], wepLocation[5][1]);
 
       }
 
@@ -150,63 +150,48 @@ public class GUI extends JFrame {
           String[] splitStr = inputtedText.split("\\s+");// Splits the inputted string into an array based spaces
           if(splitStr[0].toLowerCase().equals("move"))// If the first word is move in any format
           {
-              Counter temp = null;// Holds the name of the player counter chosen
-              Weapon hold = null;// Holds the name of the weapon chosen
-              int check = 2;// When check is set to 1 it specifies that a player counter has been chosen and when it had been set to zero it specifies a weapon has been chosen
+              BoardPiece temp = null;// Holds the name of the player counter chosen
               switch (splitStr[1].toLowerCase()) {// Checks the counter or weapon chosen
                   case "red":
                       temp = redCounter;
-                      check=1;
                       break;
                   case "yellow":
-                      temp = yellowCounter;
-                      check=1;
+                      temp = yellowCounter;              
                       break;
                   case "blue":
                       temp = blueCounter;
-                      check=1;
                       break;
                   case "cyan":
                       temp = cyanCounter;
-                      check=1;
                       break;
                   case "green":
                       temp = greenCounter;
-                      check=1;
                       break;
                   case "white":
                       temp = whiteCounter;
-                      check=1;
                       break;
                   case "dagger":
-                      hold = Dagger;
-                      check=0;
+                      temp= Dagger;
                       break;
                   case "candlestick":
-                	  hold = CandleStick;
-                	  check=0;
+                	  temp = CandleStick;
                       break;
-                  case "gun":
-                      hold = Gun;
-                      check=0;
+                  case "pistol":
+                      temp = Pistol;
                       break;
                   case "leadpipe":
-                      hold = LeadPipe;
-                      check=0;
+                      temp = LeadPipe;
                       break;
                   case "rope":
-                      hold = Rope;
-                      check=0;
+                      temp = Rope;
                       break;
                   case "wrench":
-                      hold = Wrench;
-                      check=0;
+                      temp = Wrench;
                       break;
                   default:
                 	  infoField.append("\nInvalid item chosen\n");
               }
-              if(check==1)// If player counter is chosen 
-              {
+             
               switch (splitStr[2].toLowerCase()) {// Checks the movement command entered 
                   case "up":
                       temp.moveUp(Integer.parseInt(splitStr[3]));
@@ -223,41 +208,23 @@ public class GUI extends JFrame {
                   default:
                 	  infoField.append("\nInvalid direction chosen\n");
                   
-              }
-              }
-              if(check==0)// If weapons are chosen
-              {
-              switch (splitStr[2].toLowerCase()) {// Checks the movement command entered 
-                  case "up":
-                      hold.moveUp(Integer.parseInt(splitStr[3]));
-                      break;
-                  case "down":
-                      hold.moveDown(Integer.parseInt(splitStr[3]));
-                      break;
-                  case "left":
-                      hold.moveLeft(Integer.parseInt(splitStr[3]));
-                      break;
-                  case "right":
-                      hold.moveRight(Integer.parseInt(splitStr[3]));
-                      break;
-                  default:
-                	  infoField.append("\nInvalid direction chosen\n");
-              }
+             
+            
               }
 
               repaint();// Repaints the board with the new location of the pieces
           }
           else if(inputtedText.toLowerCase().equals("help"))
           {
-              infoField.setText("Commands: \nMove Player Piece\n - move (colour) (direction) (steps)\n\nMove Weapons\n - move (weapon name) (direction) (steps)\n\nItem Names\n-Dagger, CandleStick, Gun, Rope, Wrench, LeadPipe");
+              infoField.setText("Commands: \nMove Player Piece\n - move (colour) (direction) (steps)\n\nMove Weapons\n - move (weapon name) (direction) (steps)\n\nItem Names\n-Dagger, CandleStick, Pistol, Rope, Wrench, LeadPipe");
           }
       }
 
       public void initialiseWeapons() {
           //weapon objects are created below
-          Gun = new Weapon();
-          Gun.SetImageFile("/revolver.PNG");
-          board.add(Gun);
+          Pistol = new Weapon();
+          Pistol.SetImageFile("/revolver.PNG");
+          board.add(Pistol);
 
           Rope = new Weapon();
           Rope.SetImageFile("/rope.PNG");
