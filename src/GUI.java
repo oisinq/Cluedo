@@ -39,7 +39,7 @@ public class GUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(infoField);
 
         userInput = new JTextField();
-        userInput.setText("Enter messages here!");
+        userInput.setText("Help");
 
         redCounter = new Counter();
         redCounter.setXY(204, 598);
@@ -190,34 +190,67 @@ public class GUI extends JFrame {
           userInput.setText("");//wipes the field after
 
           infoField.append(">" +inputtedText+"\n");//puts it into the panel
-          String[] splitStr = inputtedText.split("\\s+");
-          if(splitStr[0].toLowerCase().equals("move"))
+          String[] splitStr = inputtedText.split("\\s+");// Splits the inputted string into an array based spaces
+          if(splitStr[0].toLowerCase().equals("move"))// If the first word is move in any format
           {
-              Counter temp = null;
-
-              switch (splitStr[1].toLowerCase()) {
+              Counter temp = null;// Holds the name of the player counter chosen
+              Weapons hold = null;// Holds the name of the weapon chosen
+              int check = 2;// When check is set to 1 it specifies that a player counter has been chosen and when it had been set to zero it specifies a weapon has been chosen
+              switch (splitStr[1].toLowerCase()) {// Checks the counter or weapon chosen
                   case "red":
                       temp = redCounter;
+                      check=1;
                       break;
                   case "yellow":
-
                       temp = yellowCounter;
+                      check=1;
                       break;
                   case "blue":
                       temp = blueCounter;
+                      check=1;
                       break;
                   case "cyan":
                       temp = cyanCounter;
+                      check=1;
                       break;
                   case "green":
                       temp = greenCounter;
+                      check=1;
                       break;
                   case "white":
                       temp = whiteCounter;
+                      check=1;
                       break;
+                  case "dagger":
+                      hold = Dagger;
+                      check=0;
+                      break;
+                  case "candlestick":
+                	  hold = CandleStick;
+                	  check=0;
+                      break;
+                  case "gun":
+                      hold = Gun;
+                      check=0;
+                      break;
+                  case "leadpipe":
+                      hold = LeadPipe;
+                      check=0;
+                      break;
+                  case "rope":
+                      hold = Rope;
+                      check=0;
+                      break;
+                  case "wrench":
+                      hold = Wrench;
+                      check=0;
+                      break;
+                  default:
+                	  infoField.append("\nInvalid item chosen\n");
               }
-
-              switch (splitStr[2].toLowerCase()) {
+              if(check==1)// If player counter is chosen 
+              {
+              switch (splitStr[2].toLowerCase()) {// Checks the movement command entered 
                   case "up":
                       temp.moveUp(Integer.parseInt(splitStr[3]));
                       break;
@@ -230,13 +263,36 @@ public class GUI extends JFrame {
                   case "right":
                       temp.moveRight(Integer.parseInt(splitStr[3]));
                       break;
+                  default:
+                	  infoField.append("\nInvalid direction chosen\n");
+                  
+              }
+              }
+              if(check==0)// If weapons are chosen
+              {
+              switch (splitStr[2].toLowerCase()) {// Checks the movement command entered 
+                  case "up":
+                      hold.moveUp(Integer.parseInt(splitStr[3]));
+                      break;
+                  case "down":
+                      hold.moveDown(Integer.parseInt(splitStr[3]));
+                      break;
+                  case "left":
+                      hold.moveLeft(Integer.parseInt(splitStr[3]));
+                      break;
+                  case "right":
+                      hold.moveRight(Integer.parseInt(splitStr[3]));
+                      break;
+                  default:
+                	  infoField.append("\nInvalid direction chosen\n");
+              }
               }
 
-              repaint();
+              repaint();// Repaints the board with the new location of the pieces
           }
           else if(inputtedText.toLowerCase().equals("help"))
           {
-              infoField.setText("Commands: \nmove\n - move (colour) (direction) (steps)");
+              infoField.setText("Commands: \nMove Player Piece\n - move (colour) (direction) (steps)\n\nMove Weapons\n - move (weapon name) (direction) (steps)\n\nItem Names\n-Dagger, CandleStick, Gun, Rope, Wrench, LeadPipe");
           }
       }
 }
