@@ -52,7 +52,10 @@ public class GUI extends JFrame {
 
         userInput = new JTextField();
         userInput.setText("Enter text here (type 'help' for help)");
-
+        infoField.append("Commands: \nMove Player Piece\n - move (colour/character) (direction) (steps) e.g Move Scarlet Up 4\n" +
+                "Player Names:\n  -Scarlet/Red\n  -Plum/purple\n  -Mustard/yellow\n  -Peacock/blue\n  -White\n  -Green" +
+                "\n\nMove Weapons\n - move (weapon name) (direction) (steps)\nWeapon Names:\n  -Dagger\n  -CandleStick\n " +
+                " -Pistol\n  -Rope\n  -Wrench\n  -LeadPipe\n");
         // This method creates the Counter objects
         initialiseCounters();
         // This method creates the Weapon objects
