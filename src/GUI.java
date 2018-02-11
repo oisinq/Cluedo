@@ -161,14 +161,23 @@ public class GUI extends JFrame {
     private void interpretInput() {
         String inputtedText = userInput.getText();//takes info from the field
         userInput.setText("");//wipes the field after
-
+        boolean numCheck = true;
         infoField.append(">" + inputtedText + "\n");//puts it into the panel
         String[] splitStr = inputtedText.split("\\s+");// Splits the inputted string into an array based spaces
         if (inputtedText.toLowerCase().equals("help")) {
             helpCommand();
         }  else if(splitStr.length==4&&splitStr[0].toLowerCase().equals("move"))// If the first word is move in any format
         {
+        	for (int i = 0; i < splitStr[3].length(); i++) {
+    	        char c = splitStr[3].charAt(i);
+    	        if (c < '0' || c > '9') {
+    	            numCheck=false;
+    	        }
+    	 }
+        if(numCheck==true)
+        {
             moveCommand(splitStr);
+        }
         }
         else { infoField.append("\n Invalid command entered!\n");}
     }
