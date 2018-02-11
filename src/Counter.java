@@ -1,3 +1,8 @@
+/*  Cluedo - Sprint 1
+    Team: auroraBorealis
+    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
+    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -16,7 +21,7 @@ public class Counter extends JComponent implements BoardPiece {
      */
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-       g2.setColor(c);
+        g2.setColor(c);
         Shape circle = new Ellipse2D.Double(xLocation, yLocation, 20, 20);
         g2.fill(circle);
     }

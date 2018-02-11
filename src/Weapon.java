@@ -1,3 +1,8 @@
+/*  Cluedo - Sprint 1
+    Team: auroraBorealis
+    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
+    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +24,7 @@ public class Weapon extends JComponent implements BoardPiece {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-    	 g2.drawImage(Image, xLocation, yLocation,40,40,null);
+        g2.drawImage(Image, xLocation, yLocation,40,40,null);
     }
 
     /**

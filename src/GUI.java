@@ -1,3 +1,8 @@
+/*  Cluedo - Sprint 1
+    Team: auroraBorealis
+    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
+    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -171,16 +176,16 @@ public class GUI extends JFrame {
             helpCommand();
         }  else if(splitStr.length==4&&splitStr[0].toLowerCase().equals("move"))// If the first word is move in any format
         {
-        	for (int i = 0; i < splitStr[3].length(); i++) {
-    	        char c = splitStr[3].charAt(i);
-    	        if (c < '0' || c > '9') {
-    	            numCheck=false;
-    	        }
-    	 }
-        if(numCheck==true)
-        {
-            moveCommand(splitStr);
-        }
+            for (int i = 0; i < splitStr[3].length(); i++) {
+                char c = splitStr[3].charAt(i);
+                if (c < '0' || c > '9') {
+                    numCheck=false;
+                }
+            }
+            if(numCheck==true)
+            {
+                moveCommand(splitStr);
+            }
         }
         else { infoField.append("\n Invalid command entered!\n");}
     }
@@ -211,6 +216,7 @@ public class GUI extends JFrame {
                 temp = whiteCounter;
                 break;
             case "dagger":
+            case "knife":
                 temp = Dagger;
                 break;
             case "candlestick":
