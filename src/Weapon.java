@@ -16,6 +16,19 @@ public class Weapon extends JComponent implements BoardPiece {
 
     private int xLocation, yLocation;//the values for the image coordinates
     private BufferedImage Image;//this will hold the image of the weapon once its passed in
+    String name;
+
+    Weapon(String name, int x, int y, String imageLocation) {
+        this.name = name;
+        xLocation = x;
+        yLocation = y;
+        try {
+            Image = ImageIO.read(this.getClass().getResource(imageLocation));
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error: cannot load board image.");
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This paints the image at a set size of 40 by 40 pixels
@@ -97,4 +110,13 @@ public class Weapon extends JComponent implements BoardPiece {
     public void moveRight(int steps) {
         setXY(xLocation + (23 * steps), yLocation);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean hasName(String name) {
+        return this.name.toLowerCase().equals(name.toLowerCase().trim());
+    }
+
 }

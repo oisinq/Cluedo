@@ -18,7 +18,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GUI extends JFrame {
 
     // These are the variables contained in the GUI - the board components and the pieces on the board
-    private Counter scarletCounter, mustardCounter, peacockCounter, plumCounter, greenCounter, whiteCounter;
+    public Counter scarletCounter, mustardCounter, peacockCounter, plumCounter, greenCounter, whiteCounter;
+    private Counters counters;
+    private Weapons weapons;
     private Weapon Pistol, Rope, Wrench, Dagger, LeadPipe, CandleStick;
     private JPanel board;
     private JTextArea infoField;
@@ -30,7 +32,10 @@ public class GUI extends JFrame {
     /**
      * This method creates the graphical interface for the program
      */
-    public GUI() {
+    public GUI(Counters counters, Weapons weapons) {
+        this.counters = counters;
+        this.weapons = weapons;
+
         board = new JPanel();
         // We use BorderLayout to easily have multiple components in the same panel
         setLayout(new BorderLayout());
@@ -62,12 +67,9 @@ public class GUI extends JFrame {
                 "\n\nMove Weapons\n - move (weapon name) (direction) (steps)\nWeapon Names:\n  -Dagger\n  -CandleStick\n " +
                 " -Pistol\n  -Rope\n  -Wrench\n  -LeadPipe\n");
         // This method creates the Counter objects
-        initialiseCounters();
+        initialiseCounters(counters);
         // This method creates the Weapon objects
-        initialiseWeapons();
-
-        // This method places the weapons onto the screen in random locations
-        WeaponLocationAssigner();
+        initialiseWeapons(weapons);
 
         // Adds the different sections to the GUI
         addComponents();
@@ -105,62 +107,18 @@ public class GUI extends JFrame {
      * Draws the counters on top of the board in the correct locations
      */
     private void drawCounters(Graphics g) {
-        scarletCounter.paintComponent(g);
-        mustardCounter.paintComponent(g);
-        peacockCounter.paintComponent(g);
-        plumCounter.paintComponent(g);
-        greenCounter.paintComponent(g);
-        whiteCounter.paintComponent(g);
+        for(Counter c : counters) {
+            c.paintComponent(g);
+        }
     }
 
     /**
      * Draws the weapons on top of the board in the correct locations
      */
     private void drawWeapons(Graphics g) {
-
-        Pistol.paintComponent(g);
-        Rope.paintComponent(g);
-        Dagger.paintComponent(g);
-        Wrench.paintComponent(g);
-        CandleStick.paintComponent(g);
-        LeadPipe.paintComponent(g);
-    }
-
-    /**
-     * Randomly allocates a location to weapons on each game launch
-     */
-    private void WeaponLocationAssigner() {
-        //array of valid locations of weapons each array will contain an XY coordinate
-        int[][] wepLocation = new int[][]{
-                {120, 150},
-                {500, 120},
-                {172, 303},
-                {470, 300},
-                {120, 500},
-                {438, 550},
-                {550, 410},
-                {300, 100},
-                {250, 500}};
-
-        Random rnd = ThreadLocalRandom.current();//creates random numbers
-        for (int i = wepLocation.length - 1; i > 0; i--)//run this loop for the length of the array
-        {
-            int index = rnd.nextInt(i + 1);
-            int a = wepLocation[index][0];//a and b are placeholders for values in the original array
-            int b = wepLocation[index][1];
-            wepLocation[index][0] = wepLocation[i][0];//the original values get replaced with a random other value
-            wepLocation[index][1] = wepLocation[i][1];
-            wepLocation[i][0] = a;//the replaced values move to where their replacement had been
-            wepLocation[i][1] = b;
+        for(Weapon w : weapons) {
+            w.paintComponent(g);
         }
-        //allocate the new random positions to the items
-        LeadPipe.setXY(wepLocation[0][0], wepLocation[0][1]);
-        CandleStick.setXY(wepLocation[1][0], wepLocation[1][1]);
-        Wrench.setXY(wepLocation[2][0], wepLocation[2][1]);
-        Dagger.setXY(wepLocation[3][0], wepLocation[3][1]);
-        Rope.setXY(wepLocation[4][0], wepLocation[4][1]);
-        Pistol.setXY(wepLocation[5][0], wepLocation[5][1]);
-
     }
 
     /**
@@ -195,46 +153,46 @@ public class GUI extends JFrame {
         switch (splitStr[1].toLowerCase()) {// Checks the counter or weapon chosen, changes it to lowercase
             case "scarlet":
             case "red":
-                temp = scarletCounter;
+                temp = counters.get("Scarlet");
                 break;
             case "mustard":
             case "yellow":
-                temp = mustardCounter;
+                temp = counters.get("Mustard");
                 break;
             case "peacock":
             case "blue":
-                temp = peacockCounter;
+                temp =  counters.get("Peacock");
                 break;
             case "plum":
             case "purple":
-                temp = plumCounter;
+                temp = counters.get("Plum");
                 break;
             case "green":
-                temp = greenCounter;
+                temp = counters.get("Green");
                 break;
             case "white":
-                temp = whiteCounter;
+                temp = counters.get("White");
                 break;
             case "dagger":
             case "knife":
-                temp = Dagger;
+                temp = weapons.get("Dagger");
                 break;
             case "candlestick":
-                temp = CandleStick;
+                temp = weapons.get("Candlestick");
                 break;
             case "pistol":
             case "gun":
             case "revolver":
-                temp = Pistol;
+                temp = weapons.get("Pistol");
                 break;
             case "leadpipe":
-                temp = LeadPipe;
+                temp = weapons.get("Lead Pipe");
                 break;
             case "rope":
-                temp = Rope;
+                temp = weapons.get("Rope");
                 break;
             case "wrench":
-                temp = Wrench;
+                temp = weapons.get("Wrench");
                 break;
             default:
                 infoField.append("\nInvalid item chosen\n");
@@ -273,66 +231,35 @@ public class GUI extends JFrame {
     /**
      * Creates the weapons, and finally adds it to the board
      */
-    private void initialiseWeapons() {
-        //weapon objects are created below
-        Pistol = new Weapon();
-        Pistol.SetImageFile("/revolver.PNG");
-        board.add(Pistol);
-
-        Rope = new Weapon();
-        Rope.SetImageFile("/rope.PNG");
-        board.add(Rope);
-
-        Dagger = new Weapon();
-        Dagger.SetImageFile("/dagger.PNG");
-        board.add(Dagger);
-
-        Wrench = new Weapon();
-        Wrench.SetImageFile("/wrench.PNG");
-        board.add(Wrench);
-
-        CandleStick = new Weapon();
-        CandleStick.SetImageFile("/candlestick.PNG");
-        board.add(CandleStick);
-
-        LeadPipe = new Weapon();
-        LeadPipe.SetImageFile("/lead_pipe.PNG");
-        board.add(LeadPipe);
+    private void initialiseWeapons(Weapons weapons) {
+        for (Weapon w : weapons) {
+            board.add(w);
+        }
     }
 
     /**
      * Creates each counter and sets its location, and finally adds it to the board
      */
-    private void initialiseCounters() {
-        scarletCounter = new Counter();
-        scarletCounter.setXY(204, 601);
-        scarletCounter.setColor(Color.RED);
-        board.add(scarletCounter);
-
-        mustardCounter = new Counter();
-        mustardCounter.setXY(44, 440);
-        mustardCounter.setColor(Color.YELLOW);
-        board.add(mustardCounter);
-
-        peacockCounter = new Counter();
-        peacockCounter.setXY(572, 487);
-        peacockCounter.setColor(Color.BLUE);
-        board.add(peacockCounter);
-
-        plumCounter = new Counter();
-        plumCounter.setXY(572, 188);
-        plumCounter.setColor(new Color(95, 24, 175));
-        board.add(plumCounter);
-
-        greenCounter = new Counter();
-        greenCounter.setXY(250, 50);
-        greenCounter.setColor(new Color(15, 188, 41));
-        board.add(greenCounter);
-
-        whiteCounter = new Counter();
-        whiteCounter.setXY(365, 50);
-        whiteCounter.setColor(Color.WHITE);
-        board.add(whiteCounter);
+    private void initialiseCounters(Counters counters) {
+        for (Counter c : counters) {
+            board.add(c);
+        }
+//        board.add(scarletCounter);
+//
+//        mustardCounter = new Counter("Mustard", Color.YELLOW, 44, 440);
+//        board.add(mustardCounter);
+//
+//        peacockCounter = new Counter("Peacock", Color.BLUE, 572, 487);
+//        board.add(peacockCounter);
+//
+//        plumCounter = new Counter("Plum", new Color(95, 24, 175), 572, 188);
+//        board.add(plumCounter);
+//
+//        greenCounter = new Counter("Green", new Color(15, 188, 41), 250, 50);
+//        board.add(greenCounter);
+//
+//        whiteCounter = new Counter("White", Color.WHITE, 365, 50);
+//        board.add(whiteCounter);
     }
 
     /**

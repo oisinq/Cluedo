@@ -15,6 +15,17 @@ public class Counter extends JComponent implements BoardPiece {
     // We store these variables here to make it easier to move around the players on the board
     private int xLocation, yLocation;
     private Color c;
+    private String name;
+    public String getName() {
+        return name;
+    }
+
+    Counter(String name, Color c, int x, int y) {
+        this.name = name;
+        this.c = c;
+        xLocation = x;
+        yLocation = y;
+    }
 
     /**
      * This paints the component onto the board
@@ -90,5 +101,9 @@ public class Counter extends JComponent implements BoardPiece {
      */
     public void moveRight(int steps) {
         setXY(xLocation + (23 * steps), yLocation);
+    }
+
+    public boolean hasName(String name) {
+        return this.name.toLowerCase().equals(name.toLowerCase().trim());
     }
 }
