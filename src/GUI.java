@@ -27,7 +27,7 @@ public class GUI extends JFrame {
     private JTextField userInput;
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
-
+    private int num=0;
 
     /**
      * This method creates the graphical interface for the program
@@ -79,11 +79,19 @@ public class GUI extends JFrame {
 
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
-            @Override
+       
+           
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
-                interpretInput();
-            }
+            	//int die = rollDice();
+            	
+                interpretInput(5,"Scarlet");
+            	
+            	
+            
+            infoField.append("players turn end");
+        	num=0;
+        	}
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
     }
@@ -124,92 +132,54 @@ public class GUI extends JFrame {
     /**
      * Reads text from userInput and interprets text accordingly
      */
-    private void interpretInput() {
+    private void interpretInput(int count, String name) {
         String inputtedText = userInput.getText();//takes info from the field
         userInput.setText("");//wipes the field after
         boolean numCheck = true;
         infoField.append(">" + inputtedText + "\n");//puts it into the panel
         String[] splitStr = inputtedText.split("\\s+");// Splits the inputted string into an array based spaces
+  
         if (inputtedText.toLowerCase().equals("help")) {
             helpCommand();
-        }  else if(splitStr.length==4&&splitStr[0].toLowerCase().equals("move"))// If the first word is move in any format
+        }  else if(splitStr.length==2&&splitStr[0].toLowerCase().equals("move"))// If the first word is move in any format
         {
-            for (int i = 0; i < splitStr[3].length(); i++) {
-                char c = splitStr[3].charAt(i);
-                if (c < '0' || c > '9') {
-                    numCheck=false;
-                }
-            }
+            
             if(numCheck==true)
             {
-                moveCommand(splitStr);
+                moveCommand(splitStr, name);
+                num++;
             }
         }
-        else { infoField.append("\n Invalid command entered!\n");}
-    }
+        else if(inputtedText.toLowerCase().equals("quit"))
+{
+	infoField.append("Thank you for playing! Goodbye");
 
-    private void moveCommand(String[] splitStr) {
-        BoardPiece temp = null;// Holds the name of the player counter chosen
-        switch (splitStr[1].toLowerCase()) {// Checks the counter or weapon chosen, changes it to lowercase
-            case "scarlet":
-            case "red":
-                temp = counters.get("Scarlet");
-                break;
-            case "mustard":
-            case "yellow":
-                temp = counters.get("Mustard");
-                break;
-            case "peacock":
-            case "blue":
-                temp =  counters.get("Peacock");
-                break;
-            case "plum":
-            case "purple":
-                temp = counters.get("Plum");
-                break;
-            case "green":
-                temp = counters.get("Green");
-                break;
-            case "white":
-                temp = counters.get("White");
-                break;
-            case "dagger":
-            case "knife":
-                temp = weapons.get("Dagger");
-                break;
-            case "candlestick":
-                temp = weapons.get("Candlestick");
-                break;
-            case "pistol":
-            case "gun":
-            case "revolver":
-                temp = weapons.get("Pistol");
-                break;
-            case "leadpipe":
-                temp = weapons.get("Lead Pipe");
-                break;
-            case "rope":
-                temp = weapons.get("Rope");
-                break;
-            case "wrench":
-                temp = weapons.get("Wrench");
-                break;
-            default:
-                infoField.append("\nInvalid item chosen\n");
+	System.exit(0);
+}
+    
+        else { 
+        	infoField.append("\n Invalid command entered!\n");
         }
+    }
+   
 
-        switch (splitStr[2].toLowerCase()) { // Checks the movement direction entered
+   
+	private void moveCommand(String[] splitStr, String colour) {
+        BoardPiece temp = null;// Holds the name of the player counter chosen
+       
+
+        switch (splitStr[1].toLowerCase()) { // Checks the movement direction entered
             case "up":
-                temp.moveUp(Integer.parseInt(splitStr[3]));
+                Counters.get(colour).moveUp(1);
                 break;
             case "down":
-                temp.moveDown(Integer.parseInt(splitStr[3]));
+            	Counters.get(colour).moveDown(1);
                 break;
             case "left":
-                temp.moveLeft(Integer.parseInt(splitStr[3]));
+            	Counters.get(colour).moveLeft(1);
                 break;
             case "right":
-                temp.moveRight(Integer.parseInt(splitStr[3]));
+            	Counters.get(colour).moveRight(1);
                 break;
             default:
                 infoField.append("\nInvalid direction chosen\n");
