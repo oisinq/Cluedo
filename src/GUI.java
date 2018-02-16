@@ -9,8 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This class creates the graphical interface of the program and initialises all of the pieces
@@ -62,10 +60,8 @@ public class GUI extends JFrame {
 
         userInput = new JTextField();
         userInput.setText("Enter text here (type 'help' for help)");
-        infoField.append("Commands: \nMove Player Piece\n - move (colour/character) (direction) (steps) e.g Move Scarlet Up 4\n" +
-                "Player Names:\n  -Scarlet/Red\n  -Plum/purple\n  -Mustard/yellow\n  -Peacock/blue\n  -White\n  -Green" +
-                "\n\nMove Weapons\n - move (weapon name) (direction) (steps)\nWeapon Names:\n  -Dagger\n  -CandleStick\n " +
-                " -Pistol\n  -Rope\n  -Wrench\n  -LeadPipe\n");
+        infoField.append("Commands: \nMove Player Piece\n - move (direction)e.g Move Up\n" +
+                "\nEnd Turn\n - end\n\nQuit Game\n - quit\n");
         // This method creates the Counter objects
         initialiseCounters(counters);
         // This method creates the Weapon objects
@@ -139,26 +135,38 @@ public class GUI extends JFrame {
         }  else if(splitStr.length==2&&splitStr[0].toLowerCase().equals("move"))// If the first word is move in any format
         {
             
-            if(numCheck==true)
+            if(num>0)
             {
                 moveCommand(splitStr, name);
                 num--;
             }
+            else
+            {
+            	infoField.append("\n You have used all your movement.\n");
+            }
         }
         else if(inputtedText.toLowerCase().equals("quit"))
-{
-	infoField.append("Thank you for playing! Goodbye");
+        {
+        	infoField.append("Thank you for playing! Goodbye");
 
-	System.exit(0);
-}
-    
+        	System.exit(0);
+        }
+        
+        else if(num==0)
+        {
+        	infoField.append("\nYou are out of movement!\n");
+        	// Doesnt end turn. Allows for players to perform now movement based commands. 
+        }
+        else if(inputtedText.toLowerCase().equals("end"))
+        {
+        	num=0;
+        	infoField.append("\nPlayers turn has ended!\n");
+        	// Goes to the next players move
+        }
         else { 
         	infoField.append("\n Invalid command entered!\n");
         }
-        if(num==0)
-        {
-        	infoField.append("\n End of players turn!\n");
-        }
+        
     }
    
 
@@ -191,10 +199,8 @@ public class GUI extends JFrame {
      * Help command for when "help" is inputted by the user
      */
     private void helpCommand() {
-        infoField.append("Commands: \nMove Player Piece\n - move (colour/character) (direction) (steps)\n" +
-                "Player Names:\n  -Scarlet/Red\n  -Plum/purple\n  -Mustard/yellow\n  -Peacock/blue\n  -White\n  -Green" +
-                "\n\nMove Weapons\n - move (weapon name) (direction) (steps)\nWeapon Names:\n  -Dagger\n  -CandleStick\n " +
-                " -Pistol\n  -Rope\n  -Wrench\n  -LeadPipe\n");
+        infoField.append("Commands: \nMove Player Piece\n - move (direction)\n" +
+                "\nQuit Game\n - quit"+"\nEnd turn\n - end");
     }
 
     /**
@@ -213,22 +219,7 @@ public class GUI extends JFrame {
         for (Counter c : counters) {
             board.add(c);
         }
-//        board.add(scarletCounter);
-//
-//        mustardCounter = new Counter("Mustard", Color.YELLOW, 44, 440);
-//        board.add(mustardCounter);
-//
-//        peacockCounter = new Counter("Peacock", Color.BLUE, 572, 487);
-//        board.add(peacockCounter);
-//
-//        plumCounter = new Counter("Plum", new Color(95, 24, 175), 572, 188);
-//        board.add(plumCounter);
-//
-//        greenCounter = new Counter("Green", new Color(15, 188, 41), 250, 50);
-//        board.add(greenCounter);
-//
-//        whiteCounter = new Counter("White", Color.WHITE, 365, 50);
-//        board.add(whiteCounter);
+
     }
 
     /**
