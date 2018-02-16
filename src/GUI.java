@@ -27,7 +27,7 @@ public class GUI extends JFrame {
     private JTextField userInput;
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
-    private int num=4;
+    private int num=5;
 
     /**
      * This method creates the graphical interface for the program
