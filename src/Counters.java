@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public class Counters implements Iterable<Counter>, Iterator<Counter> {
 
-    private final HashSet<Counter> counters = new HashSet<>();
+    private final static HashSet<Counter> counters = new HashSet<>();
     private Iterator<Counter> iterator;
 
     Counters() {
@@ -16,7 +16,7 @@ public class Counters implements Iterable<Counter>, Iterator<Counter> {
         counters.add(new Counter("White", Color.WHITE, 365, 50));
     }
 
-    public Counter get(String name) {
+    public static Counter get(String name) {
         for (Counter c : counters) {
             if (c.hasName(name)) {
                 return c;
