@@ -27,7 +27,7 @@ public class GUI extends JFrame {
     private JTextField userInput;
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
-    private int num=0;
+    private int num=4;
 
     /**
      * This method creates the graphical interface for the program
@@ -86,11 +86,6 @@ public class GUI extends JFrame {
             	//int die = rollDice();
             	
                 interpretInput(5,"Scarlet");
-            	
-            	
-            
-            infoField.append("players turn end");
-        	num=0;
         	}
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
@@ -147,7 +142,7 @@ public class GUI extends JFrame {
             if(numCheck==true)
             {
                 moveCommand(splitStr, name);
-                num++;
+                num--;
             }
         }
         else if(inputtedText.toLowerCase().equals("quit"))
@@ -159,6 +154,10 @@ public class GUI extends JFrame {
     
         else { 
         	infoField.append("\n Invalid command entered!\n");
+        }
+        if(num==0)
+        {
+        	infoField.append("\n End of players turn!\n");
         }
     }
    
