@@ -24,6 +24,11 @@ public class GUI extends JFrame {
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
     private int num=5;
+    // Squares that are marked 0 are inaccessible by the player (they are out of bounds)
+    // Squares that are marked 1 are pathways that the player can walk on
+    // Sqaures that are marked 2 are pathway squares that are adjacent to room entrances
+    // Sqaures that are marked 3 are squares inside rooms
+    // Sqaures that are marked 4 are room squares that are adjacent to room entrances
     public int[][] squareType = {
             {0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
             {3,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,3},
@@ -59,13 +64,6 @@ public class GUI extends JFrame {
     public GUI(Counters counters, Weapons weapons) {
         this.counters = counters;
         this.weapons = weapons;
-
-        for(int i = 0; i < 26; i++) {
-            for (int j = 0; j < 24; j++) {
-                System.out.print(squareType[i][j]);
-            }
-            System.out.println();
-        }
 
         board = new JPanel();
         // We use BorderLayout to easily have multiple components in the same panel
@@ -113,6 +111,7 @@ public class GUI extends JFrame {
                 Dice die = new Dice();
             	int dieResult = die.rollDice();
 
+            	// TODO I entered 100 moves to make it easier to test - in the final version, the dieResult should be passed through
                 interpretInput(100,"Scarlet");
         	}
         };
@@ -205,6 +204,8 @@ public class GUI extends JFrame {
 
    
 	private void moveCommand(String[] splitStr, String colour) {
+        // I added shortcuts for the directions to make testing easier
+        // We can only move if the next square is either a pathway or is a room square adjacent to an entrance
         switch (splitStr[1].toLowerCase()) { // Checks the movement direction entered
             case "up":
             case "u":
@@ -237,6 +238,12 @@ public class GUI extends JFrame {
         repaint(); // Repaints the board with the new location of the pieces
     }
 
+    /**
+     * Checks if you can enter a certain room or not by looking at both the current square and the next square
+     * @param colour the colour of the token
+     * @param direction the direction you want to remove
+     * @return a boolean representing if you can enter the room or not
+     */
     private boolean isEnterable(String colour, String direction) {
         int nextSquareType;
         int currentSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()];
@@ -270,6 +277,12 @@ public class GUI extends JFrame {
         return false;
     }
 
+    /**
+     * Checks if the next square is a pathway
+     * @param colour the colour of the token you want to move
+     * @param direction the direction you want to move
+     * @return a boolean representing if the next square is a pathway or not
+     */
     private boolean isPathway(String colour, String direction) {
         int nextSquareType;
         int currentSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()];

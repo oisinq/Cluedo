@@ -46,17 +46,12 @@ public class Counter extends JComponent implements BoardPiece {
      * @param x the x co-ordinate of the location
      * @param y the y co-ordinate of the location
      */
+    // TODO Make this work with the grid co-ordinates - possibly replace it with a method setting the grid locations
     public void setXY(int x, int y) {
         xLocation = x;
         yLocation = y;
     }
 
-    public void setGridXY(int x, int y) {
-        xLocation = 43 + (x * 23);
-        yLocation = 50 + (x * 23);
-        gridX = x;
-        gridY = y;
-    }
 
     /**
      * Sets the colour of the counter
