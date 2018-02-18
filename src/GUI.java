@@ -16,16 +16,42 @@ import java.io.IOException;
 public class GUI extends JFrame {
 
     // These are the variables contained in the GUI - the board components and the pieces on the board
-    public Counter scarletCounter, mustardCounter, peacockCounter, plumCounter, greenCounter, whiteCounter;
     private Counters counters;
     private Weapons weapons;
-    private Weapon Pistol, Rope, Wrench, Dagger, LeadPipe, CandleStick;
     private JPanel board;
     private JTextArea infoField;
     private JTextField userInput;
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
     private int num=5;
+    public int[][] squareType = {
+            {0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
+            {3,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,3},
+            {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3},
+            {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3},
+            {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,4,3,3,3,3,3},
+            {3,3,3,3,3,3,1,2,4,3,3,3,3,3,3,4,2,1,2,3,3,3,3,0},
+            {3,3,3,3,4,3,1,1,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1},
+            {1,1,1,1,1,1,1,1,3,4,3,3,3,3,4,3,1,1,1,1,1,1,1,0},
+            {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3,3},
+            {3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,2,4,3,3,3,3,3},
+            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,3,3,3,3},
+            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,3,3,3,3},
+            {3,3,3,3,3,3,3,4,2,1,3,3,3,3,3,1,1,1,3,3,3,3,4,3},
+            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,1,1,2,1,2,0},
+            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,4,3,3,0},
+            {3,3,3,3,3,3,4,3,1,1,3,3,3,3,3,1,1,3,3,3,3,3,3,3},
+            {0,1,1,1,1,1,2,1,1,1,3,3,4,3,3,1,2,4,3,3,3,3,3,3},
+            {1,1,1,1,1,1,1,1,1,1,1,2,2,1,1,1,1,3,3,3,3,3,3,3},
+            {0,1,1,1,1,1,2,1,1,3,3,4,4,3,3,1,1,1,3,3,3,3,3,0},
+            {3,3,3,3,3,3,4,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1},
+            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,4,2,1,2,1,1,1,1,1,0},
+            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,4,3,3,3,3,3,3},
+            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3},
+            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3},
+            {3,3,3,3,3,3,0,1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,3},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+    };
 
     /**
      * This method creates the graphical interface for the program
@@ -33,6 +59,13 @@ public class GUI extends JFrame {
     public GUI(Counters counters, Weapons weapons) {
         this.counters = counters;
         this.weapons = weapons;
+
+        for(int i = 0; i < 26; i++) {
+            for (int j = 0; j < 24; j++) {
+                System.out.print(squareType[i][j]);
+            }
+            System.out.println();
+        }
 
         board = new JPanel();
         // We use BorderLayout to easily have multiple components in the same panel
@@ -75,13 +108,12 @@ public class GUI extends JFrame {
 
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
-       
-           
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
-            	//int die = rollDice();
-            	
-                interpretInput(5,"Scarlet");
+                Dice die = new Dice();
+            	int dieResult = die.rollDice();
+
+                interpretInput(100,"Scarlet");
         	}
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
@@ -127,12 +159,13 @@ public class GUI extends JFrame {
         String inputtedText = userInput.getText();//takes info from the field
         userInput.setText("");//wipes the field after
         boolean numCheck = true;
+        num = count;
         infoField.append(">" + inputtedText + "\n");//puts it into the panel
         String[] splitStr = inputtedText.split("\\s+");// Splits the inputted string into an array based spaces
   
         if (inputtedText.toLowerCase().equals("help")) {
             helpCommand();
-        }  else if(splitStr.length==2&&splitStr[0].toLowerCase().equals("move"))// If the first word is move in any format
+        }  else if(splitStr.length==2&&splitStr[0].toLowerCase().equals("move") || true)// If the first word is move in any format
         {
             
             if(num>0)
@@ -172,27 +205,110 @@ public class GUI extends JFrame {
 
    
 	private void moveCommand(String[] splitStr, String colour) {
-        BoardPiece temp = null;// Holds the name of the player counter chosen
-       
-
         switch (splitStr[1].toLowerCase()) { // Checks the movement direction entered
             case "up":
-                Counters.get(colour).moveUp(1);
+            case "u":
+                if (isPathway(colour, "u") || isEnterable(colour, "u")) {
+                    Counters.get(colour).moveUp(1);
+                }
                 break;
             case "down":
-            	Counters.get(colour).moveDown(1);
+            case "d":
+                if (isPathway(colour, "d") || isEnterable(colour, "d")) {
+                    Counters.get(colour).moveDown(1);
+                }
                 break;
             case "left":
-            	Counters.get(colour).moveLeft(1);
+            case "l":
+                if (isPathway(colour, "l") || isEnterable(colour, "l")) {
+                    Counters.get(colour).moveLeft(1);
+                }
                 break;
             case "right":
-            	Counters.get(colour).moveRight(1);
+            case "r":
+                if (isPathway(colour, "r") || isEnterable(colour, "r")) {
+                    Counters.get(colour).moveRight(1);
+                }
                 break;
             default:
                 infoField.append("\nInvalid direction chosen\n");
         }
 
         repaint(); // Repaints the board with the new location of the pieces
+    }
+
+    private boolean isEnterable(String colour, String direction) {
+        int nextSquareType;
+        int currentSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()];
+
+        switch(direction) {
+            case "u":
+                nextSquareType = squareType[Counters.get(colour).getGridY()-1][Counters.get(colour).getGridX()];
+                if (nextSquareType == 4 && currentSquareType == 2) {
+                    return true;
+                }
+                break;
+            case "d":
+                nextSquareType = squareType[Counters.get(colour).getGridY()+1][Counters.get(colour).getGridX()];
+                if (nextSquareType == 4 && currentSquareType == 2) {
+                    return true;
+                }
+                break;
+            case "l":
+                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()-1];
+                if (nextSquareType == 4 && currentSquareType == 2) {
+                    return true;
+                }
+                break;
+            case "r":
+                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()+1];
+                if (nextSquareType == 4 && currentSquareType == 2) {
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+
+    private boolean isPathway(String colour, String direction) {
+        int nextSquareType;
+        int currentSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()];
+
+        switch(direction) {
+            case "u":
+                nextSquareType = squareType[Counters.get(colour).getGridY()-1][Counters.get(colour).getGridX()];
+                if (currentSquareType == 4 && nextSquareType == 1) {
+                    return false;
+                } else if (nextSquareType == 2 || nextSquareType == 1) {
+                    return true;
+                }
+                break;
+            case "d":
+                nextSquareType = squareType[Counters.get(colour).getGridY()+1][Counters.get(colour).getGridX()];
+                if (currentSquareType == 4 && nextSquareType == 1) {
+                    return false;
+                } else if (nextSquareType == 2 || nextSquareType == 1) {
+                    return true;
+                }
+                break;
+            case "l":
+                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()-1];
+                if (currentSquareType == 4 && nextSquareType == 1) {
+                    return false;
+                } else if (nextSquareType == 2 || nextSquareType == 1) {
+                    return true;
+                }
+                break;
+            case "r":
+                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()+1];
+                if (currentSquareType == 4 && nextSquareType == 1) {
+                    return false;
+                } else if (nextSquareType == 2 || nextSquareType == 1) {
+                    return true;
+                }
+                break;
+        }
+        return false;
     }
 
     /**

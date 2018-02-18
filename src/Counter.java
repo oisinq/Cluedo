@@ -14,6 +14,8 @@ public class Counter extends JComponent implements BoardPiece {
 
     // We store these variables here to make it easier to move around the players on the board
     private int xLocation, yLocation;
+    // 43, 50 is top of grid
+    private int gridX, gridY;
     private Color c;
     private String name;
     public String getName() {
@@ -23,8 +25,10 @@ public class Counter extends JComponent implements BoardPiece {
     Counter(String name, Color c, int x, int y) {
         this.name = name;
         this.c = c;
-        xLocation = x;
-        yLocation = y;
+        gridX = x;
+        gridY = y;
+        xLocation = 43 + (gridX * 23);
+        yLocation = 50 + (gridY * 23);
     }
 
     /**
@@ -45,6 +49,13 @@ public class Counter extends JComponent implements BoardPiece {
     public void setXY(int x, int y) {
         xLocation = x;
         yLocation = y;
+    }
+
+    public void setGridXY(int x, int y) {
+        xLocation = 43 + (x * 23);
+        yLocation = 50 + (x * 23);
+        gridX = x;
+        gridY = y;
     }
 
     /**
@@ -72,11 +83,28 @@ public class Counter extends JComponent implements BoardPiece {
     }
 
     /**
+     * Returns the X co-ordinate of the counter
+     * @return the X co-ordinate of the counter
+     */
+    public int getGridX() {
+        return gridX;
+    }
+
+    /**
+     * Returns the Y co-ordinate of the counter
+     * @return the Y co-ordinate of the counter
+     */
+    public int getGridY() {
+        return gridY;
+    }
+
+    /**
      * Moves the counter up the entered number of steps
      * @param steps the number of steps to be moved
      */
     public void moveUp(int steps) {
         setXY(xLocation, yLocation - (23 * steps));
+        gridY--;
     }
 
     /**
@@ -85,6 +113,7 @@ public class Counter extends JComponent implements BoardPiece {
      */
     public void moveDown(int steps) {
         setXY(xLocation, yLocation + (23 * steps));
+        gridY++;
     }
 
     /**
@@ -93,6 +122,7 @@ public class Counter extends JComponent implements BoardPiece {
      */
     public void moveLeft(int steps) {
         setXY(xLocation - (23 * steps), yLocation);
+        gridX--;
     }
 
     /**
@@ -101,6 +131,7 @@ public class Counter extends JComponent implements BoardPiece {
      */
     public void moveRight(int steps) {
         setXY(xLocation + (23 * steps), yLocation);
+        gridX++;
     }
 
     public boolean hasName(String name) {
