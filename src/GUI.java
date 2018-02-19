@@ -111,9 +111,7 @@ public class GUI extends JFrame {
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
-                Dice die = new Dice();
-            	 dieResult = die.rollDice();
-            	infoField.append(dieResult+"");
+                
             	// TODO I entered 100 moves to make it easier to test - in the final version, the dieResult should be passed through
                 interpretInput(dieResult,CurrPlay);
         	}
@@ -144,6 +142,9 @@ public class GUI extends JFrame {
     			CurrPlay="Peacock";
     			infoField.append(CurrPlay+" has started their turn");
     		}
+    		Dice die = new Dice();
+       	 dieResult = die.rollDice();
+       	infoField.append("\nYou rolled a "+ dieResult+"\n");
     	
     }
     public void paint(Graphics g) {
