@@ -268,6 +268,7 @@ public class GUI extends JFrame {
         // I added shortcuts for the directions to make testing easier
         // We can only move if the next square is either a pathway or is a room square adjacent to an entrance
 		boolean moved=true;
+		boolean check=true;
 		int x=0;
 		while(x<splitStr.length&&moved==true)
 		{
@@ -276,28 +277,40 @@ public class GUI extends JFrame {
             case "u":
                 if (isPathway(colour, "u") || isEnterable(colour, "u")) {
                     Counters.get(colour).moveUp(1);
-                    moved=true;
+                }
+                else
+                {
+                	moved=false;
                 }
                 break;
             case "down":
             case "d":
                 if (isPathway(colour, "d") || isEnterable(colour, "d")) {
                     Counters.get(colour).moveDown(1);
-                    moved=true;
+                }
+                else
+                {
+                	moved=false;
                 }
                 break;
             case "left":
             case "l":
                 if (isPathway(colour, "l") || isEnterable(colour, "l")) {
                     Counters.get(colour).moveLeft(1);
-                    moved=true;
+                }
+                else
+                {
+                	moved=false;
                 }
                 break;
             case "right":
             case "r":
                 if (isPathway(colour, "r") || isEnterable(colour, "r")) {
                     Counters.get(colour).moveRight(1);
-                    moved=true;
+                }
+                else
+                {
+                	moved=false;
                 }
                 break;
             default:
