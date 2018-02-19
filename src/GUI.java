@@ -164,7 +164,8 @@ public class GUI extends JFrame {
   
         if (inputtedText.toLowerCase().equals("help")) {
             helpCommand();
-        }  else if(splitStr.length==2&&splitStr[0].toLowerCase().equals("move") || true)// If the first word is move in any format
+        }  
+        else if(splitStr.length==2&&splitStr[0].toLowerCase().equals("move") )// If the first word is move in any format
         {
             
             if(num>0)
