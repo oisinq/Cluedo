@@ -29,6 +29,7 @@ public class GUI extends JFrame {
     private int dieResult=0;
     boolean quit=false;
     int PlayTurn=0;
+    int turnTrack=0;
     String CurrPlay=play[0];
     // Squares that are marked 0 are inaccessible by the player (they are out of bounds)
     // Squares that are marked 1 are pathways that the player can walk on
@@ -113,12 +114,12 @@ public class GUI extends JFrame {
         // Displays the frame to the user
         setVisible(true);
         Iterator sure = counters.iterator();
-        int x=0;
+       
         while (sure.hasNext()) {
             Counter ok = (Counter)sure.next();
-            play[x]=ok.getCounterName();
-            System.out.println(play[x]+"wertyui");
-            x++;
+            play[turnTrack]=ok.getCounterName();
+            System.out.println(play[turnTrack]+"wertyui");
+            turnTrack++;
         }
         CurrPlay=play[0];
         turn();
@@ -143,7 +144,7 @@ public class GUI extends JFrame {
     public void turn()
     {
     	
-    	
+    		System.out.println(play.length);
     		if(play[PlayTurn].equals("Scarlet"))
     		{
     			CurrPlay="Scarlet";
@@ -220,7 +221,7 @@ public class GUI extends JFrame {
         infoField.append(">" + inputtedText + "\n");//puts it into the panel
         String[] splitStr = inputtedText.split("\\s+");// Splits the inputted string into an array based spaces
   
-        if (inputtedText.toLowerCase().equals("help")) {
+        if (splitStr[0].toLowerCase().equals("help")) {
             helpCommand();
         }  
         else if(splitStr.length==2&&(splitStr[0].toLowerCase().equals("move") || splitStr[0].toLowerCase().equals("m"))) // If the first word is move or m in any format
@@ -236,7 +237,7 @@ public class GUI extends JFrame {
             	infoField.append("\n You have used all your movement.\n");
             }
         }
-        else if(inputtedText.toLowerCase().equals("quit"))
+        else if(splitStr[0].toLowerCase().equals("quit"))
         {
         	infoField.append("Thank you for playing! Goodbye");
 
@@ -244,11 +245,12 @@ public class GUI extends JFrame {
         }
         
         
-        else if(inputtedText.toLowerCase().equals("end"))
+        else if(splitStr[0].toLowerCase().equals("end"))
         {
         	dieResult=0;
         	infoField.append("\nPlayers turn has ended!\n");
-        	PlayTurn=(PlayTurn+1)%play.length;
+        	PlayTurn=(PlayTurn+1)%turnTrack;
+        	
         	 turn();
         	// Goes to the next players move
         }
