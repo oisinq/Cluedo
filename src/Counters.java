@@ -8,12 +8,6 @@ public class Counters implements Iterable<Counter>, Iterator<Counter> {
     private Iterator<Counter> iterator;
 
     Counters() {
-       // counters.add(new Counter("","Scarlet", Color.RED, 7, 24));
-        //counters.add(new Counter("","Mustard", Color.YELLOW, 0, 17));
-       // counters.add(new Counter("","Peacock", Color.BLUE, 23, 19));
-        //counters.add(new Counter("","Plum", new Color(95, 24, 175), 23, 6));
-       // counters.add(new Counter("","Green", new Color(15, 188, 41), 9, 0));
-        //counters.add(new Counter("","White", Color.WHITE, 14, 0));
     }
 
     public static Counter get(String name) {
@@ -38,7 +32,7 @@ public class Counters implements Iterable<Counter>, Iterator<Counter> {
         return iterator;
     }
     
-    public static void createCounter(String userName,String userChoice){
+    public void createCounter(String userName,String userChoice){
     	
     	 switch (userChoice) { 
          case "Plum":

@@ -13,7 +13,7 @@ public class Main {
     private GUI frame;
 
     Main() {
-    	GameSetup test = new GameSetup();
+    	GameSetup setup = new GameSetup(counters);
     	frame = new GUI(counters,weapons);
         Gameplay game = new Gameplay(frame);
     }

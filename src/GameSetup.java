@@ -9,13 +9,15 @@ import javax.swing.JOptionPane;
 
 
 public class GameSetup  {
+
+    Counters counters;
 	
-	
-	GameSetup() {
+	GameSetup(Counters counters) {
+	    this.counters = counters;
 		playerCountSelect();
     }
 	
-	public static void playerCountSelect(){
+	public void playerCountSelect(){
 			String[] playerCount =(new String[] {"2","3", "4","5", "6"});
 	        String userChoice = (String) JOptionPane.showInputDialog( null, "Select How Many Players You Want","Cluedo", JOptionPane.QUESTION_MESSAGE, null,playerCount, playerCount[0]);
 		
@@ -40,7 +42,7 @@ public class GameSetup  {
 		}
 	
 	
-	public static void CharacterSelect(int PlayerCount){
+	public void CharacterSelect(int PlayerCount){
 		String[] Characters =(new String[] {"Plum","White", "Scarlet","Green", "Mustard","Peacock"});
 		List<String> CharacterList = new ArrayList<String>(Arrays.asList(Characters));
 		for(int i=0;i<PlayerCount;i++){
@@ -48,7 +50,7 @@ public class GameSetup  {
 	        String userChoice = (String) JOptionPane.showInputDialog( null, "Player "+(i+1)+" Please Select A Character","Cluedo", JOptionPane.QUESTION_MESSAGE, null,Characters, Characters[0]);
 	        CharacterList.remove(userChoice);
 	        Characters = CharacterList.toArray(new String[0]);
-	        Counters.createCounter(userName,userChoice);
+	        counters.createCounter(userName,userChoice);
 		}
 	}
 	
