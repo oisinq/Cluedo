@@ -10,16 +10,17 @@ public class Main {
 
     private final Counters counters = new Counters();
     private final Weapons weapons = new Weapons();
-    private final GUI frame = new GUI(counters, weapons);
+    private GUI frame;
 
     Main() {
+    	GameSetup test = new GameSetup();
+    	frame = new GUI(counters,weapons);
         Gameplay game = new Gameplay(frame);
     }
 
     public static void main(String args[]) {
         // Currently this method only creates the GUI - in the future it will do more as we add gameplay
 //        GUI frame = new GUI();
-    	GameSetup test= new GameSetup();
     	Main main = new Main();
     }
 }

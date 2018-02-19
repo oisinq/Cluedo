@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 public class GameSetup  {
 	
 	
-	public static void main(String args[]) {
+	GameSetup() {
 		playerCountSelect();
     }
 	
@@ -41,15 +41,14 @@ public class GameSetup  {
 	
 	
 	public static void CharacterSelect(int PlayerCount){
-		//idk array here?
-
 		String[] Characters =(new String[] {"Plum","White", "Scarlet","Green", "Mustard","Peacock"});
 		List<String> CharacterList = new ArrayList<String>(Arrays.asList(Characters));
 		for(int i=0;i<PlayerCount;i++){
-			String UserName = JOptionPane.showInputDialog("Enter Your Username");
+			String userName = JOptionPane.showInputDialog("Enter Your Username");
 	        String userChoice = (String) JOptionPane.showInputDialog( null, "Player "+(i+1)+" Please Select A Character","Cluedo", JOptionPane.QUESTION_MESSAGE, null,Characters, Characters[0]);
 	        CharacterList.remove(userChoice);
 	        Characters = CharacterList.toArray(new String[0]);
+	        Counters.createCounter(userName,userChoice);
 		}
 	}
 	
