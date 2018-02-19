@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * This class creates the graphical interface of the program and initialises all of the pieces
@@ -19,6 +20,7 @@ public class GUI extends JFrame {
     // These are the variables contained in the GUI - the board components and the pieces on the board
     private Counters counters;
     private Weapons weapons;
+    String[] play =new String[5];
     private JPanel board;
     private JTextArea infoField;
     private JTextField userInput;
@@ -27,7 +29,7 @@ public class GUI extends JFrame {
     private int dieResult=0;
     boolean quit=false;
     int PlayTurn=0;
-    String CurrPlay="Scarlet";
+    String CurrPlay=play[0];
     // Squares that are marked 0 are inaccessible by the player (they are out of bounds)
     // Squares that are marked 1 are pathways that the player can walk on
     // Sqaures that are marked 2 are pathway squares that are adjacent to room entrances
@@ -68,7 +70,7 @@ public class GUI extends JFrame {
     public GUI(Counters counters, Weapons weapons) {
         this.counters = counters;
         this.weapons = weapons;
-
+        
         board = new JPanel();
         // We use BorderLayout to easily have multiple components in the same panel
         setLayout(new BorderLayout());
@@ -110,26 +112,37 @@ public class GUI extends JFrame {
 
         // Displays the frame to the user
         setVisible(true);
-       
+        Iterator sure = counters.iterator();
+        int x=0;
+        while (sure.hasNext()) {
+            Counter ok = (Counter)sure.next();
+            play[x]=ok.getCounterName();
+            System.out.println(play[x]+"wertyui");
+            x++;
+        }
+        CurrPlay=play[0];
+        turn();
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
                 
             	// TODO I entered 100 moves to make it easier to test - in the final version, the dieResult should be passed through
-                interpretInput(dieResult,CurrPlay);
+                interpretInput(CurrPlay);
         	}
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
     }
+  
 
+   
     /**
      * This method runs when we setVisible(true) and when we repaint()
      * It paints the images and counters onto the board
      */
     public void turn()
     {
-    	String[] play = {"Scarlet", "Mustard", "Peacock"};
+    	
     	
     		if(play[PlayTurn].equals("Scarlet"))
     		{
@@ -146,12 +159,28 @@ public class GUI extends JFrame {
     			CurrPlay="Peacock";
     			infoField.append(CurrPlay+" has started their turn");
     		}
+    		else if(play[PlayTurn].equals("Plum"))
+    		{
+    			CurrPlay="Plum";
+    			infoField.append(CurrPlay+" has started their turn");
+    		}
+    		else if(play[PlayTurn].equals("White"))
+    		{
+    			CurrPlay="White";
+    			infoField.append(CurrPlay+" has started their turn");
+    		}
+    		else if(play[PlayTurn].equals("Green"))
+    		{
+    			CurrPlay="Green";
+    			infoField.append(CurrPlay+" has started their turn");
+    		}
     		Dice die = new Dice();
        	 dieResult = die.rollDice();
        	infoField.append("\nYou rolled a "+ dieResult+"\n");
     	
     }
     public void paint(Graphics g) {
+    	 
         // This line insures that the other components of the JFrame are visible
         super.paint(g);
         // We cast to Graphics2D to access more image drawing features
@@ -183,11 +212,11 @@ public class GUI extends JFrame {
     /**
      * Reads text from userInput and interprets text accordingly
      */
-    private void interpretInput(int count, String name) {
+    private void interpretInput( String name) {
         String inputtedText = userInput.getText();//takes info from the field
         userInput.setText("");//wipes the field after
       
-        dieResult = count;
+       
         infoField.append(">" + inputtedText + "\n");//puts it into the panel
         String[] splitStr = inputtedText.split("\\s+");// Splits the inputted string into an array based spaces
   
@@ -219,7 +248,7 @@ public class GUI extends JFrame {
         {
         	dieResult=0;
         	infoField.append("\nPlayers turn has ended!\n");
-        	PlayTurn=(PlayTurn+1)%3;
+        	PlayTurn=(PlayTurn+1)%play.length;
         	 turn();
         	// Goes to the next players move
         }
