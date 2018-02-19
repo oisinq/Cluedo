@@ -1,10 +1,11 @@
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
 public class Counters implements Iterable<Counter>, Iterator<Counter> {
 
-    private final static HashSet<Counter> counters = new HashSet<>();
+    private static final ArrayList<Counter> counters = new ArrayList<>();
     private Iterator<Counter> iterator;
 
     Counters() {

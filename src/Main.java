@@ -15,6 +15,7 @@ public class Main {
     Main() {
     	GameSetup setup = new GameSetup(counters);
     	frame = new GUI(counters,weapons);
+    	Tester tester = new Tester(counters);
         Gameplay game = new Gameplay(frame);
     }
 
