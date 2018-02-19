@@ -224,13 +224,15 @@ public class GUI extends JFrame {
         if (splitStr[0].toLowerCase().equals("help")) {
             helpCommand();
         }  
-        else if(splitStr.length==2&&(splitStr[0].toLowerCase().equals("move") || splitStr[0].toLowerCase().equals("m"))) // If the first word is move or m in any format
+        else if((splitStr[0].toLowerCase().equals("u") || splitStr[0].toLowerCase().equals("up")||splitStr[0].toLowerCase().equals("d") || splitStr[0].toLowerCase().equals("down")||splitStr[0].toLowerCase().equals("l") || splitStr[0].toLowerCase().equals("left")||splitStr[0].toLowerCase().equals("r") || splitStr[0].toLowerCase().equals("right"))) // If the first word is move or m in any format
         {
             
             if(dieResult>0)
             {
-                moveCommand(splitStr, name);
-                dieResult--;
+                if(moveCommand(splitStr, name)==true)
+                {
+                dieResult=dieResult-splitStr.length;
+                }
             }
             else
             {
@@ -245,7 +247,7 @@ public class GUI extends JFrame {
         }
         
         
-        else if(splitStr[0].toLowerCase().equals("end"))
+        else if(splitStr[0].toLowerCase().equals("done"))
         {
         	dieResult=0;
         	infoField.append("\nPlayers turn has ended!\n");
@@ -262,39 +264,51 @@ public class GUI extends JFrame {
    
 
    
-	private void moveCommand(String[] splitStr, String colour) {
+	private boolean moveCommand(String[] splitStr, String colour) {
         // I added shortcuts for the directions to make testing easier
         // We can only move if the next square is either a pathway or is a room square adjacent to an entrance
-        switch (splitStr[1].toLowerCase()) { // Checks the movement direction entered
+		boolean moved=true;
+		int x=0;
+		while(x<splitStr.length&&moved==true)
+		{
+        switch (splitStr[x].toLowerCase()) { // Checks the movement direction entered
             case "up":
             case "u":
                 if (isPathway(colour, "u") || isEnterable(colour, "u")) {
                     Counters.get(colour).moveUp(1);
+                    moved=true;
                 }
                 break;
             case "down":
             case "d":
                 if (isPathway(colour, "d") || isEnterable(colour, "d")) {
                     Counters.get(colour).moveDown(1);
+                    moved=true;
                 }
                 break;
             case "left":
             case "l":
                 if (isPathway(colour, "l") || isEnterable(colour, "l")) {
                     Counters.get(colour).moveLeft(1);
+                    moved=true;
                 }
                 break;
             case "right":
             case "r":
                 if (isPathway(colour, "r") || isEnterable(colour, "r")) {
                     Counters.get(colour).moveRight(1);
+                    moved=true;
                 }
                 break;
             default:
                 infoField.append("\nInvalid direction chosen\n");
+                moved=false;
         }
+        x++;
+		}
 
         repaint(); // Repaints the board with the new location of the pieces
+        return moved;
     }
 
     /**
