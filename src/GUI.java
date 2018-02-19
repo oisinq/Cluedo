@@ -23,7 +23,10 @@ public class GUI extends JFrame {
     private JTextField userInput;
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
-    private int num=5;
+    private int dieResult=0;
+    boolean quit=false;
+    int PlayTurn=0;
+    String CurrPlay="Scarlet";
     // Squares that are marked 0 are inaccessible by the player (they are out of bounds)
     // Squares that are marked 1 are pathways that the player can walk on
     // Sqaures that are marked 2 are pathway squares that are adjacent to room entrances
@@ -103,16 +106,16 @@ public class GUI extends JFrame {
 
         // Displays the frame to the user
         setVisible(true);
-
+       
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
                 Dice die = new Dice();
-            	int dieResult = die.rollDice();
-
+            	 dieResult = die.rollDice();
+            	infoField.append(dieResult+"");
             	// TODO I entered 100 moves to make it easier to test - in the final version, the dieResult should be passed through
-                interpretInput(100,"Scarlet");
+                interpretInput(dieResult,CurrPlay);
         	}
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
@@ -122,6 +125,27 @@ public class GUI extends JFrame {
      * This method runs when we setVisible(true) and when we repaint()
      * It paints the images and counters onto the board
      */
+    public void turn()
+    {
+    	String[] play = {"Scarlet", "Mustard", "Peacock"};
+    	
+    		if(play[PlayTurn].equals("Scarlet"))
+    		{
+    			CurrPlay="Scarlet";
+    			infoField.append(CurrPlay+" has started their turn");
+    		}
+    		else if(play[PlayTurn].equals("Mustard"))
+    		{
+    			CurrPlay="Mustard";
+    			infoField.append(CurrPlay+" has started their turn");
+    		}
+    		else if(play[PlayTurn].equals("Peacock"))
+    		{
+    			CurrPlay="Peacock";
+    			infoField.append(CurrPlay+" has started their turn");
+    		}
+    	
+    }
     public void paint(Graphics g) {
         // This line insures that the other components of the JFrame are visible
         super.paint(g);
@@ -157,8 +181,8 @@ public class GUI extends JFrame {
     private void interpretInput(int count, String name) {
         String inputtedText = userInput.getText();//takes info from the field
         userInput.setText("");//wipes the field after
-        boolean numCheck = true;
-        num = count;
+      
+        dieResult = count;
         infoField.append(">" + inputtedText + "\n");//puts it into the panel
         String[] splitStr = inputtedText.split("\\s+");// Splits the inputted string into an array based spaces
   
@@ -168,10 +192,10 @@ public class GUI extends JFrame {
         else if(splitStr.length==2&&splitStr[0].toLowerCase().equals("move") )// If the first word is move in any format
         {
             
-            if(num>0)
+            if(dieResult>0)
             {
                 moveCommand(splitStr, name);
-                num--;
+                dieResult--;
             }
             else
             {
@@ -185,15 +209,13 @@ public class GUI extends JFrame {
         	System.exit(0);
         }
         
-        else if(num==0)
-        {
-        	infoField.append("\nYou are out of movement!\n");
-        	// Doesnt end turn. Allows for players to perform now movement based commands. 
-        }
+        
         else if(inputtedText.toLowerCase().equals("end"))
         {
-        	num=0;
+        	dieResult=0;
         	infoField.append("\nPlayers turn has ended!\n");
+        	PlayTurn=(PlayTurn+1)%3;
+        	 turn();
         	// Goes to the next players move
         }
         else { 
