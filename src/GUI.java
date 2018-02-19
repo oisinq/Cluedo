@@ -5,6 +5,7 @@
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -40,8 +41,8 @@ public class GUI extends JFrame {
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,4,3,3,3,3,3},
             {3,3,3,3,3,3,1,2,4,3,3,3,3,3,3,4,2,1,2,3,3,3,3,0},
             {3,3,3,3,4,3,1,1,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1},
-            {1,1,1,1,1,1,1,1,3,4,3,3,3,3,4,3,1,1,1,1,1,1,1,0},
-            {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,3,3,3},
+            {1,1,1,1,2,1,1,1,3,4,3,3,3,3,4,3,1,1,1,1,1,1,1,0},
+            {0,1,1,1,1,1,1,1,1,2,1,1,1,1,2,1,1,1,3,3,3,3,3,3},
             {3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,2,4,3,3,3,3,3},
             {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,3,3,3,3},
             {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,3,3,3,3},
@@ -91,6 +92,9 @@ public class GUI extends JFrame {
         infoField.setLineWrap(true);
         // I place the infoField inside a scrollpane so that the textArea doesn't fill up
         scrollPane = new JScrollPane(infoField);
+
+        DefaultCaret caret = (DefaultCaret)infoField.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         userInput = new JTextField();
         userInput.setText("Enter text here (type 'help' for help)");
@@ -190,7 +194,7 @@ public class GUI extends JFrame {
         if (inputtedText.toLowerCase().equals("help")) {
             helpCommand();
         }  
-        else if(splitStr.length==2&&splitStr[0].toLowerCase().equals("move") )// If the first word is move in any format
+        else if(splitStr.length==2&&(splitStr[0].toLowerCase().equals("move") || splitStr[0].toLowerCase().equals("m"))) // If the first word is move or m in any format
         {
             
             if(dieResult>0)
