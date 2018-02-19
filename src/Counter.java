@@ -17,13 +17,18 @@ public class Counter extends JComponent implements BoardPiece {
     // 43, 50 is top of grid
     private int gridX, gridY;
     private Color c;
-    private String name;
-    public String getName() {
-        return name;
+    private String userName;
+    public String getUserName(){
+    	return userName;
+    }
+    private String counterName;
+    public String getCounterName() {
+        return counterName;
     }
 
-    Counter(String name, Color c, int x, int y) {
-        this.name = name;
+    Counter(String userName,String counterName, Color c, int x, int y) {
+    	this.userName=userName;
+        this.counterName = counterName;
         this.c = c;
         gridX = x;
         gridY = y;
@@ -129,7 +134,10 @@ public class Counter extends JComponent implements BoardPiece {
         gridX++;
     }
 
-    public boolean hasName(String name) {
-        return this.name.toLowerCase().equals(name.toLowerCase().trim());
+    public boolean hasCounterName(String counterName) {
+        return this.counterName.toLowerCase().equals(counterName.toLowerCase().trim());
+    }
+    public boolean hasUserName(String name) {
+        return this.userName.toLowerCase().equals(userName.toLowerCase().trim());
     }
 }
