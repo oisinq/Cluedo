@@ -20,7 +20,7 @@ public class GUI extends JFrame {
     // These are the variables contained in the GUI - the board components and the pieces on the board
     private Counters counters;
     private Weapons weapons;
-    String[] play =new String[5];
+    String[] play =new String[6];
     private JPanel board;
     private JTextArea infoField;
     private JTextField userInput;
@@ -107,6 +107,7 @@ public class GUI extends JFrame {
         initialiseCounters(counters);
         // This method creates the Weapon objects
         initialiseWeapons(weapons);
+
 
         // Adds the different sections to the GUI
         addComponents();
@@ -218,19 +219,19 @@ public class GUI extends JFrame {
       
        
         infoField.append(">" + inputtedText + "\n");//puts it into the panel
-        String[] splitStr = inputtedText.split("\\s+");// Splits the inputted string into an array based spaces
+        String splitStr = inputtedText.replaceAll("\\s+","");// Splits the inputted string into an array based spaces
   
-        if (splitStr[0].toLowerCase().equals("help")) {
+        if (splitStr.toLowerCase().equals("help")) {
             helpCommand();
         }  
-        else if((splitStr[0].toLowerCase().equals("u") || splitStr[0].toLowerCase().equals("up")||splitStr[0].toLowerCase().equals("d") || splitStr[0].toLowerCase().equals("down")||splitStr[0].toLowerCase().equals("l") || splitStr[0].toLowerCase().equals("left")||splitStr[0].toLowerCase().equals("r") || splitStr[0].toLowerCase().equals("right"))) // If the first word is move or m in any format
+        else if((splitStr.toLowerCase().equals("u") || splitStr.toLowerCase().equals("up")||splitStr.toLowerCase().equals("d") || splitStr.toLowerCase().equals("down")||splitStr.toLowerCase().equals("l") || splitStr.toLowerCase().equals("left")||splitStr.toLowerCase().equals("r") || splitStr.toLowerCase().equals("right"))) // If the first word is move or m in any format
         {
             
             if(dieResult>0)
             {
                 if(moveCommand(splitStr, name)==true)
                 {
-                dieResult=dieResult-splitStr.length;
+                dieResult=dieResult-1;
                 }
             }
             else
@@ -238,7 +239,7 @@ public class GUI extends JFrame {
             	infoField.append("\n You have used all your movement.\n");
             }
         }
-        else if(splitStr[0].toLowerCase().equals("quit"))
+        else if(splitStr.toLowerCase().equals("quit"))
         {
         	infoField.append("Thank you for playing! Goodbye");
 
@@ -246,7 +247,7 @@ public class GUI extends JFrame {
         }
         
         
-        else if(splitStr[0].toLowerCase().equals("done"))
+        else if(splitStr.toLowerCase().equals("done"))
         {
         	dieResult=0;
         	infoField.append("\nPlayers turn has ended!\n");
@@ -263,14 +264,13 @@ public class GUI extends JFrame {
    
 
    
-	private boolean moveCommand(String[] splitStr, String colour) {
+	private boolean moveCommand(String splitStr, String colour) {
         // I added shortcuts for the directions to make testing easier
         // We can only move if the next square is either a pathway or is a room square adjacent to an entrance
 		boolean moved=true;
-		boolean check=true;
 		int x=0;
 		
-        switch (splitStr[x].toLowerCase()) { // Checks the movement direction entered
+        switch (splitStr.toLowerCase()) { // Checks the movement direction entered
             case "up":
             case "u":
                 if (isPathway(colour, "u") || isEnterable(colour, "u")) {
@@ -316,6 +316,10 @@ public class GUI extends JFrame {
                 moved=false;
        
 		}
+        if(moved==false)
+        {
+        	infoField.append("Error. Incorrect Movement!");
+        }
 
         repaint(); // Repaints the board with the new location of the pieces
         return moved;
