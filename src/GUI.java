@@ -37,13 +37,13 @@ public class GUI extends JFrame {
     // Sqaures that are marked 3 are squares inside rooms
     // Sqaures that are marked 4 are room squares that are adjacent to room entrances
     public int[][] squareType = {
-            {0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,-1,0,0,0,0,-1,0,0,0,0,0,0,0,0,0},
             {3,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,3},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,4,3,3,3,3,3},
             {3,3,3,3,3,3,1,2,4,3,3,3,3,3,3,4,2,1,2,3,3,3,3,0},
-            {3,3,3,3,4,3,1,1,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1},
+            {3,3,3,3,4,3,1,1,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,-1},
             {1,1,1,1,2,1,1,1,3,4,3,3,3,3,4,3,1,1,1,1,1,1,1,0},
             {0,1,1,1,1,1,1,1,1,2,1,1,1,1,2,1,1,1,3,3,3,3,3,3},
             {3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,2,4,3,3,3,3,3},
@@ -54,14 +54,14 @@ public class GUI extends JFrame {
             {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,4,3,3,0},
             {3,3,3,3,3,3,4,3,1,1,3,3,3,3,3,1,1,3,3,3,3,3,3,3},
             {0,1,1,1,1,1,2,1,1,1,3,3,4,3,3,1,2,4,3,3,3,3,3,3},
-            {1,1,1,1,1,1,1,1,1,1,1,2,2,1,1,1,1,3,3,3,3,3,3,3},
+            {-1,1,1,1,1,1,1,1,1,1,1,2,2,1,1,1,1,3,3,3,3,3,3,3},
             {0,1,1,1,1,1,2,1,1,3,3,4,4,3,3,1,1,1,3,3,3,3,3,0},
-            {3,3,3,3,3,3,4,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1},
+            {3,3,3,3,3,3,4,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,1,-1},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,4,2,1,2,1,1,1,1,1,0},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,4,3,3,3,3,3,3},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3},
-            {3,3,3,3,3,3,0,1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,3},
+            {3,3,3,3,3,3,0,-1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,3},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
     };
 
@@ -102,7 +102,7 @@ public class GUI extends JFrame {
         userInput = new JTextField();
         userInput.setText("Enter text here (type 'help' for help)");
         infoField.append("Commands: \nMove Player Piece\n - move (direction)e.g Move Up\n" +
-                "\nEnd Turn\n - end\n\nQuit Game\n - quit\n");
+                "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n");
         // This method creates the Counter objects
         initialiseCounters(counters);
         // This method creates the Weapon objects
@@ -143,8 +143,6 @@ public class GUI extends JFrame {
      */
     public void turn()
     {
-    	
-    		System.out.println(play.length);
     		if(play[PlayTurn].equals("Scarlet"))
     		{
     			CurrPlay="Scarlet";
@@ -273,8 +271,10 @@ public class GUI extends JFrame {
         switch (splitStr.toLowerCase()) { // Checks the movement direction entered
             case "up":
             case "u":
-                if (isPathway(colour, "u") || isEnterable(colour, "u")) {
+                if ((isPathway(colour, "u") || isEnterable(colour, "u")) && !isOccupied(colour, "u")) {
+                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
                     Counters.get(colour).moveUp(1);
+                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
                 }
                 else
                 {
@@ -283,8 +283,10 @@ public class GUI extends JFrame {
                 break;
             case "down":
             case "d":
-                if (isPathway(colour, "d") || isEnterable(colour, "d")) {
+                if ((isPathway(colour, "d") || isEnterable(colour, "d")) && !isOccupied(colour, "d")) {
+                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
                     Counters.get(colour).moveDown(1);
+                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
                 }
                 else
                 {
@@ -293,8 +295,10 @@ public class GUI extends JFrame {
                 break;
             case "left":
             case "l":
-                if (isPathway(colour, "l") || isEnterable(colour, "l")) {
+                if ((isPathway(colour, "l") || isEnterable(colour, "l")) && !isOccupied(colour, "l")) {
+                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
                     Counters.get(colour).moveLeft(1);
+                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
                 }
                 else
                 {
@@ -303,8 +307,10 @@ public class GUI extends JFrame {
                 break;
             case "right":
             case "r":
-                if (isPathway(colour, "r") || isEnterable(colour, "r")) {
+                if ((isPathway(colour, "r") || isEnterable(colour, "r")) && !isOccupied(colour, "r")) {
+                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
                     Counters.get(colour).moveRight(1);
+                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
                 }
                 else
                 {
@@ -338,25 +344,25 @@ public class GUI extends JFrame {
         switch(direction) {
             case "u":
                 nextSquareType = squareType[Counters.get(colour).getGridY()-1][Counters.get(colour).getGridX()];
-                if (nextSquareType == 4 && currentSquareType == 2) {
+                if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "d":
                 nextSquareType = squareType[Counters.get(colour).getGridY()+1][Counters.get(colour).getGridX()];
-                if (nextSquareType == 4 && currentSquareType == 2) {
+                if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "l":
                 nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()-1];
-                if (nextSquareType == 4 && currentSquareType == 2) {
+                if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "r":
                 nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()+1];
-                if (nextSquareType == 4 && currentSquareType == 2) {
+                if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
@@ -404,6 +410,44 @@ public class GUI extends JFrame {
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the next square is a pathway
+     * @param colour the colour of the token you want to move
+     * @param direction the direction you want to move
+     * @return a boolean representing if the next square is a pathway or not
+     */
+    private boolean isOccupied(String colour, String direction) {
+        int nextSquareType;
+
+        switch(direction) {
+            case "u":
+                nextSquareType = squareType[Counters.get(colour).getGridY()-1][Counters.get(colour).getGridX()];
+                if (nextSquareType < 0) {
+                    return true;
+                }
+                break;
+            case "d":
+                nextSquareType = squareType[Counters.get(colour).getGridY()+1][Counters.get(colour).getGridX()];
+                if (nextSquareType < 0) {
+                    return true;
+                }
+                break;
+            case "l":
+                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()-1];
+                if (nextSquareType < 0) {
+                    return true;
+                }
+                break;
+            case "r":
+                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()+1];
+                if (nextSquareType < 0) {
                     return true;
                 }
                 break;
