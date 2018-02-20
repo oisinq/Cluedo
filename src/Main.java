@@ -6,7 +6,7 @@
 /**
  * This is the main class that is ran when the program starts
  */
-public class Main {
+public class Main{
 
     private final Counters counters = new Counters();
     private final Weapons weapons = new Weapons();
