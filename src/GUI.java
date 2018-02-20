@@ -270,8 +270,7 @@ public class GUI extends JFrame {
 		boolean moved=true;
 		boolean check=true;
 		int x=0;
-		while(x<splitStr.length&&moved==true)
-		{
+		
         switch (splitStr[x].toLowerCase()) { // Checks the movement direction entered
             case "up":
             case "u":
@@ -316,8 +315,7 @@ public class GUI extends JFrame {
             default:
                 infoField.append("\nInvalid direction chosen\n");
                 moved=false;
-        }
-        x++;
+       
 		}
 
         repaint(); // Repaints the board with the new location of the pieces
