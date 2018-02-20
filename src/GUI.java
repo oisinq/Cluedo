@@ -250,8 +250,8 @@ public class GUI extends JFrame {
 
         	System.exit(0);
         }
-<<<<<<< HEAD
-        else if(splitStr[0].toLowerCase().equals("roll"))
+
+        else if(splitStr.toLowerCase().equals("roll"))
         {	
         	if (dieRoll==0){
         	dieResult=roll();
@@ -261,12 +261,8 @@ public class GUI extends JFrame {
         		infoField.append("You have already rolled this turn!");
         	}
         }
-        else if(splitStr[0].toLowerCase().equals("done"))
-=======
-        
-        
+     
         else if(splitStr.toLowerCase().equals("done"))
->>>>>>> 67c2c24cba925f35a84ac4b6d0f90dadd8b04762
         {
         	dieResult=0;
         	dieRoll=0;
