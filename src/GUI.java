@@ -118,7 +118,6 @@ public class GUI extends JFrame {
         while (sure.hasNext()) {
             Counter ok = (Counter)sure.next();
             play[turnTrack]=ok.getCounterName();
-            System.out.println(play[turnTrack]+"wertyui");
             turnTrack++;
         }
         CurrPlay=play[0];
