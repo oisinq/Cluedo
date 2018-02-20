@@ -29,6 +29,7 @@ public class GUI extends JFrame {
     private int dieResult=0;
     boolean quit=false;
     int PlayTurn=0;
+    int dieRoll=0;//tracker used to stop more than one roll call per turn
     int turnTrack=0;
     String CurrPlay=play[0];
     // Squares that are marked 0 are inaccessible by the player (they are out of bounds)
@@ -173,10 +174,15 @@ public class GUI extends JFrame {
     			CurrPlay="Green";
     			infoField.append(CurrPlay+" has started their turn");
     		}
-    		Dice die = new Dice();
-       	 dieResult = die.rollDice();
-       	infoField.append("\nYou rolled a "+ dieResult+"\n");
+
     	
+    }
+    
+    public  int roll(){
+    	Dice die = new Dice();
+      	 dieResult = die.rollDice();
+      	infoField.append("\nYou rolled a "+ dieResult+"\n");
+      	 return dieResult;
     }
     public void paint(Graphics g) {
     	 
@@ -243,11 +249,26 @@ public class GUI extends JFrame {
 
         	System.exit(0);
         }
+<<<<<<< HEAD
+        else if(splitStr[0].toLowerCase().equals("roll"))
+        {	
+        	if (dieRoll==0){
+        	dieResult=roll();
+        	dieRoll++;
+        	}
+        	else{
+        		infoField.append("You have already rolled this turn!");
+        	}
+        }
+        else if(splitStr[0].toLowerCase().equals("done"))
+=======
         
         
         else if(splitStr.toLowerCase().equals("done"))
+>>>>>>> 67c2c24cba925f35a84ac4b6d0f90dadd8b04762
         {
         	dieResult=0;
+        	dieRoll=0;
         	infoField.append("\nPlayers turn has ended!\n");
         	PlayTurn=(PlayTurn+1)%turnTrack;
         	
