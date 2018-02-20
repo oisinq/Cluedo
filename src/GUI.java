@@ -20,6 +20,7 @@ public class GUI extends JFrame {
     // These are the variables contained in the GUI - the board components and the pieces on the board
     private Counters counters;
     private Weapons weapons;
+    private Rooms rooms;
     String[] play =new String[6];
     private JPanel board;
     private JTextArea infoField;
@@ -69,7 +70,7 @@ public class GUI extends JFrame {
     /**
      * This method creates the graphical interface for the program
      */
-    public GUI(Counters counters, Weapons weapons) {
+    public GUI(Counters counters, Weapons weapons, Rooms rooms) {
         this.counters = counters;
         this.weapons = weapons;
         

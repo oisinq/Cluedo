@@ -57,6 +57,13 @@ public class Counter extends JComponent implements BoardPiece {
         yLocation = y;
     }
 
+    public void setGridXY(int x, int y) {
+        gridX = x;
+        gridY = y;
+        xLocation = 43 + (gridX * 23);
+        yLocation = 50 + (gridY * 23);
+    }
+
 
     /**
      * Sets the colour of the counter
