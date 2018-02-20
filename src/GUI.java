@@ -101,8 +101,8 @@ public class GUI extends JFrame {
 
         userInput = new JTextField();
         userInput.setText("Enter text here (type 'help' for help)");
-        infoField.append("Commands: \nMove Player Piece\n - move (direction)e.g Move Up\n" +
-                "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n");
+        infoField.append("Commands: \nMove Player Piece\n - intial for direction of movement e.g U/D/L/R \n" +
+                "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n\n");
         // This method creates the Counter objects
         initialiseCounters(counters);
         // This method creates the Weapon objects
