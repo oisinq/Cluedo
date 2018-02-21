@@ -14,10 +14,12 @@ public class Room {
     // We store these variables here to make it easier to move around the players on the board
     private String roomName;
     private ArrayList<Coordinates> entrances;
+    private ArrayList<Coordinates> tokenSquares;
 
-    Room(String roomName, ArrayList entrances) {
+    Room(String roomName, ArrayList entrances, ArrayList tokenSquares) {
         this.roomName=roomName;
         this.entrances = entrances;
+        this.tokenSquares = tokenSquares;
     }
 
     public boolean hasRoomName(String counterName) {
@@ -26,5 +28,9 @@ public class Room {
 
     public ArrayList<Coordinates> getEntrances() {
         return entrances;
+    }
+
+    public ArrayList<Coordinates> getTokenSquares() {
+        return tokenSquares;
     }
 }

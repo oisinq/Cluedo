@@ -22,6 +22,7 @@ public class Counter extends JComponent implements BoardPiece {
     	return userName;
     }
     private String counterName;
+    private Room currentRoom;
     public String getCounterName() {
         return counterName;
     }
@@ -34,6 +35,7 @@ public class Counter extends JComponent implements BoardPiece {
         gridY = y;
         xLocation = 43 + (gridX * 23);
         yLocation = 50 + (gridY * 23);
+        currentRoom = null;
     }
 
     /**
@@ -146,5 +148,13 @@ public class Counter extends JComponent implements BoardPiece {
     }
     public boolean hasUserName(String name) {
         return this.userName.toLowerCase().equals(userName.toLowerCase().trim());
+    }
+
+    public void setCurrentRoom(Room r) {
+        currentRoom = r;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
     }
 }

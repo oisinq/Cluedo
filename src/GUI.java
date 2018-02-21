@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -73,6 +74,7 @@ public class GUI extends JFrame {
     public GUI(Counters counters, Weapons weapons, Rooms rooms) {
         this.counters = counters;
         this.weapons = weapons;
+        this.rooms = rooms;
         
         board = new JPanel();
         // We use BorderLayout to easily have multiple components in the same panel
@@ -345,8 +347,40 @@ public class GUI extends JFrame {
         	infoField.append("Error. Incorrect Movement!");
         }
 
+        if(isRoom(colour)) {
+            moveToRoomCentre(colour);
+        }
+
         repaint(); // Repaints the board with the new location of the pieces
         return moved;
+    }
+
+    private boolean isRoom(String colour) {
+        if (squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] == -4) {
+            return true;
+        }
+        return false;
+    }
+
+    private void moveToRoomCentre(String colour) {
+        Counter counter = Counters.get(colour);
+        Coordinates coord = new Coordinates(counter.getGridX(), counter.getGridY());
+        Room room = null;
+
+        for (Room r : rooms) {
+            ArrayList<Coordinates> entrances = r.getEntrances();
+            for (int i = 0; i < entrances.size(); i++) {
+                if ((coord.getCol() == entrances.get(i).getCol()) && (coord.getRow() == entrances.get(i).getRow())) {
+                    counter.setCurrentRoom(r);
+                    room = r;
+                }
+            }
+        }
+
+        ArrayList<Coordinates> tokenSquares = room.getTokenSquares();
+        Coordinates location = tokenSquares.iterator().next();
+        counter.setGridXY(location.getRow(), location.getCol());
+
     }
 
     /**
