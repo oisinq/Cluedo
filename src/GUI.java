@@ -257,6 +257,8 @@ public class GUI extends JFrame {
         {	
         	if (dieRoll==0){
         	dieResult=roll();
+        	//TODO This lets you move (basically) unlimitedly - for testing purposes only
+            //    dieResult=1000;
         	dieRoll++;
         	}
         	else{
@@ -365,6 +367,7 @@ public class GUI extends JFrame {
     private void moveToRoomCentre(String colour) {
         Counter counter = Counters.get(colour);
         Coordinates coord = new Coordinates(counter.getGridX(), counter.getGridY());
+        squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
         Room room = null;
 
         for (Room r : rooms) {
@@ -378,8 +381,9 @@ public class GUI extends JFrame {
         }
 
         ArrayList<Coordinates> tokenSquares = room.getTokenSquares();
-        Coordinates location = tokenSquares.iterator().next();
-        counter.setGridXY(location.getRow(), location.getCol());
+        Coordinates location = tokenSquares.get(room.getLastFilledToken() + 1);
+        counter.setGridXY(location.getCol(), location.getRow());
+        room.incremenetLastFilledToken();
 
     }
 

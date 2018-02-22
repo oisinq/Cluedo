@@ -15,6 +15,7 @@ public class Room {
     private String roomName;
     private ArrayList<Coordinates> entrances;
     private ArrayList<Coordinates> tokenSquares;
+    private int lastFilledToken = -1;
 
     Room(String roomName, ArrayList entrances, ArrayList tokenSquares) {
         this.roomName=roomName;
@@ -32,5 +33,13 @@ public class Room {
 
     public ArrayList<Coordinates> getTokenSquares() {
         return tokenSquares;
+    }
+
+    public int getLastFilledToken() {
+        return lastFilledToken;
+    }
+
+    public void incremenetLastFilledToken() {
+        lastFilledToken++;
     }
 }
