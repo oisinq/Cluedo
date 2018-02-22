@@ -22,24 +22,24 @@ public class GUI extends JFrame {
     private Counters counters;
     private Weapons weapons;
     private Rooms rooms;
-    String[] play =new String[6];
+    private String[] play =new String[6];
     private JPanel board;
     private JTextArea infoField;
     private JTextField userInput;
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
     private int dieResult=0;
-    boolean quit=false;
-    int PlayTurn=0;
-    int dieRoll=0;//tracker used to stop more than one roll call per turn
-    int turnTrack=0;
-    String CurrPlay=play[0];
+    private boolean quit=false;
+    private int PlayTurn=0;
+    private int dieRoll=0;//tracker used to stop more than one roll call per turn
+    private int turnTrack=0;
+    private String CurrPlay=play[0];
     // Squares that are marked 0 are inaccessible by the player (they are out of bounds)
     // Squares that are marked 1 are pathways that the player can walk on
     // Sqaures that are marked 2 are pathway squares that are adjacent to room entrances
     // Sqaures that are marked 3 are squares inside rooms
     // Sqaures that are marked 4 are room squares that are adjacent to room entrances
-    public int[][] squareType = {
+    private int[][] squareType = {
             {0,0,0,0,0,0,0,0,0,-1,0,0,0,0,-1,0,0,0,0,0,0,0,0,0},
             {3,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,3},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3},
@@ -118,21 +118,21 @@ public class GUI extends JFrame {
 
         // Displays the frame to the user
         setVisible(true);
-        Iterator sure = counters.iterator();
+        Iterator countersIterator = counters.iterator();
        
-        while (sure.hasNext()) {
-            Counter ok = (Counter)sure.next();
-            play[turnTrack]=ok.getCounterName();
+        while (countersIterator.hasNext()) {
+            Counter currentCounter = (Counter)countersIterator.next();
+            play[turnTrack]=currentCounter.getCounterName();
             turnTrack++;
         }
+
         CurrPlay=play[0];
         turn();
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
-                
-            	// TODO I entered 100 moves to make it easier to test - in the final version, the dieResult should be passed through
+
                 interpretInput(CurrPlay);
         	}
         };
@@ -145,40 +145,42 @@ public class GUI extends JFrame {
      * This method runs when we setVisible(true) and when we repaint()
      * It paints the images and counters onto the board
      */
-    public void turn()
+    private void turn()
     {
     		if(play[PlayTurn].equals("Scarlet"))
     		{
     			CurrPlay="Scarlet";
-    			infoField.append(CurrPlay+" has started their turn");
+    			infoField.append(CurrPlay+" has started their turn\n");
     		}
     		else if(play[PlayTurn].equals("Mustard"))
     		{
     			CurrPlay="Mustard";
-    			infoField.append(CurrPlay+" has started their turn");
+    			infoField.append(CurrPlay+" has started their turn\n");
     		}
     		else if(play[PlayTurn].equals("Peacock"))
     		{
     			CurrPlay="Peacock";
-    			infoField.append(CurrPlay+" has started their turn");
+    			infoField.append(CurrPlay+" has started their turn\n");
     		}
     		else if(play[PlayTurn].equals("Plum"))
     		{
     			CurrPlay="Plum";
-    			infoField.append(CurrPlay+" has started their turn");
+    			infoField.append(CurrPlay+" has started their turn\n");
     		}
     		else if(play[PlayTurn].equals("White"))
     		{
     			CurrPlay="White";
-    			infoField.append(CurrPlay+" has started their turn");
+    			infoField.append(CurrPlay+" has started their turn\n");
     		}
     		else if(play[PlayTurn].equals("Green"))
     		{
     			CurrPlay="Green";
-    			infoField.append(CurrPlay+" has started their turn");
+    			infoField.append(CurrPlay+" has started their turn\n");
     		}
 
-    	
+        if (isRoom(CurrPlay)) {
+            listExits(CurrPlay);
+        }
     }
     
     public  int roll(){
@@ -238,7 +240,7 @@ public class GUI extends JFrame {
             {
                 if(moveCommand(splitStr, name)==true)
                 {
-                dieResult=dieResult-1;
+                  dieResult=dieResult-1;
                 }
             }
             else
@@ -256,9 +258,9 @@ public class GUI extends JFrame {
         else if(splitStr.toLowerCase().equals("roll"))
         {	
         	if (dieRoll==0){
-        	dieResult=roll();
+        	//dieResult=roll();
         	//TODO This lets you move (basically) unlimitedly - for testing purposes only
-            //    dieResult=1000;
+            dieResult=1000;
         	dieRoll++;
         	}
         	else{
@@ -275,7 +277,28 @@ public class GUI extends JFrame {
         	
         	 turn();
         	// Goes to the next players move
+        } else if(Integer.parseInt(splitStr.toLowerCase()) > 0) {
+            Counter c = Counters.get(CurrPlay);
+            Room r = c.getCurrentRoom();
+
+            switch (splitStr.toLowerCase()) {
+                case "1":
+                    c.setGridXY(r.getEntrances().get(0).getCol(), r.getEntrances().get(0).getRow());
+                    break;
+                case "2":
+                    c.setGridXY(r.getEntrances().get(1).getCol(), r.getEntrances().get(1).getRow());
+                    break;
+                case "3":
+                    c.setGridXY(r.getEntrances().get(2).getCol(), r.getEntrances().get(2).getRow());
+                    break;
+                case "4":
+                    c.setGridXY(r.getEntrances().get(3).getCol(), r.getEntrances().get(3).getRow());
+                    break;
+            }
+
+            repaint();
         }
+
         else { 
         	infoField.append("\n Invalid command entered!\n");
         }
@@ -288,7 +311,11 @@ public class GUI extends JFrame {
         // I added shortcuts for the directions to make testing easier
         // We can only move if the next square is either a pathway or is a room square adjacent to an entrance
 		boolean moved=true;
-		int x=0;
+//		int x=0;
+//
+//		if (isRoom(colour)) {
+//            listExits(colour);
+//        }
 		
         switch (splitStr.toLowerCase()) { // Checks the movement direction entered
             case "up":
@@ -358,10 +385,25 @@ public class GUI extends JFrame {
     }
 
     private boolean isRoom(String colour) {
-        if (squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] == -4) {
+        if (squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] <= -3 || squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] >= 3 ) {
             return true;
         }
         return false;
+    }
+
+    private void listExits(String colour) {
+        Counter counter = Counters.get(colour);
+        Room room = counter.getCurrentRoom();
+        ArrayList<Coordinates> entrances = room.getEntrances();
+
+        // Prints entrances
+        infoField.append("Type the entrance number to leave through that entrance.\n");
+        for (int i = 0; i < entrances.size(); i++) {
+            Coordinates current = entrances.get(i);
+            infoField.append("Entrance " + (i+1) + ": (" + current.getRow() + " , " + current.getCol() + ")\n");
+        }
+
+
     }
 
     private void moveToRoomCentre(String colour) {

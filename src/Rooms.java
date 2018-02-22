@@ -98,8 +98,8 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
     private void createLibrary() {
         ArrayList<Coordinates> entrances = new ArrayList<>();
         ArrayList<Coordinates> counterSquares = new ArrayList<>();
-        entrances.add(new Coordinates(20, 14));
         entrances.add(new Coordinates(17, 16));
+        entrances.add(new Coordinates(20, 14));
         setCounterSquares(19, 15, counterSquares);
         rooms.add(new Room("Library", entrances, counterSquares));
     }
