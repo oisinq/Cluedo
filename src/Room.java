@@ -42,4 +42,8 @@ public class Room {
     public void incremenetLastFilledToken() {
         lastFilledToken++;
     }
+
+    public String getRoomName() {
+        return roomName;
+    }
 }

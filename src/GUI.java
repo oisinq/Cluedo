@@ -296,8 +296,23 @@ public class GUI extends JFrame {
                     break;
 
             }
-            if (squareType[Counters.get(CurrPlay).getGridY()][Counters.get(CurrPlay).getGridX()] == 6) {
-                moveToRoomCentre(CurrPlay);
+            if (c.getGridY() == -1) {
+                String ugh = c.getCurrentRoom().getRoomName();
+                switch (ugh) {
+                    case "Conservatory":
+                        c.setCurrentRoom(Rooms.get("Lounge"));
+                        break;
+                    case "Lounge":
+                        c.setCurrentRoom(Rooms.get("Conseratory"));
+                        break;
+                    case "Kitchen":
+                        c.setCurrentRoom(Rooms.get("Study"));
+                        break;
+                    case "Study":
+                        c.setCurrentRoom(Rooms.get("Kitchen"));
+                        break;
+                }
+                actuallyMove(Counters.get(CurrPlay));
             } else {
             int xValue = c.getGridX();
             int yValue = c.getGridY();
@@ -429,24 +444,25 @@ public class GUI extends JFrame {
         Counter counter = Counters.get(colour);
         Coordinates coord = new Coordinates(counter.getGridX(), counter.getGridY());
         squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
-        Room room = null;
 
         for (Room r : rooms) {
             ArrayList<Coordinates> entrances = r.getEntrances();
             for (int i = 0; i < entrances.size(); i++) {
                 if ((coord.getCol() == entrances.get(i).getCol()) && (coord.getRow() == entrances.get(i).getRow())) {
                     counter.setCurrentRoom(r);
-                    room = r;
                 }
             }
         }
+        actuallyMove(Counters.get(colour));
+    }
 
+    private void actuallyMove(Counter c) {
+        Room room = c.getCurrentRoom();
         ArrayList<Coordinates> tokenSquares = room.getTokenSquares();
         Coordinates location = tokenSquares.get(room.getLastFilledToken() + 1);
-        counter.setGridXY(location.getCol(), location.getRow());
+        c.setGridXY(location.getCol(), location.getRow());
 
         room.incremenetLastFilledToken();
-
     }
 
     /**
