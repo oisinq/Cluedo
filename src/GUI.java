@@ -40,7 +40,7 @@ public class GUI extends JFrame {
     // Sqaures that are marked 4 are room squares that are adjacent to room entrances
     private int[][] squareType = {
             {0,0,0,0,0,0,0,0,0,-1,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0},
-            {3,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,3,0},
+            {6,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,6,0},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,4,3,3,3,3,3,0},
@@ -63,7 +63,7 @@ public class GUI extends JFrame {
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,4,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,0,-1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,3,0},
+            {6,3,3,3,3,3,0,-1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,6,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
     };
 
@@ -182,7 +182,7 @@ public class GUI extends JFrame {
         }
     }
     
-    public  int roll(){
+    public  int roll() {
     	Dice die = new Dice();
       	 dieResult = die.rollDice();
       	infoField.append("\nYou rolled a "+ dieResult+"\n");
@@ -259,7 +259,7 @@ public class GUI extends JFrame {
         	if (dieRoll==0){
         	dieResult=roll();
         	//TODO This lets you move (basically) unlimitedly - for testing purposes only
-            //dieResult=1000;
+            dieResult=1000;
         	dieRoll++;
         	}
         	else{
@@ -279,6 +279,7 @@ public class GUI extends JFrame {
         } else if(checkInteger(splitStr)==true && dieResult>0) {
             Counter c = Counters.get(CurrPlay);
             Room r = c.getCurrentRoom();
+            boolean secretPassage=false;
 
             switch (splitStr.toLowerCase()) {
                 case "1":
@@ -293,7 +294,11 @@ public class GUI extends JFrame {
                 case "4":
                     c.setGridXY(r.getEntrances().get(3).getCol(), r.getEntrances().get(3).getRow());
                     break;
+
             }
+            if (squareType[Counters.get(CurrPlay).getGridY()][Counters.get(CurrPlay).getGridX()] == 6) {
+                moveToRoomCentre(CurrPlay);
+            } else {
             int xValue = c.getGridX();
             int yValue = c.getGridY();
             if(squareType[yValue - 1][xValue] == 2) {
@@ -307,7 +312,7 @@ public class GUI extends JFrame {
             }
             if(squareType[yValue][xValue + 1] == 2) {
                 c.setGridXY(xValue + 1, yValue - 1);
-            }
+            }}
 
             repaint();
             dieResult--;
@@ -400,7 +405,7 @@ public class GUI extends JFrame {
     }
 
     private boolean isRoom(String colour) {
-        if (squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] <= -3 || squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] >= 3 ) {
+        if (squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] <= -3 || squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] >= 3) {
             return true;
         }
         return false;
