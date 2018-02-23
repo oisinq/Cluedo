@@ -29,7 +29,6 @@ public class GUI extends JFrame {
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
     private int dieResult=0;
-    private boolean quit=false;
     private int PlayTurn=0;
     private int dieRoll=0;//tracker used to stop more than one roll call per turn
     private int turnTrack=0;
@@ -277,7 +276,7 @@ public class GUI extends JFrame {
         	
         	 turn();
         	// Goes to the next players move
-        } else if(Integer.parseInt(splitStr.toLowerCase()) > 0 && dieResult>0) {
+        } else if(checkInteger(splitStr)==true && dieResult>0) {
             Counter c = Counters.get(CurrPlay);
             Room r = c.getCurrentRoom();
 
@@ -571,7 +570,32 @@ public class GUI extends JFrame {
 
     /**
      * Help command for when "help" is inputted by the user
-     */
+     */public static boolean checkInteger(String str) {
+    	    if (str == null) {
+    	        return false;
+    	    }
+    	    int length = str.length();
+    	    if (length == 0) {
+    	        return false;
+    	    }
+    	    int i = 0;
+    	    if (str.charAt(0) == '-') {
+    	        if (length == 1) {
+    	            return false;
+    	        }
+    	        i = 1;
+    	    }
+    	    char c;
+    	    while(i<length)
+    	    {
+    	        c = str.charAt(i);
+    	        if (c < '0' || c > '9') {
+    	            return false;
+    	        }
+    	        i++;
+    	    }
+    	    return true;
+    	}
     private void helpCommand() {
         infoField.append("Commands: \nMove Player Piece\n - move (direction)\n" +
                 "\nQuit Game\n - quit"+"\nEnd turn\n - end");
