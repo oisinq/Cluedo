@@ -32,7 +32,7 @@ public class GUI extends JFrame {
     private int PlayTurn=0;
     private int dieRoll=0;//tracker used to stop more than one roll call per turn
     private int turnTrack=0;
-    private String CurrPlay=play[0];
+    private String currPlay =play[0];
     // Squares that are marked 0 are inaccessible by the player (they are out of bounds)
     // Squares that are marked 1 are pathways that the player can walk on
     // Sqaures that are marked 2 are pathway squares that are adjacent to room entrances
@@ -126,14 +126,14 @@ public class GUI extends JFrame {
             turnTrack++;
         }
 
-        CurrPlay=play[0];
+        currPlay =play[0];
         turn();
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
 
-                interpretInput(CurrPlay);
+                interpretInput(currPlay);
         	}
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
@@ -149,37 +149,37 @@ public class GUI extends JFrame {
     {
     		if(play[PlayTurn].equals("Scarlet"))
     		{
-    			CurrPlay="Scarlet";
-    			infoField.append(CurrPlay+" has started their turn\n");
+    			currPlay ="Scarlet";
+    			infoField.append(currPlay +" has started their turn\n");
     		}
     		else if(play[PlayTurn].equals("Mustard"))
     		{
-    			CurrPlay="Mustard";
-    			infoField.append(CurrPlay+" has started their turn\n");
+    			currPlay ="Mustard";
+    			infoField.append(currPlay +" has started their turn\n");
     		}
     		else if(play[PlayTurn].equals("Peacock"))
     		{
-    			CurrPlay="Peacock";
-    			infoField.append(CurrPlay+" has started their turn\n");
+    			currPlay ="Peacock";
+    			infoField.append(currPlay +" has started their turn\n");
     		}
     		else if(play[PlayTurn].equals("Plum"))
     		{
-    			CurrPlay="Plum";
-    			infoField.append(CurrPlay+" has started their turn\n");
+    			currPlay ="Plum";
+    			infoField.append(currPlay +" has started their turn\n");
     		}
     		else if(play[PlayTurn].equals("White"))
     		{
-    			CurrPlay="White";
-    			infoField.append(CurrPlay+" has started their turn\n");
+    			currPlay ="White";
+    			infoField.append(currPlay +" has started their turn\n");
     		}
     		else if(play[PlayTurn].equals("Green"))
     		{
-    			CurrPlay="Green";
-    			infoField.append(CurrPlay+" has started their turn\n");
+    			currPlay ="Green";
+    			infoField.append(currPlay +" has started their turn\n");
     		}
 
-        if (isRoom(CurrPlay)) {
-            listExits(CurrPlay);
+        if (isRoom(currPlay)) {
+            listExits(currPlay);
         }
     }
     
@@ -189,8 +189,8 @@ public class GUI extends JFrame {
       	infoField.append("\nYou rolled a "+ dieResult+"\n");
       	 return dieResult;
     }
+
     public void paint(Graphics g) {
-    	 
         // This line insures that the other components of the JFrame are visible
         super.paint(g);
         // We cast to Graphics2D to access more image drawing features
@@ -235,41 +235,34 @@ public class GUI extends JFrame {
         }  
         else if((splitStr.toLowerCase().equals("u") || splitStr.toLowerCase().equals("up")||splitStr.toLowerCase().equals("d") || splitStr.toLowerCase().equals("down")||splitStr.toLowerCase().equals("l") || splitStr.toLowerCase().equals("left")||splitStr.toLowerCase().equals("r") || splitStr.toLowerCase().equals("right"))) // If the first word is move or m in any format
         {
-            
-            if(dieResult>0)
-            {
-                if(moveCommand(splitStr, name)==true)
-                {
+            if(dieResult>0) {
+                if(moveCommand(splitStr, name)==true) {
                   dieResult=dieResult-1;
                 }
             }
-            else
-            {
+            else {
             	infoField.append("\n You have used all your movement.\n");
             }
         }
-        else if(splitStr.toLowerCase().equals("quit"))
-        {
+        else if(splitStr.toLowerCase().equals("quit")) {
         	infoField.append("Thank you for playing! Goodbye");
 
         	System.exit(0);
         }
 
-        else if(splitStr.toLowerCase().equals("roll"))
-        {	
+        else if(splitStr.toLowerCase().equals("roll")) {
         	if (dieRoll==0){
         	dieResult=roll();
         	//TODO This lets you move (basically) unlimitedly - for testing purposes only
-            //dieResult=1000;
+            dieResult=10;
         	dieRoll++;
         	}
-        	else{
+        	else {
         		infoField.append("You have already rolled this turn!");
         	}
         }
      
-        else if(splitStr.toLowerCase().equals("done"))
-        {
+        else if(splitStr.toLowerCase().equals("done")) {
         	dieResult=0;
         	dieRoll=0;
         	infoField.append("\nPlayers turn has ended!\n");
@@ -277,10 +270,10 @@ public class GUI extends JFrame {
         	
         	 turn();
         	// Goes to the next players move
-        } else if(checkInteger(splitStr)==true && dieResult>0) {
-            Counter c = Counters.get(CurrPlay);
+        } else if(checkInteger(splitStr)==true && dieResult > 0) {
+            Counter c = Counters.get(currPlay);
             Room r = c.getCurrentRoom();
-            boolean secretPassage=false;
+            squareType[c.getGridY()][c.getGridX()] *= -1;
 
             switch (splitStr.toLowerCase()) {
                 case "1":
@@ -313,7 +306,7 @@ public class GUI extends JFrame {
                         c.setCurrentRoom(Rooms.get("Kitchen"));
                         break;
                 }
-                actuallyMove(Counters.get(CurrPlay));
+                actuallyMove(Counters.get(currPlay));
             } else {
             int xValue = c.getGridX();
             int yValue = c.getGridY();
@@ -330,6 +323,7 @@ public class GUI extends JFrame {
                 c.setGridXY(xValue + 1, yValue - 1);
             }}
 
+            squareType[c.getGridY()][c.getGridX()] *= -1;
             repaint();
             dieResult--;
         }
@@ -477,10 +471,19 @@ public class GUI extends JFrame {
 
     private void actuallyMove(Counter c) {
         Room room = c.getCurrentRoom();
-        ArrayList<Coordinates> tokenSquares = room.getTokenSquares();
-        Coordinates location = tokenSquares.get(room.getLastFilledToken() + 1);
-        c.setGridXY(location.getCol(), location.getRow());
+        Coordinates location = null;
+        boolean found = false;
 
+        ArrayList<Coordinates> tokenSquares = room.getTokenSquares();
+        for (int i = 0; i < tokenSquares.size() && !found; i++) {
+            if (squareType[tokenSquares.get(i).getRow()][tokenSquares.get(i).getCol()] > 0) {
+                 location = tokenSquares.get(i);
+                 found = true;
+            }
+        }
+
+        c.setGridXY(location.getCol(), location.getRow());
+        squareType[location.getRow()][location.getCol()] *= -1;
         room.incremenetLastFilledToken();
         dieResult = 0;
     }
