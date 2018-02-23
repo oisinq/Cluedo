@@ -295,6 +295,20 @@ public class GUI extends JFrame {
                     c.setGridXY(r.getEntrances().get(3).getCol(), r.getEntrances().get(3).getRow());
                     break;
             }
+            int xValue = c.getGridX();
+            int yValue = c.getGridY();
+            if(squareType[yValue - 1][xValue] == 2) {
+                c.setGridXY(xValue, yValue - 1);
+            }
+            if(squareType[yValue + 1][xValue] == 2) {
+                c.setGridXY(xValue, yValue + 1);
+            }
+            if(squareType[yValue][xValue - 1] == 2) {
+                c.setGridXY(xValue - 1, yValue);
+            }
+            if(squareType[yValue][xValue + 1] == 2) {
+                c.setGridXY(xValue + 1, yValue - 1);
+            }
 
             repaint();
         }
@@ -371,7 +385,7 @@ public class GUI extends JFrame {
                 moved=false;
        
 		}
-        if(moved==false)
+        if(!moved)
         {
         	infoField.append("Error. Incorrect Movement!");
         }
