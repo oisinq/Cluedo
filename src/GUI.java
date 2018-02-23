@@ -258,9 +258,9 @@ public class GUI extends JFrame {
         else if(splitStr.toLowerCase().equals("roll"))
         {	
         	if (dieRoll==0){
-        	//dieResult=roll();
+        	dieResult=roll();
         	//TODO This lets you move (basically) unlimitedly - for testing purposes only
-            dieResult=1000;
+            //dieResult=1000;
         	dieRoll++;
         	}
         	else{
@@ -277,7 +277,7 @@ public class GUI extends JFrame {
         	
         	 turn();
         	// Goes to the next players move
-        } else if(Integer.parseInt(splitStr.toLowerCase()) > 0) {
+        } else if(Integer.parseInt(splitStr.toLowerCase()) > 0 && dieResult>0) {
             Counter c = Counters.get(CurrPlay);
             Room r = c.getCurrentRoom();
 
@@ -311,6 +311,7 @@ public class GUI extends JFrame {
             }
 
             repaint();
+            dieResult--;
         }
 
         else { 
