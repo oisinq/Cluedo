@@ -316,6 +316,7 @@ public class GUI extends JFrame {
         else { 
         	infoField.append("\n Invalid command entered!\n");
         }
+        infoField.append("\nYou have " + dieResult + " movement left\n");
         
     }
    
