@@ -38,9 +38,10 @@ public class GUI extends JFrame {
     // Sqaures that are marked 2 are pathway squares that are adjacent to room entrances
     // Sqaures that are marked 3 are squares inside rooms
     // Sqaures that are marked 4 are room squares that are adjacent to room entrances
+    // A number is turned negative when it is occupied
     private int[][] squareType = {
             {0,0,0,0,0,0,0,0,0,-1,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0},
-            {6,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,6,0},
+            {3,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,4,3,3,3,3,3,0},
@@ -63,7 +64,7 @@ public class GUI extends JFrame {
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,4,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
-            {6,3,3,3,3,3,0,-1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,6,0},
+            {3,3,3,3,3,3,0,-1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,3,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
     };
 
@@ -259,7 +260,7 @@ public class GUI extends JFrame {
         	if (dieRoll==0){
         	dieResult=roll();
         	//TODO This lets you move (basically) unlimitedly - for testing purposes only
-            dieResult=1000;
+            //dieResult=1000;
         	dieRoll++;
         	}
         	else{
@@ -303,7 +304,7 @@ public class GUI extends JFrame {
                         c.setCurrentRoom(Rooms.get("Lounge"));
                         break;
                     case "Lounge":
-                        c.setCurrentRoom(Rooms.get("Conseratory"));
+                        c.setCurrentRoom(Rooms.get("Conservatory"));
                         break;
                     case "Kitchen":
                         c.setCurrentRoom(Rooms.get("Study"));
@@ -434,7 +435,25 @@ public class GUI extends JFrame {
         infoField.append("Type the entrance number to leave through that entrance.\n");
         for (int i = 0; i < entrances.size(); i++) {
             Coordinates current = entrances.get(i);
-            infoField.append("Entrance " + (i+1) + ": (" + current.getRow() + " , " + current.getCol() + ")\n");
+            if (current.getRow() > -1) {
+                infoField.append("Entrance " + (i + 1) + ": (" + current.getRow() + " , " + current.getCol() + ")\n");
+            } else {
+                infoField.append("Entrance " + (i + 1) + " - secret passageway to ");
+                switch (counter.getCurrentRoom().getRoomName()) {
+                    case "Conservatory":
+                        infoField.append("Lounge");
+                        break;
+                    case "Lounge":
+                        infoField.append("Conservatory");
+                        break;
+                    case "Kitchen":
+                        infoField.append("Study");
+                        break;
+                    case "Study":
+                        infoField.append("Kitchen");
+                        break;
+                }
+            }
         }
 
 
@@ -463,6 +482,7 @@ public class GUI extends JFrame {
         c.setGridXY(location.getCol(), location.getRow());
 
         room.incremenetLastFilledToken();
+        dieResult = 0;
     }
 
     /**
