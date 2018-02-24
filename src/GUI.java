@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * This class creates the graphical interface of the program and initialises all of the pieces
@@ -32,7 +31,8 @@ public class GUI extends JFrame {
     private int PlayTurn=0;
     private int dieRoll=0;//tracker used to stop more than one roll call per turn
     private int turnTrack=0;
-    private String currPlay =play[0];
+    private String currentPlayerName;
+
     // Squares that are marked 0 are inaccessible by the player (they are out of bounds)
     // Squares that are marked 1 are pathways that the player can walk on
     // Sqaures that are marked 2 are pathway squares that are adjacent to room entrances
@@ -118,22 +118,20 @@ public class GUI extends JFrame {
 
         // Displays the frame to the user
         setVisible(true);
-        Iterator countersIterator = counters.iterator();
-       
-        while (countersIterator.hasNext()) {
-            Counter currentCounter = (Counter)countersIterator.next();
-            play[turnTrack]=currentCounter.getCounterName();
+
+        for (Counter currentCounter : counters) {
+            play[turnTrack] = currentCounter.getCounterName();
             turnTrack++;
         }
 
-        currPlay =play[0];
+        currentPlayerName = play[0];
         turn();
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
 
-                interpretInput(currPlay);
+                interpretInput(currentPlayerName);
         	}
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
@@ -147,47 +145,38 @@ public class GUI extends JFrame {
      */
     private void turn()
     {
-    		if(play[PlayTurn].equals("Scarlet"))
-    		{
-    			currPlay ="Scarlet";
-    			infoField.append(currPlay +" has started their turn\n");
-    		}
-    		else if(play[PlayTurn].equals("Mustard"))
-    		{
-    			currPlay ="Mustard";
-    			infoField.append(currPlay +" has started their turn\n");
-    		}
-    		else if(play[PlayTurn].equals("Peacock"))
-    		{
-    			currPlay ="Peacock";
-    			infoField.append(currPlay +" has started their turn\n");
-    		}
-    		else if(play[PlayTurn].equals("Plum"))
-    		{
-    			currPlay ="Plum";
-    			infoField.append(currPlay +" has started their turn\n");
-    		}
-    		else if(play[PlayTurn].equals("White"))
-    		{
-    			currPlay ="White";
-    			infoField.append(currPlay +" has started their turn\n");
-    		}
-    		else if(play[PlayTurn].equals("Green"))
-    		{
-    			currPlay ="Green";
-    			infoField.append(currPlay +" has started their turn\n");
-    		}
-
-        if (isRoom(currPlay)) {
-            listExits(currPlay);
+        switch (play[PlayTurn]) {
+            case "Scarlet":
+                currentPlayerName = "Scarlet";
+                infoField.append(currentPlayerName + " has started their turn\n");
+                break;
+            case "Mustard":
+                currentPlayerName = "Mustard";
+                infoField.append(currentPlayerName + " has started their turn\n");
+                break;
+            case "Peacock":
+                currentPlayerName = "Peacock";
+                infoField.append(currentPlayerName + " has started their turn\n");
+                break;
+            case "Plum":
+                currentPlayerName = "Plum";
+                infoField.append(currentPlayerName + " has started their turn\n");
+                break;
+            case "White":
+                currentPlayerName = "White";
+                infoField.append(currentPlayerName + " has started their turn\n");
+                break;
+            case "Green":
+                currentPlayerName = "Green";
+                infoField.append(currentPlayerName + " has started their turn\n");
+                break;
         }
-    }
-    
-    public  int roll() {
-    	Dice die = new Dice();
-      	 dieResult = die.rollDice();
-      	infoField.append("\nYou rolled a "+ dieResult+"\n");
-      	 return dieResult;
+
+        Counter c = Counters.get(currentPlayerName);
+
+        if (isRoom(c)) {
+            listExits(c);
+        }
     }
 
     public void paint(Graphics g) {
@@ -233,10 +222,9 @@ public class GUI extends JFrame {
         if (splitStr.toLowerCase().equals("help")) {
             helpCommand();
         }  
-        else if((splitStr.toLowerCase().equals("u") || splitStr.toLowerCase().equals("up")||splitStr.toLowerCase().equals("d") || splitStr.toLowerCase().equals("down")||splitStr.toLowerCase().equals("l") || splitStr.toLowerCase().equals("left")||splitStr.toLowerCase().equals("r") || splitStr.toLowerCase().equals("right"))) // If the first word is move or m in any format
-        {
+        else if((splitStr.toLowerCase().equals("u") || splitStr.toLowerCase().equals("up")||splitStr.toLowerCase().equals("d") || splitStr.toLowerCase().equals("down")||splitStr.toLowerCase().equals("l") || splitStr.toLowerCase().equals("left")||splitStr.toLowerCase().equals("r") || splitStr.toLowerCase().equals("right"))) { // If the first word is move or m in any format
             if(dieResult>0) {
-                if(moveCommand(splitStr, name)==true) {
+                if(moveCommand(splitStr, name)) {
                   dieResult=dieResult-1;
                 }
             }
@@ -252,10 +240,12 @@ public class GUI extends JFrame {
 
         else if(splitStr.toLowerCase().equals("roll")) {
         	if (dieRoll==0){
-        	dieResult=roll();
-        	//TODO This lets you move (basically) unlimitedly - for testing purposes only
-            dieResult=10;
-        	dieRoll++;
+                Dice die = new Dice();
+        	    dieResult=die.roll();
+                infoField.append("\nYou rolled a "+ dieResult+"\n");
+        	    //TODO This lets you move (basically) unlimitedly - for testing purposes only
+                // dieResult = 1000;
+        	    dieRoll++;
         	}
         	else {
         		infoField.append("You have already rolled this turn!");
@@ -270,9 +260,14 @@ public class GUI extends JFrame {
         	
         	 turn();
         	// Goes to the next players move
-        } else if(checkInteger(splitStr)==true && dieResult > 0) {
-            Counter c = Counters.get(currPlay);
-            Room r = c.getCurrentRoom();
+        } else if(checkInteger(splitStr) && dieResult > 0) {
+            Counter c = Counters.get(currentPlayerName);
+            if (c == null) {
+                throw new RuntimeException("Counter does not exist");
+            }
+
+           Room r = c.getCurrentRoom();
+
             squareType[c.getGridY()][c.getGridX()] *= -1;
 
             switch (splitStr.toLowerCase()) {
@@ -306,7 +301,7 @@ public class GUI extends JFrame {
                         c.setCurrentRoom(Rooms.get("Kitchen"));
                         break;
                 }
-                actuallyMove(Counters.get(currPlay));
+                moveToRoomCentre(Counters.get(currentPlayerName));
             } else {
             int xValue = c.getGridX();
             int yValue = c.getGridY();
@@ -333,95 +328,94 @@ public class GUI extends JFrame {
         }
         
     }
-   
 
-   
+
+    /**
+     * This method lets the user make standard moves (e.g. up/down/left/right
+     */
 	private boolean moveCommand(String splitStr, String colour) {
-        // I added shortcuts for the directions to make testing easier
         // We can only move if the next square is either a pathway or is a room square adjacent to an entrance
 		boolean moved=true;
-//		int x=0;
-//
-//		if (isRoom(colour)) {
-//            listExits(colour);
-//        }
+
+        Counter counter = Counters.get(colour);
+        if (counter == null) {
+            throw new RuntimeException();
+        }
 		
         switch (splitStr.toLowerCase()) { // Checks the movement direction entered
             case "up":
             case "u":
-                if ((isPathway(colour, "u") || isEnterable(colour, "u")) && !isOccupied(colour, "u") && Counters.get(colour).getGridY()>0) {
-                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
-                    Counters.get(colour).moveUp(1);
-                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
+                if ((isPathway(counter, "u") || isEnterable(counter, "u")) && isNotOccupied(counter, "u") && counter.getGridY()>0) {
+                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                    counter.moveUp(1);
+                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
                 }
-                else
-                {
+                else {
                 	moved=false;
                 }
                 break;
             case "down":
             case "d":
-                if ((isPathway(colour, "d") || isEnterable(colour, "d")) && !isOccupied(colour, "d")) {
-                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
-                    Counters.get(colour).moveDown(1);
-                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
+                if ((isPathway(counter, "d") || isEnterable(counter, "d")) && isNotOccupied(counter, "d")) {
+                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                    counter.moveDown(1);
+                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
                 }
-                else
-                {
+                else {
                 	moved=false;
                 }
                 break;
             case "left":
             case "l":
-                if ((isPathway(colour, "l") || isEnterable(colour, "l")) && !isOccupied(colour, "l")&& Counters.get(colour).getGridX()>0) {
-                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
-                    Counters.get(colour).moveLeft(1);
-                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
+                if ((isPathway(counter, "l") || isEnterable(counter, "l")) && isNotOccupied(counter, "l") && counter.getGridX()>0) {
+                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                    counter.moveLeft(1);
+                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
                 }
-                else
-                {
+                else {
                 	moved=false;
                 }
                 break;
             case "right":
             case "r":
-                if ((isPathway(colour, "r") || isEnterable(colour, "r")) && !isOccupied(colour, "r")) {
-                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
-                    Counters.get(colour).moveRight(1);
-                    squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
+                if ((isPathway(counter, "r") || isEnterable(counter, "r")) && isNotOccupied(counter, "r")) {
+                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                    counter.moveRight(1);
+                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
                 }
-                else
-                {
+                else {
                 	moved=false;
                 }
                 break;
             default:
                 infoField.append("\nInvalid direction chosen\n");
                 moved=false;
-       
 		}
-        if(!moved)
-        {
+        if(!moved) {
         	infoField.append("Error. Incorrect Movement!");
         }
 
-        if(isRoom(colour)) {
-            moveToRoomCentre(colour);
+        // If the counter is now in a room, it finds what room the counter is in and moves it to the centre of that room
+        if(isRoom(counter)) {
+            findCurrentRoom(counter);
+            moveToRoomCentre(counter);
         }
 
         repaint(); // Repaints the board with the new location of the pieces
         return moved;
     }
 
-    private boolean isRoom(String colour) {
-        if (squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] <= -3 || squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] >= 3) {
-            return true;
-        }
-        return false;
+    /**
+     * This checks if the counter is currently in a room or not
+     */
+    private boolean isRoom(Counter counter) {
+        return squareType[counter.getGridY()][counter.getGridX()] <= -3 || squareType[counter.getGridY()][counter.getGridX()] >= 3;
     }
 
-    private void listExits(String colour) {
-        Counter counter = Counters.get(colour);
+    /**
+     * This prints off the possible exits for a counter to leave a room through
+     */
+    private void listExits(Counter counter) {
         Room room = counter.getCurrentRoom();
         ArrayList<Coordinates> entrances = room.getEntrances();
 
@@ -429,9 +423,11 @@ public class GUI extends JFrame {
         infoField.append("Type the entrance number to leave through that entrance.\n");
         for (int i = 0; i < entrances.size(); i++) {
             Coordinates current = entrances.get(i);
+            // If it's a secret passageway, the coordinates are (-1, -1) - if that's the case, we don't want to print the actual coordinates
             if (current.getRow() > -1) {
                 infoField.append("Entrance " + (i + 1) + ": (" + current.getRow() + " , " + current.getCol() + ")\n");
             } else {
+                // If it's a secret entrance, we say where the secret entrance goes to
                 infoField.append("Entrance " + (i + 1) + " - secret passageway to ");
                 switch (counter.getCurrentRoom().getRoomName()) {
                     case "Conservatory":
@@ -449,33 +445,37 @@ public class GUI extends JFrame {
                 }
             }
         }
-
-
     }
 
-    private void moveToRoomCentre(String colour) {
-        Counter counter = Counters.get(colour);
+    /**
+     * This finds the current entrance that the user is placed at, and assigns the corresponding current room to the counter
+     */
+    private void findCurrentRoom(Counter counter) {
         Coordinates coord = new Coordinates(counter.getGridX(), counter.getGridY());
-        squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()] *= -1;
+        squareType[counter.getGridY()][counter.getGridX()] *= -1;
 
         for (Room r : rooms) {
             ArrayList<Coordinates> entrances = r.getEntrances();
-            for (int i = 0; i < entrances.size(); i++) {
-                if ((coord.getCol() == entrances.get(i).getCol()) && (coord.getRow() == entrances.get(i).getRow())) {
+            for (Coordinates entrance : entrances) {
+                if ((coord.getCol() == entrance.getCol()) && (coord.getRow() == entrance.getRow())) {
                     counter.setCurrentRoom(r);
                 }
             }
         }
-        actuallyMove(Counters.get(colour));
     }
 
-    private void actuallyMove(Counter c) {
+    /**
+     * Moves the counter to the next available spot in the centre of the room
+     */
+    private void moveToRoomCentre(Counter c) {
         Room room = c.getCurrentRoom();
         Coordinates location = null;
         boolean found = false;
 
         ArrayList<Coordinates> tokenSquares = room.getTokenSquares();
+        // This searches through the tokenSquares arraylist to find one that isn't occupied
         for (int i = 0; i < tokenSquares.size() && !found; i++) {
+            // Since occupied squares are negative, we check if the corresponding value in squareType is positive
             if (squareType[tokenSquares.get(i).getRow()][tokenSquares.get(i).getCol()] > 0) {
                  location = tokenSquares.get(i);
                  found = true;
@@ -490,35 +490,35 @@ public class GUI extends JFrame {
 
     /**
      * Checks if you can enter a certain room or not by looking at both the current square and the next square
-     * @param colour the colour of the token
+     * @param counter the counter to check
      * @param direction the direction you want to remove
      * @return a boolean representing if you can enter the room or not
      */
-    private boolean isEnterable(String colour, String direction) {
+    private boolean isEnterable(Counter counter, String direction) {
         int nextSquareType;
-        int currentSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()];
+        int currentSquareType = squareType[counter.getGridY()][counter.getGridX()];
 
         switch(direction) {
             case "u":
-                nextSquareType = squareType[Counters.get(colour).getGridY()-1][Counters.get(colour).getGridX()];
+                nextSquareType = squareType[counter.getGridY()-1][counter.getGridX()];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "d":
-                nextSquareType = squareType[Counters.get(colour).getGridY()+1][Counters.get(colour).getGridX()];
+                nextSquareType = squareType[counter.getGridY()+1][counter.getGridX()];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "l":
-                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()-1];
+                nextSquareType = squareType[counter.getGridY()][counter.getGridX()-1];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "r":
-                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()+1];
+                nextSquareType = squareType[counter.getGridY()][counter.getGridX()+1];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
@@ -529,17 +529,17 @@ public class GUI extends JFrame {
 
     /**
      * Checks if the next square is a pathway
-     * @param colour the colour of the token you want to move
+     * @param counter the colour of the token you want to move
      * @param direction the direction you want to move
      * @return a boolean representing if the next square is a pathway or not
      */
-    private boolean isPathway(String colour, String direction) {
+    private boolean isPathway(Counter counter, String direction) {
         int nextSquareType;
-        int currentSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()];
+        int currentSquareType = squareType[counter.getGridY()][counter.getGridX()];
 
         switch(direction) {
             case "u":
-                nextSquareType = squareType[Counters.get(colour).getGridY()-1][Counters.get(colour).getGridX()];
+                nextSquareType = squareType[counter.getGridY()-1][counter.getGridX()];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -547,7 +547,7 @@ public class GUI extends JFrame {
                 }
                 break;
             case "d":
-                nextSquareType = squareType[Counters.get(colour).getGridY()+1][Counters.get(colour).getGridX()];
+                nextSquareType = squareType[counter.getGridY()+1][counter.getGridX()];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -555,7 +555,7 @@ public class GUI extends JFrame {
                 }
                 break;
             case "l":
-                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()-1];
+                nextSquareType = squareType[counter.getGridY()][counter.getGridX()-1];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -563,7 +563,7 @@ public class GUI extends JFrame {
                 }
                 break;
             case "r":
-                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()+1];
+                nextSquareType = squareType[counter.getGridY()][counter.getGridX()+1];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -576,70 +576,75 @@ public class GUI extends JFrame {
 
     /**
      * Checks if the next square is a pathway
-     * @param colour the colour of the token you want to move
+     * @param counter the colour of the token you want to move
      * @param direction the direction you want to move
      * @return a boolean representing if the next square is a pathway or not
      */
-    private boolean isOccupied(String colour, String direction) {
+    private boolean isNotOccupied(Counter counter, String direction) {
         int nextSquareType;
 
         switch(direction) {
             case "u":
-                nextSquareType = squareType[Counters.get(colour).getGridY()-1][Counters.get(colour).getGridX()];
+                nextSquareType = squareType[counter.getGridY()-1][counter.getGridX()];
                 if (nextSquareType < 0) {
-                    return true;
+                    return false;
                 }
                 break;
             case "d":
-                nextSquareType = squareType[Counters.get(colour).getGridY()+1][Counters.get(colour).getGridX()];
+                nextSquareType = squareType[counter.getGridY()+1][counter.getGridX()];
                 if (nextSquareType < 0) {
-                    return true;
+                    return false;
                 }
                 break;
             case "l":
-                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()-1];
+                nextSquareType = squareType[counter.getGridY()][counter.getGridX()-1];
                 if (nextSquareType < 0) {
-                    return true;
+                    return false;
                 }
                 break;
             case "r":
-                nextSquareType = squareType[Counters.get(colour).getGridY()][Counters.get(colour).getGridX()+1];
+                nextSquareType = squareType[counter.getGridY()][counter.getGridX()+1];
                 if (nextSquareType < 0) {
-                    return true;
+                    return false;
                 }
                 break;
         }
-        return false;
+        return true;
     }
 
     /**
-     * Help command for when "help" is inputted by the user
-     */public static boolean checkInteger(String str) {
-    	    if (str == null) {
-    	        return false;
-    	    }
-    	    int length = str.length();
-    	    if (length == 0) {
-    	        return false;
-    	    }
-    	    int i = 0;
-    	    if (str.charAt(0) == '-') {
-    	        if (length == 1) {
-    	            return false;
-    	        }
-    	        i = 1;
-    	    }
-    	    char c;
-    	    while(i<length)
-    	    {
-    	        c = str.charAt(i);
-    	        if (c < '0' || c > '9') {
-    	            return false;
-    	        }
-    	        i++;
-    	    }
-    	    return true;
-    	}
+     * Checks if a string is an integer
+     */
+    private static boolean checkInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        char c;
+        while(i<length)
+        {
+            c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+
+    /**
+     * Displays a help message in the infoField
+      */
     private void helpCommand() {
         infoField.append("Commands: \nMove Player Piece\n - move (direction)\n" +
                 "\nQuit Game\n - quit"+"\nEnd turn\n - end");

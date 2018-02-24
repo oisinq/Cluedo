@@ -8,7 +8,7 @@ public class Dice {
         rand = new Random();
     }
 
-    int rollDice() {
+    int roll() {
         // This returns a random number between 1 and 6
         return rand.nextInt(6) + 1;
     }
