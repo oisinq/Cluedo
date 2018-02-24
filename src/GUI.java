@@ -271,6 +271,7 @@ public class GUI extends JFrame {
 
             squareType[c.getGridY()][c.getGridX()] *= -1;
 
+            // Checks which room is selected
             switch (splitStr.toLowerCase()) {
                 case "1":
                     c.setGridXY(r.getEntrances().get(0).getCol(), r.getEntrances().get(0).getRow());
@@ -279,13 +280,22 @@ public class GUI extends JFrame {
                     c.setGridXY(r.getEntrances().get(1).getCol(), r.getEntrances().get(1).getRow());
                     break;
                 case "3":
-                    c.setGridXY(r.getEntrances().get(2).getCol(), r.getEntrances().get(2).getRow());
+                    try {
+                        c.setGridXY(r.getEntrances().get(2).getCol(), r.getEntrances().get(2).getRow());
+                    } catch(IndexOutOfBoundsException e) {
+                        infoField.append("Select a valid entrance!\n");
+                    }
                     break;
                 case "4":
-                    c.setGridXY(r.getEntrances().get(3).getCol(), r.getEntrances().get(3).getRow());
+                    try {
+                        c.setGridXY(r.getEntrances().get(3).getCol(), r.getEntrances().get(3).getRow());
+                    } catch(IndexOutOfBoundsException e) {
+                    infoField.append("Select a valid entrance!\n");
+                    }
                     break;
 
             }
+            // If the co-ordinates are negative, then I know it's a secret passageway - I can then swap the room
             if (c.getGridY() == -1) {
                 String ugh = c.getCurrentRoom().getRoomName();
                 switch (ugh) {
@@ -302,7 +312,8 @@ public class GUI extends JFrame {
                         c.setCurrentRoom(Rooms.get("Kitchen"));
                         break;
                 }
-                moveToRoomCentre(Counters.get(currentPlayerName));
+                // After swapping the room, the counter needs to be moved to the centrepoint
+                moveToRoomCentre(c);
             } else {
             int xValue = c.getGridX();
             int yValue = c.getGridY();
