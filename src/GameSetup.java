@@ -21,6 +21,11 @@ public class GameSetup  {
 			String[] playerCount =(new String[] {"2","3", "4","5", "6"});
 	        String userChoice = (String) JOptionPane.showInputDialog( null, "Select How Many Players You Want","Cluedo", JOptionPane.QUESTION_MESSAGE, null,playerCount, playerCount[0]);
 		
+	        if(userChoice == null){
+	        	System.out.println("You have exited the game,Thanks For Playing!");
+	        	System.exit(0);
+	        }
+	        
 	        switch (userChoice) {
             case "2":
                 CharacterSelect(2);
@@ -48,6 +53,10 @@ public class GameSetup  {
 		for(int i=0;i<PlayerCount;i++){
 			String userName = JOptionPane.showInputDialog("Enter Your Username");
 	        String userChoice = (String) JOptionPane.showInputDialog( null, "Player "+(i+1)+" Please Select A Character","Cluedo", JOptionPane.QUESTION_MESSAGE, null,Characters, Characters[0]);
+	        if(userChoice== null){
+	        	System.out.println("You have exited the game,Thanks For Playing!");
+	        	System.exit(0);
+	        }
 	        CharacterList.remove(userChoice);
 	        Characters = CharacterList.toArray(new String[0]);
 	        counters.createCounter(userName,userChoice);
