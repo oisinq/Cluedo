@@ -83,6 +83,7 @@ public class GUI extends JFrame {
         setTitle("Cluedo");
         // Places the frame in the centre of the screen
         setLocationRelativeTo(null);
+        setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // This loads the image "cluedo_board.jpg", or shows the user an error

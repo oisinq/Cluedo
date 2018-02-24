@@ -52,6 +52,10 @@ public class GameSetup  {
 		List<String> CharacterList = new ArrayList<String>(Arrays.asList(Characters));
 		for(int i=0;i<PlayerCount;i++){
 			String userName = JOptionPane.showInputDialog("Enter Your Username");
+			if(userName== null){
+	        	System.out.println("You have exited the game,Thanks For Playing!");
+	        	System.exit(0);
+	        }
 	        String userChoice = (String) JOptionPane.showInputDialog( null, "Player "+(i+1)+" Please Select A Character","Cluedo", JOptionPane.QUESTION_MESSAGE, null,Characters, Characters[0]);
 	        if(userChoice== null){
 	        	System.out.println("You have exited the game,Thanks For Playing!");
