@@ -70,14 +70,14 @@ public class GUI extends JFrame {
         // This method creates the Weapon objects
         initialiseWeapons(weapons);
 
+
         // Adds the different sections to the GUI
         addComponents();
+
         // Displays the frame to the user
         setVisible(true);
 
-        // We separate the gameplay from the GUI by placing it in the Gameplay class
         Gameplay gp = new Gameplay(this, counters, rooms);
-
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {

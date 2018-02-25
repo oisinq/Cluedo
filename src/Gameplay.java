@@ -512,51 +512,49 @@ public class Gameplay {
             throw new RuntimeException();
         }
 
-        if (counter.getRow() <= 0 || counter.getColumn() <= 0) {
-            // This means you're moving off the board - so you can't move
-            moved = false;
-        } else {
-            switch (splitStr.toLowerCase()) { // Checks the movement direction entered
-                case "up":
-                case "u":
-                    if ((isPathway(counter, "u") || isEnterable(counter, "u")) && isNotOccupied(counter, "u")) {
-                        squareType[counter.getRow()][counter.getColumn()] *= -1;
-                        counter.moveUp(1);
-                        squareType[counter.getRow()][counter.getColumn()] *= -1;
-                        moved = true;
-                    }
-                    break;
-                case "down":
-                case "d":
-                    if ((isPathway(counter, "d") || isEnterable(counter, "d")) && isNotOccupied(counter, "d")) {
-                        squareType[counter.getRow()][counter.getColumn()] *= -1;
-                        counter.moveDown(1);
-                        squareType[counter.getRow()][counter.getColumn()] *= -1;
-                        moved = true;
-                    }
-                    break;
-                case "left":
-                case "l":
-                    if ((isPathway(counter, "l") || isEnterable(counter, "l")) && isNotOccupied(counter, "l")) {
-                        squareType[counter.getRow()][counter.getColumn()] *= -1;
-                        counter.moveLeft(1);
-                        squareType[counter.getRow()][counter.getColumn()] *= -1;
-                        moved = true;
-                    }
-                    break;
-                case "right":
-                case "r":
-                    if ((isPathway(counter, "r") || isEnterable(counter, "r")) && isNotOccupied(counter, "r")) {
-                        squareType[counter.getRow()][counter.getColumn()] *= -1;
-                        counter.moveRight(1);
-                        squareType[counter.getRow()][counter.getColumn()] *= -1;
-                        moved = true;
-                    }
-                    break;
-                default:
-                    frame.appendText("Invalid direction chosen");
-                    moved = false;
-            }
+//        if (counter.getRow() <= 0 || counter.getColumn() <= 0) {
+//            // This means you're moving off the board - so you can't move
+//            moved = false;
+        switch (splitStr.toLowerCase()) { // Checks the movement direction entered
+            case "up":
+            case "u":
+                if ( counter.getRow() > 0 && (isPathway(counter, "u") || isEnterable(counter, "u")) && isNotOccupied(counter, "u")) {
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
+                    counter.moveUp(1);
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
+                    moved = true;
+                }
+                break;
+            case "down":
+            case "d":
+                if ((isPathway(counter, "d") || isEnterable(counter, "d")) && isNotOccupied(counter, "d")) {
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
+                    counter.moveDown(1);
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
+                    moved = true;
+                }
+                break;
+            case "left":
+            case "l":
+                if ( counter.getColumn() > 0 && (isPathway(counter, "l") || isEnterable(counter, "l")) && isNotOccupied(counter, "l")) {
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
+                    counter.moveLeft(1);
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
+                    moved = true;
+                }
+                break;
+            case "right":
+            case "r":
+                if ((isPathway(counter, "r") || isEnterable(counter, "r")) && isNotOccupied(counter, "r")) {
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
+                    counter.moveRight(1);
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
+                    moved = true;
+                }
+                break;
+            default:
+                frame.appendText("Invalid direction chosen");
+                moved = false;
         }
 
         if(!moved) {
