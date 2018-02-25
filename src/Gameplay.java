@@ -492,6 +492,7 @@ public class Gameplay {
             int tempResult = dieResult;
             moveToRoomCentre(c);
             dieResult = tempResult;
+            squareType[c.getRow()][c.getColumn()] *= -1;
             frame.appendText("Entrance is blocked - please select another entrance.");
         }
     }
@@ -501,7 +502,7 @@ public class Gameplay {
      */
     private boolean moveCommand(String splitStr, String colour) {
         // We can only move if the next square is either a pathway or is a room square adjacent to an entrance
-        boolean moved=true;
+        boolean moved=false;
 
         Counter counter = Counters.get(colour);
         if (counter == null) {
@@ -515,9 +516,7 @@ public class Gameplay {
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
                     counter.moveUp(1);
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
-                }
-                else {
-                    moved=false;
+                    moved = true;
                 }
                 break;
             case "down":
@@ -526,9 +525,7 @@ public class Gameplay {
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
                     counter.moveDown(1);
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
-                }
-                else {
-                    moved=false;
+                    moved = true;
                 }
                 break;
             case "left":
@@ -537,9 +534,7 @@ public class Gameplay {
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
                     counter.moveLeft(1);
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
-                }
-                else {
-                    moved=false;
+                    moved = true;
                 }
                 break;
             case "right":
@@ -548,9 +543,7 @@ public class Gameplay {
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
                     counter.moveRight(1);
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
-                }
-                else {
-                    moved=false;
+                    moved = true;
                 }
                 break;
             default:
@@ -563,8 +556,10 @@ public class Gameplay {
 
         // If the counter is now in a room, it finds what room the counter is in and moves it to the centre of that room
         if(isRoom(counter)) {
+            int tmp = dieResult;
             findCurrentRoom(counter);
             moveToRoomCentre(counter);
+            dieResult = tmp;
         }
 
         frame.repaint(); // Repaints the board with the new location of the pieces
