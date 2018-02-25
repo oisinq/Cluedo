@@ -18,13 +18,13 @@ public class Gameplay {
     private String currentPlayerName;
 
     private int[][] squareType = {
-            {0,0,0,0,0,0,0,0,0,-1,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0},
+            {0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
             {3,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,4,3,3,3,3,3,0},
             {3,3,3,3,3,3,1,2,4,3,3,3,3,3,3,4,2,1,2,3,3,3,3,0,0},
-            {3,3,3,3,4,3,1,1,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,-1,0},
+            {3,3,3,3,4,3,1,1,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,0},
             {1,1,1,1,2,1,1,1,3,4,3,3,3,3,4,3,1,1,1,1,1,1,1,0,0},
             {0,1,1,1,1,1,1,1,1,2,1,1,1,1,2,1,1,1,3,3,3,3,3,3,0},
             {3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,2,4,3,3,3,3,3,0},
@@ -35,14 +35,14 @@ public class Gameplay {
             {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,4,3,3,0,0},
             {3,3,3,3,3,3,4,3,1,1,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
             {0,1,1,1,1,1,2,1,1,1,3,3,4,3,3,1,2,4,3,3,3,3,3,3,0},
-            {-1,1,1,1,1,1,1,1,1,1,1,2,2,1,1,1,1,3,3,3,3,3,3,3,0},
+            {1,1,1,1,1,1,1,1,1,1,1,2,2,1,1,1,1,3,3,3,3,3,3,3,0},
             {0,1,1,1,1,1,2,1,1,3,3,4,4,3,3,1,1,1,3,3,3,3,3,0,0},
-            {3,3,3,3,3,3,4,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,1,-1,0},
+            {3,3,3,3,3,3,4,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,0},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,4,2,1,2,1,1,1,1,1,0,0},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,4,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
             {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,0,-1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,3,0},
+            {3,3,3,3,3,3,0,1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,3,0},
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
     };
 
@@ -55,6 +55,7 @@ public class Gameplay {
         for (Counter currentCounter : this.counters) {
             play[turnTrack] = currentCounter.getCharacterName();
             turnTrack++;
+            squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
         // This is the current player
         currentPlayerName = play[0];
@@ -369,7 +370,7 @@ public class Gameplay {
         }
 
         else if(splitStr.toLowerCase().equals("roll")) {
-            if (dieRoll==0) {
+            if (dieRoll == 0) {
                 Dice die = new Dice();
                 dieResult=die.roll();
                 //TODO - this is for testing only!
@@ -512,9 +513,6 @@ public class Gameplay {
             throw new RuntimeException();
         }
 
-//        if (counter.getRow() <= 0 || counter.getColumn() <= 0) {
-//            // This means you're moving off the board - so you can't move
-//            moved = false;
         switch (splitStr.toLowerCase()) { // Checks the movement direction entered
             case "up":
             case "u":
@@ -553,12 +551,12 @@ public class Gameplay {
                 }
                 break;
             default:
-                frame.appendText("Invalid direction chosen");
+                frame.appendText("Invalid direction chosen.");
                 moved = false;
         }
 
         if(!moved) {
-            frame.appendText("Error. Incorrect Movement!");
+            frame.appendText("Error - unable to make this move.");
         }
 
         // If the counter is now in a room, it finds what room the counter is in and moves it to the centre of that room
