@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 1
+/*  Cluedo - Sprint 2
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -15,8 +15,9 @@ import java.io.IOException;
 public class Weapon extends JComponent implements BoardPiece {
 
     private int xLocation, yLocation;//the values for the image coordinates
+    private int column, row;
     private BufferedImage Image;//this will hold the image of the weapon once its passed in
-    String name;
+    private String name;
 
     Weapon(String name, int x, int y, String imageLocation) {
         this.name = name;
@@ -41,75 +42,71 @@ public class Weapon extends JComponent implements BoardPiece {
     }
 
     /**
-     * Sets an image file for the weapon
-     * @param location the location of the weapon image
+     * Sets the (Row, Column) location of the counter - this also affects the xLocation/yLocation
      */
-    public void SetImageFile(String location){//this sets the file location of the image
-        try {
-            Image = ImageIO.read(this.getClass().getResource(location));
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error: cannot load board image.");
-            e.printStackTrace();
-        }
+    public void setRowColumn(int r, int c) {
+        row = r;
+        column = c;
+        xLocation = 43 + (column * 23);
+        yLocation = 50 + (row * 23);
     }
 
     /**
-     * Sets the location of the counter
-     * @param x the x co-ordinate of the location
-     * @param y the y co-ordinate of the location
-     */
-    public void setXY(int x, int y) {
-        xLocation = x;
-        yLocation = y;
-    }
-
-    /**
-     * Returns the X co-ordinate of the weapon
-     * @return the X co-ordinate of the weapon
+     * Returns the X co-ordinate of the counter location
      */
     public int getX() {
         return xLocation;
     }
 
     /**
-     * Returns the Y co-ordinate of the weapon
-     * @return the Y co-ordinate of the weapon
+     * Returns the Y co-ordinate of the counter location
      */
     public int getY() {
         return yLocation;
     }
 
     /**
-     * Moves the weapon up the entered number of steps
-     * @param steps the number of steps to be moved
+     * Returns the column of the counter
+     */
+    public int getColumn() {
+        return column;
+    }
+
+    /**
+     * Returns the row of the counter
+     */
+    public int getRow() {
+        return row;
+    }
+
+    /**
+     * Moves the counter up the entered number of steps
      */
     public void moveUp(int steps) {
-        setXY(xLocation, yLocation - (23 * steps));
+        setRowColumn(row - steps, column);
     }
 
     /**
-     * Moves the weapon down the entered number of steps
-     * @param steps the number of steps to be moved
+     * Moves the counter down the entered number of steps
      */
     public void moveDown(int steps) {
-        setXY(xLocation, yLocation + (23 * steps));
+        setRowColumn(row + steps, column);
     }
 
     /**
-     * Moves the weapon left the entered number of steps
-     * @param steps the number of steps to be moved
+     * Moves the counter left the entered number of steps
      */
     public void moveLeft(int steps) {
-        setXY(xLocation - (23 * steps), yLocation);
+        setRowColumn(row, column - steps);
     }
 
     /**
-     * Moves the weapon right the entered number of steps
-     * @param steps the number of steps to be moved
+     * Moves the counter right the entered number of steps
      */
     public void moveRight(int steps) {
-        setXY(xLocation + (23 * steps), yLocation);
+        setRowColumn(row, column + steps);
     }
+
 
     public String getName() {
         return name;

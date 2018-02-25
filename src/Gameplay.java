@@ -1,11 +1,14 @@
+/*  Cluedo - Sprint 2
+    Team: auroraBorealis
+    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
+    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
+
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Gameplay {
 
-    GUI frame;
+    private GUI frame;
     private Counters counters;
-    private Weapons weapons;
     private Rooms rooms;
     private String[] play =new String[6];
     private int dieResult=0;
@@ -43,23 +46,18 @@ public class Gameplay {
             {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
     };
 
-    public Gameplay(GUI frame, Counters counters, Rooms rooms) {
+    Gameplay(GUI frame, Counters counters, Rooms rooms) {
         this.frame=frame;
-        this.counters=counters;
+        this.counters = counters;
         this.rooms=rooms;
 
-        for (Counter currentCounter : counters) {
-            play[turnTrack] = currentCounter.getCounterName();
+        for (Counter currentCounter : this.counters) {
+            play[turnTrack] = currentCounter.getCharacterName();
             turnTrack++;
         }
         currentPlayerName = play[0];
-
+        helpCommand();
         turn();
-    }
-
-    int rollDice() {
-        Random rand = new Random();
-        return rand.nextInt(6) + 1;
     }
 
     /**
@@ -70,33 +68,33 @@ public class Gameplay {
         switch (play[PlayTurn]) {
             case "Scarlet":
                 currentPlayerName = "Scarlet";
-                frame.appendText(currentPlayerName + " has started their turn\n");
+                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Mustard":
                 currentPlayerName = "Mustard";
-                frame.appendText(currentPlayerName + " has started their turn\n");
+                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Peacock":
                 currentPlayerName = "Peacock";
-                frame.appendText(currentPlayerName + " has started their turn\n");
+                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Plum":
                 currentPlayerName = "Plum";
-                frame.appendText(currentPlayerName + " has started their turn\n");
+                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "White":
                 currentPlayerName = "White";
-                frame.appendText(currentPlayerName + " has started their turn\n");
+                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Green":
                 currentPlayerName = "Green";
-                frame.appendText(currentPlayerName + " has started their turn\n");
+                frame.appendText(currentPlayerName + " has started their turn");
                 break;
         }
 
         Counter c = Counters.get(currentPlayerName);
 
-        if (isRoom(c)) {
+        if (c != null && isRoom(c)) {
             listExits(c);
         }
     }
@@ -105,7 +103,7 @@ public class Gameplay {
      * This checks if the counter is currently in a room or not
      */
     private boolean isRoom(Counter counter) {
-        return squareType[counter.getGridY()][counter.getGridX()] <= -3 || squareType[counter.getGridY()][counter.getGridX()] >= 3;
+        return squareType[counter.getRow()][counter.getColumn()] <= -3 || squareType[counter.getRow()][counter.getColumn()] >= 3;
     }
 
     /**
@@ -116,12 +114,12 @@ public class Gameplay {
         ArrayList<Coordinates> entrances = room.getEntrances();
 
         // Prints entrances
-        frame.appendText("Type the entrance number to leave through that entrance.\n");
+        frame.appendText("Type the entrance number to leave through that entrance.");
         for (int i = 0; i < entrances.size(); i++) {
             Coordinates current = entrances.get(i);
             // If it's a secret passageway, the coordinates are (-1, -1) - if that's the case, we don't want to print the actual coordinates
             if (current.getRow() > -1) {
-                frame.appendText("Entrance " + (i + 1) + ": (" + current.getRow() + " , " + current.getCol() + ")\n");
+                frame.appendText("Entrance " + (i + 1) + ": Row " + current.getRow() + ", column " + current.getCol());
             } else {
                 // If it's a secret entrance, we say where the secret entrance goes to
                 frame.appendText("Entrance " + (i + 1) + " - secret passageway to ");
@@ -147,8 +145,8 @@ public class Gameplay {
      * This finds the current entrance that the user is placed at, and assigns the corresponding current room to the counter
      */
     private void findCurrentRoom(Counter counter) {
-        Coordinates coord = new Coordinates(counter.getGridX(), counter.getGridY());
-        squareType[counter.getGridY()][counter.getGridX()] *= -1;
+        Coordinates coord = new Coordinates(counter.getColumn(), counter.getRow());
+        squareType[counter.getRow()][counter.getColumn()] *= -1;
 
         for (Room r : rooms) {
             ArrayList<Coordinates> entrances = r.getEntrances();
@@ -178,7 +176,7 @@ public class Gameplay {
             }
         }
 
-        c.setGridXY(location.getCol(), location.getRow());
+        c.setRowColumn(location.getRow(), location.getCol());
         squareType[location.getRow()][location.getCol()] *= -1;
         room.incremenetLastFilledToken();
         dieResult = 0;
@@ -192,29 +190,29 @@ public class Gameplay {
      */
     private boolean isEnterable(Counter counter, String direction) {
         int nextSquareType;
-        int currentSquareType = squareType[counter.getGridY()][counter.getGridX()];
+        int currentSquareType = squareType[counter.getRow()][counter.getColumn()];
 
         switch(direction) {
             case "u":
-                nextSquareType = squareType[counter.getGridY()-1][counter.getGridX()];
+                nextSquareType = squareType[counter.getRow()-1][counter.getColumn()];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "d":
-                nextSquareType = squareType[counter.getGridY()+1][counter.getGridX()];
+                nextSquareType = squareType[counter.getRow()+1][counter.getColumn()];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "l":
-                nextSquareType = squareType[counter.getGridY()][counter.getGridX()-1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn()-1];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "r":
-                nextSquareType = squareType[counter.getGridY()][counter.getGridX()+1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn()+1];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
@@ -231,11 +229,11 @@ public class Gameplay {
      */
     private boolean isPathway(Counter counter, String direction) {
         int nextSquareType;
-        int currentSquareType = squareType[counter.getGridY()][counter.getGridX()];
+        int currentSquareType = squareType[counter.getRow()][counter.getColumn()];
 
         switch(direction) {
             case "u":
-                nextSquareType = squareType[counter.getGridY()-1][counter.getGridX()];
+                nextSquareType = squareType[counter.getRow()-1][counter.getColumn()];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -243,7 +241,7 @@ public class Gameplay {
                 }
                 break;
             case "d":
-                nextSquareType = squareType[counter.getGridY()+1][counter.getGridX()];
+                nextSquareType = squareType[counter.getRow()+1][counter.getColumn()];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -251,7 +249,7 @@ public class Gameplay {
                 }
                 break;
             case "l":
-                nextSquareType = squareType[counter.getGridY()][counter.getGridX()-1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn()-1];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -259,7 +257,7 @@ public class Gameplay {
                 }
                 break;
             case "r":
-                nextSquareType = squareType[counter.getGridY()][counter.getGridX()+1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn()+1];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -281,25 +279,25 @@ public class Gameplay {
 
         switch(direction) {
             case "u":
-                nextSquareType = squareType[counter.getGridY()-1][counter.getGridX()];
+                nextSquareType = squareType[counter.getRow()-1][counter.getColumn()];
                 if (nextSquareType < 0) {
                     return false;
                 }
                 break;
             case "d":
-                nextSquareType = squareType[counter.getGridY()+1][counter.getGridX()];
+                nextSquareType = squareType[counter.getRow()+1][counter.getColumn()];
                 if (nextSquareType < 0) {
                     return false;
                 }
                 break;
             case "l":
-                nextSquareType = squareType[counter.getGridY()][counter.getGridX()-1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn()-1];
                 if (nextSquareType < 0) {
                     return false;
                 }
                 break;
             case "r":
-                nextSquareType = squareType[counter.getGridY()][counter.getGridX()+1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn()+1];
                 if (nextSquareType < 0) {
                     return false;
                 }
@@ -346,11 +344,11 @@ public class Gameplay {
         frame.getUserInput().setText("");//wipes the field after
 
 
-        frame.appendText(">" + inputtedText + "\n");//puts it into the panel
+        frame.appendText(">" + inputtedText);//puts it into the panel
         String splitStr = inputtedText.replaceAll("\\s+","");// Splits the inputted string into an array based spaces
 
         if (splitStr.toLowerCase().equals("help")) {
-            frame.helpCommand();
+            helpCommand();
         }
         else if((splitStr.toLowerCase().equals("u") || splitStr.toLowerCase().equals("up")||splitStr.toLowerCase().equals("d") || splitStr.toLowerCase().equals("down")||splitStr.toLowerCase().equals("l") || splitStr.toLowerCase().equals("left")||splitStr.toLowerCase().equals("r") || splitStr.toLowerCase().equals("right"))) { // If the first word is move or m in any format
             if(dieResult>0) {
@@ -359,7 +357,7 @@ public class Gameplay {
                 }
             }
             else {
-                frame.appendText("\n You have used all your movement.\n");
+                frame.appendText("You have used all your movement.");
             }
         }
         else if(splitStr.toLowerCase().equals("quit")) {
@@ -371,7 +369,7 @@ public class Gameplay {
             if (dieRoll==0) {
                 Dice die = new Dice();
                 dieResult=die.roll();
-                frame.appendText("\nYou rolled a "+ dieResult+"\n");
+                frame.appendText("You rolled a "+ dieResult);
                 //TODO This lets you move (basically) unlimitedly - for testing purposes only
                 // dieResult = 1000;
                 dieRoll++;
@@ -384,7 +382,7 @@ public class Gameplay {
         else if(splitStr.toLowerCase().equals("done")) {
             dieResult=0;
             dieRoll=0;
-            frame.appendText("\nPlayers turn has ended!\n");
+            frame.appendText(currentPlayerName + "'s turn has ended!");
             PlayTurn=(PlayTurn+1)%turnTrack;
 
             turn();
@@ -397,34 +395,34 @@ public class Gameplay {
 
             Room r = c.getCurrentRoom();
 
-            squareType[c.getGridY()][c.getGridX()] *= -1;
+            squareType[c.getRow()][c.getColumn()] *= -1;
 
             // Checks which room is selected
             switch (splitStr.toLowerCase()) {
                 case "1":
-                    c.setGridXY(r.getEntrances().get(0).getCol(), r.getEntrances().get(0).getRow());
+                    c.setRowColumn(r.getEntrances().get(0).getRow(), r.getEntrances().get(0).getCol());
                     break;
                 case "2":
-                    c.setGridXY(r.getEntrances().get(1).getCol(), r.getEntrances().get(1).getRow());
+                    c.setRowColumn(r.getEntrances().get(1).getRow(), r.getEntrances().get(1).getCol());
                     break;
                 case "3":
                     try {
-                        c.setGridXY(r.getEntrances().get(2).getCol(), r.getEntrances().get(2).getRow());
+                        c.setRowColumn(r.getEntrances().get(2).getRow(), r.getEntrances().get(2).getCol());
                     } catch(IndexOutOfBoundsException e) {
-                        frame.appendText("Select a valid entrance!\n");
+                        frame.appendText("Select a valid entrance!");
                     }
                     break;
                 case "4":
                     try {
-                        c.setGridXY(r.getEntrances().get(3).getCol(), r.getEntrances().get(3).getRow());
+                        c.setRowColumn(r.getEntrances().get(3).getRow(), r.getEntrances().get(3).getCol());
                     } catch(IndexOutOfBoundsException e) {
-                        frame.appendText("Select a valid entrance!\n");
+                        frame.appendText("Select a valid entrance!");
                     }
                     break;
 
             }
             // If the co-ordinates are negative, then I know it's a secret passageway - I can then swap the room
-            if (c.getGridY() == -1) {
+            if (c.getRow() == -1) {
                 String ugh = c.getCurrentRoom().getRoomName();
                 switch (ugh) {
                     case "Conservatory":
@@ -443,28 +441,28 @@ public class Gameplay {
                 // After swapping the room, the counter needs to be moved to the centrepoint
                 moveToRoomCentre(c);
             } else {
-                int xValue = c.getGridX();
-                int yValue = c.getGridY();
-                if(squareType[yValue - 1][xValue] == 2) {
-                    c.setGridXY(xValue, yValue - 1);
+                int col = c.getColumn();
+                int row = c.getRow();
+                if(squareType[row - 1][col] == 2) {
+                    c.setRowColumn(row - 1, col);
                 }
-                if(squareType[yValue + 1][xValue] == 2) {
-                    c.setGridXY(xValue, yValue + 1);
+                if(squareType[row + 1][col] == 2) {
+                    c.setRowColumn(row + 1, col);
                 }
-                if(squareType[yValue][xValue - 1] == 2) {
-                    c.setGridXY(xValue - 1, yValue);
+                if(squareType[row][col - 1] == 2) {
+                    c.setRowColumn(row, col - 1);
                 }
-                if(squareType[yValue][xValue + 1] == 2) {
-                    c.setGridXY(xValue + 1, yValue - 1);
+                if(squareType[row][col + 1] == 2) {
+                    c.setRowColumn(row, col + 1);
                 }}
 
-            squareType[c.getGridY()][c.getGridX()] *= -1;
+            squareType[c.getRow()][c.getColumn()] *= -1;
             frame.repaint();
             dieResult--;
         }
 
         else {
-            frame.appendText("\n Invalid command entered!\n");
+            frame.appendText("Invalid command entered!");
         }
 
     }
@@ -484,10 +482,10 @@ public class Gameplay {
         switch (splitStr.toLowerCase()) { // Checks the movement direction entered
             case "up":
             case "u":
-                if ((isPathway(counter, "u") || isEnterable(counter, "u")) && isNotOccupied(counter, "u") && counter.getGridY()>0) {
-                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                if ((isPathway(counter, "u") || isEnterable(counter, "u")) && isNotOccupied(counter, "u") && counter.getRow()>0) {
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
                     counter.moveUp(1);
-                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
                 }
                 else {
                     moved=false;
@@ -496,9 +494,9 @@ public class Gameplay {
             case "down":
             case "d":
                 if ((isPathway(counter, "d") || isEnterable(counter, "d")) && isNotOccupied(counter, "d")) {
-                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
                     counter.moveDown(1);
-                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
                 }
                 else {
                     moved=false;
@@ -506,10 +504,10 @@ public class Gameplay {
                 break;
             case "left":
             case "l":
-                if ((isPathway(counter, "l") || isEnterable(counter, "l")) && isNotOccupied(counter, "l") && counter.getGridX()>0) {
-                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                if ((isPathway(counter, "l") || isEnterable(counter, "l")) && isNotOccupied(counter, "l") && counter.getColumn()>0) {
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
                     counter.moveLeft(1);
-                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
                 }
                 else {
                     moved=false;
@@ -518,16 +516,16 @@ public class Gameplay {
             case "right":
             case "r":
                 if ((isPathway(counter, "r") || isEnterable(counter, "r")) && isNotOccupied(counter, "r")) {
-                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
                     counter.moveRight(1);
-                    squareType[counter.getGridY()][counter.getGridX()] *= -1;
+                    squareType[counter.getRow()][counter.getColumn()] *= -1;
                 }
                 else {
                     moved=false;
                 }
                 break;
             default:
-                frame.appendText("\nInvalid direction chosen\n");
+                frame.appendText("Invalid direction chosen");
                 moved=false;
         }
         if(!moved) {
@@ -542,6 +540,14 @@ public class Gameplay {
 
         frame.repaint(); // Repaints the board with the new location of the pieces
         return moved;
+    }
+
+    /**
+     * Displays a help message in the infoField
+     */
+    public void helpCommand() {
+        frame.appendText("Commands:\nMove Player Piece:\n - letter corresponding to direction of movement e.g u/d/l/r \n" +
+                "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n");
     }
 
     public String getCurrentPlayerName() {

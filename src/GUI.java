@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 1
+/*  Cluedo - Sprint 2
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -36,7 +36,7 @@ public class GUI extends JFrame {
         board = new JPanel();
         // We use BorderLayout to easily have multiple components in the same panel
         setLayout(new BorderLayout());
-        setSize(870, 690);
+        setSize(900, 690);
         setTitle("Cluedo");
         // Places the frame in the centre of the screen
         setLocationRelativeTo(null);
@@ -51,7 +51,7 @@ public class GUI extends JFrame {
             JOptionPane.showMessageDialog(null, "Error: cannot load board image.");
         }
 
-        infoField = new JTextArea(10, 18);
+        infoField = new JTextArea(10, 20);
         // I setEditable to false so that the user can't edit the text on the right-hand size
         infoField.setEditable(false);
         infoField.setLineWrap(true);
@@ -63,8 +63,8 @@ public class GUI extends JFrame {
 
         userInput = new JTextField();
         userInput.setText("Enter text here (type 'help' for help)");
-        infoField.append("Commands: \nMove Player Piece\n - intial for direction of movement e.g U/D/L/R \n" +
-                "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n\n");
+        //infoField.append("Commands: \nMove Player Piece\n - intial for direction of movement e.g U/D/L/R \n" +
+        //        "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n\n");
         // This method creates the Counter objects
         initialiseCounters(counters);
         // This method creates the Weapon objects
@@ -119,15 +119,7 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Displays a help message in the infoField
-     */
-    public void helpCommand() {
-        infoField.append("Commands: \nMove Player Piece\n - move (direction)\n" +
-                "\nQuit Game\n - quit"+"\nEnd turn\n - end");
-    }
-
-    /**
-     * Creates the weapons, and finally adds it to the board
+     * Creates each weapon and adds it to the board
      */
     private void initialiseWeapons(Weapons weapons) {
         for (Weapon w : weapons) {
@@ -136,13 +128,12 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Creates each counter and sets its location, and finally adds it to the board
+     * Creates each counter and adds it to the board
      */
     private void initialiseCounters(Counters counters) {
         for (Counter c : counters) {
             board.add(c);
         }
-
     }
 
     /**
@@ -154,10 +145,16 @@ public class GUI extends JFrame {
         add(board, "Center");
     }
 
+    /**
+     * We use this method to add text to the infoField from outside this class
+     */
     public void appendText(String input) {
-        infoField.append(input);
+        infoField.append(input + "\n");
     }
 
+    /**
+     * Returns the userInput component - we use this so we can access the entered text outside of this class
+     */
     public JTextField getUserInput() {
         return userInput;
     }
