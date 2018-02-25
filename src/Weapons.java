@@ -1,3 +1,8 @@
+/*  Cluedo - Sprint 2
+    Team: auroraBorealis
+    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
+    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -15,7 +20,7 @@ public class Weapons implements Iterable<Weapon>, Iterator<Weapon> {
     Weapons() {
         weaponLocationRandomiser();
         weapons.add(new Weapon("Rope", wepLocation[0][0], wepLocation[0][1], "/rope.PNG"));
-        weapons.add(new Weapon("Dagger", wepLocation[01][0], wepLocation[1][1], "/dagger.PNG"));
+        weapons.add(new Weapon("Dagger", wepLocation[1][0], wepLocation[1][1], "/dagger.PNG"));
         weapons.add(new Weapon("Wrench", wepLocation[2][0], wepLocation[2][1], "/wrench.PNG"));
         weapons.add(new Weapon("Pistol", wepLocation[3][0], wepLocation[3][1], "/revolver.PNG"));
         weapons.add(new Weapon("Candlestick", wepLocation[4][0], wepLocation[4][1], "/candlestick.PNG"));

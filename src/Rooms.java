@@ -1,4 +1,8 @@
-import java.awt.Color;
+/*  Cluedo - Sprint 2
+    Team: auroraBorealis
+    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
+    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -46,7 +50,8 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
         ArrayList<Coordinates> entrances = new ArrayList<>();
         ArrayList<Coordinates> counterSquares = new ArrayList<>();
         entrances.add(new Coordinates(4, 6));
-        entrances.add(new Coordinates(23, 24));
+    //    entrances.add(new Coordinates(23, 24));
+        entrances.add(new Coordinates(-1, -1));
         setCounterSquares(2, 3, counterSquares);
         rooms.add(new Room("Kitchen", entrances, counterSquares));
     }
@@ -66,7 +71,8 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
         ArrayList<Coordinates> entrances = new ArrayList<>();
         ArrayList<Coordinates> counterSquares = new ArrayList<>();
         entrances.add(new Coordinates(18, 4));
-        entrances.add(new Coordinates(0, 24));
+    //    entrances.add(new Coordinates(0, 24));
+        entrances.add(new Coordinates(-1, -1));
         setCounterSquares(20, 2, counterSquares);
         rooms.add(new Room("Conservatory", entrances, counterSquares));
     }
@@ -110,7 +116,8 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
         ArrayList<Coordinates> entrances = new ArrayList<>();
         ArrayList<Coordinates> counterSquares = new ArrayList<>();
         entrances.add(new Coordinates(6, 19));
-        entrances.add(new Coordinates(23, 1));
+    //    entrances.add(new Coordinates(23, 1));
+        entrances.add(new Coordinates(-1, -1));
         setCounterSquares(3, 20, counterSquares);
         rooms.add(new Room("Lounge", entrances, counterSquares));
     }
@@ -129,7 +136,8 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
         ArrayList<Coordinates> entrances = new ArrayList<>();
         ArrayList<Coordinates> counterSquares = new ArrayList<>();
         entrances.add(new Coordinates(17, 21));
-        entrances.add(new Coordinates(0, 1));
+    //    entrances.add(new Coordinates(0, 1));
+        entrances.add(new Coordinates(-1, -1));
         setCounterSquares(19, 22, counterSquares);
         rooms.add(new Room("Study", entrances, counterSquares));
     }

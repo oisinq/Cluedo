@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 1
+/*  Cluedo - Sprint 2
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -10,8 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * This class creates the graphical interface of the program and initialises all of the pieces
@@ -21,67 +19,28 @@ public class GUI extends JFrame {
     // These are the variables contained in the GUI - the board components and the pieces on the board
     private Counters counters;
     private Weapons weapons;
-    private Rooms rooms;
-    private String[] play =new String[6];
     private JPanel board;
     private JTextArea infoField;
     private JTextField userInput;
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
-    private int dieResult=0;
-    private int PlayTurn=0;
-    private int dieRoll=0;//tracker used to stop more than one roll call per turn
-    private int turnTrack=0;
-    private String CurrPlay=play[0];
-    // Squares that are marked 0 are inaccessible by the player (they are out of bounds)
-    // Squares that are marked 1 are pathways that the player can walk on
-    // Sqaures that are marked 2 are pathway squares that are adjacent to room entrances
-    // Sqaures that are marked 3 are squares inside rooms
-    // Sqaures that are marked 4 are room squares that are adjacent to room entrances
-    private int[][] squareType = {
-            {0,0,0,0,0,0,0,0,0,-1,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0},
-            {6,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,6,0},
-            {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,4,3,3,3,3,3,0},
-            {3,3,3,3,3,3,1,2,4,3,3,3,3,3,3,4,2,1,2,3,3,3,3,0,0},
-            {3,3,3,3,4,3,1,1,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,-1,0},
-            {1,1,1,1,2,1,1,1,3,4,3,3,3,3,4,3,1,1,1,1,1,1,1,0,0},
-            {0,1,1,1,1,1,1,1,1,2,1,1,1,1,2,1,1,1,3,3,3,3,3,3,0},
-            {3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,2,4,3,3,3,3,3,0},
-            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,3,4,2,1,3,3,3,3,3,1,1,1,3,3,3,3,4,3,0},
-            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,1,1,2,1,2,0,0},
-            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,4,3,3,0,0},
-            {3,3,3,3,3,3,4,3,1,1,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
-            {0,1,1,1,1,1,2,1,1,1,3,3,4,3,3,1,2,4,3,3,3,3,3,3,0},
-            {-1,1,1,1,1,1,1,1,1,1,1,2,2,1,1,1,1,3,3,3,3,3,3,3,0},
-            {0,1,1,1,1,1,2,1,1,3,3,4,4,3,3,1,1,1,3,3,3,3,3,0,0},
-            {3,3,3,3,3,3,4,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,1,-1,0},
-            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,4,2,1,2,1,1,1,1,1,0,0},
-            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,4,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
-            {6,3,3,3,3,3,0,-1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,6,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-    };
+
 
     /**
      * This method creates the graphical interface for the program
      */
-    public GUI(Counters counters, Weapons weapons, Rooms rooms) {
+    GUI(Counters counters, Weapons weapons, Rooms rooms) {
         this.counters = counters;
         this.weapons = weapons;
-        this.rooms = rooms;
-        
+
         board = new JPanel();
         // We use BorderLayout to easily have multiple components in the same panel
         setLayout(new BorderLayout());
-        setSize(835, 690);
+        setSize(900, 690);
         setTitle("Cluedo");
         // Places the frame in the centre of the screen
         setLocationRelativeTo(null);
+        setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // This loads the image "cluedo_board.jpg", or shows the user an error
@@ -92,7 +51,7 @@ public class GUI extends JFrame {
             JOptionPane.showMessageDialog(null, "Error: cannot load board image.");
         }
 
-        infoField = new JTextArea(10, 15);
+        infoField = new JTextArea(10, 20);
         // I setEditable to false so that the user can't edit the text on the right-hand size
         infoField.setEditable(false);
         infoField.setLineWrap(true);
@@ -104,8 +63,8 @@ public class GUI extends JFrame {
 
         userInput = new JTextField();
         userInput.setText("Enter text here (type 'help' for help)");
-        infoField.append("Commands: \nMove Player Piece\n - intial for direction of movement e.g U/D/L/R \n" +
-                "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n\n");
+        //infoField.append("Commands: \nMove Player Piece\n - intial for direction of movement e.g U/D/L/R \n" +
+        //        "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n\n");
         // This method creates the Counter objects
         initialiseCounters(counters);
         // This method creates the Weapon objects
@@ -117,79 +76,20 @@ public class GUI extends JFrame {
 
         // Displays the frame to the user
         setVisible(true);
-        Iterator countersIterator = counters.iterator();
-       
-        while (countersIterator.hasNext()) {
-            Counter currentCounter = (Counter)countersIterator.next();
-            play[turnTrack]=currentCounter.getCounterName();
-            turnTrack++;
-        }
 
-        CurrPlay=play[0];
-        turn();
+        Gameplay gp = new Gameplay(this, counters, rooms);
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
-
-                interpretInput(CurrPlay);
-        	}
+                gp.interpretInput(gp.getCurrentPlayerName());
+            }
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
     }
-  
 
-   
-    /**
-     * This method runs when we setVisible(true) and when we repaint()
-     * It paints the images and counters onto the board
-     */
-    private void turn()
-    {
-    		if(play[PlayTurn].equals("Scarlet"))
-    		{
-    			CurrPlay="Scarlet";
-    			infoField.append(CurrPlay+" has started their turn\n");
-    		}
-    		else if(play[PlayTurn].equals("Mustard"))
-    		{
-    			CurrPlay="Mustard";
-    			infoField.append(CurrPlay+" has started their turn\n");
-    		}
-    		else if(play[PlayTurn].equals("Peacock"))
-    		{
-    			CurrPlay="Peacock";
-    			infoField.append(CurrPlay+" has started their turn\n");
-    		}
-    		else if(play[PlayTurn].equals("Plum"))
-    		{
-    			CurrPlay="Plum";
-    			infoField.append(CurrPlay+" has started their turn\n");
-    		}
-    		else if(play[PlayTurn].equals("White"))
-    		{
-    			CurrPlay="White";
-    			infoField.append(CurrPlay+" has started their turn\n");
-    		}
-    		else if(play[PlayTurn].equals("Green"))
-    		{
-    			CurrPlay="Green";
-    			infoField.append(CurrPlay+" has started their turn\n");
-    		}
 
-        if (isRoom(CurrPlay)) {
-            listExits(CurrPlay);
-        }
-    }
-    
-    public  int roll() {
-    	Dice die = new Dice();
-      	 dieResult = die.rollDice();
-      	infoField.append("\nYou rolled a "+ dieResult+"\n");
-      	 return dieResult;
-    }
     public void paint(Graphics g) {
-    	 
         // This line insures that the other components of the JFrame are visible
         super.paint(g);
         // We cast to Graphics2D to access more image drawing features
@@ -219,6 +119,7 @@ public class GUI extends JFrame {
     }
 
     /**
+<<<<<<< HEAD
      * Reads text from userInput and interprets text accordingly
      */
     private void interpretInput( String name) {
@@ -609,6 +510,9 @@ public class GUI extends JFrame {
 
     /**
      * Creates the weapons, and finally adds it to the board
+=======
+     * Creates each weapon and adds it to the board
+>>>>>>> 27afef79c65a24b72cc98283c741f9625b055ad2
      */
     private void initialiseWeapons(Weapons weapons) {
         for (Weapon w : weapons) {
@@ -617,13 +521,12 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Creates each counter and sets its location, and finally adds it to the board
+     * Creates each counter and adds it to the board
      */
     private void initialiseCounters(Counters counters) {
         for (Counter c : counters) {
             board.add(c);
         }
-
     }
 
     /**
@@ -633,5 +536,19 @@ public class GUI extends JFrame {
         add(scrollPane, "East");
         add(userInput, "South");
         add(board, "Center");
+    }
+
+    /**
+     * We use this method to add text to the infoField from outside this class
+     */
+    public void appendText(String input) {
+        infoField.append(input + "\n");
+    }
+
+    /**
+     * Returns the userInput component - we use this so we can access the entered text outside of this class
+     */
+    public JTextField getUserInput() {
+        return userInput;
     }
 }

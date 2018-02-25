@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 1
+/*  Cluedo - Sprint 2
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -12,29 +12,22 @@ import java.awt.geom.Ellipse2D;
  */
 public class Counter extends JComponent implements BoardPiece {
 
-    // We store these variables here to make it easier to move around the players on the board
     private int xLocation, yLocation;
     // 43, 50 is top of grid
-    private int gridX, gridY;
+    private int column, row;
     private Color c;
     private String userName;
-    public String getUserName(){
-    	return userName;
-    }
-    private String counterName;
+    private String characterName;
     private Room currentRoom;
-    public String getCounterName() {
-        return counterName;
-    }
 
-    Counter(String userName,String counterName, Color c, int x, int y) {
+    Counter(String userName, String characterName, Color c, int x, int y) {
     	this.userName=userName;
-        this.counterName = counterName;
+        this.characterName = characterName;
         this.c = c;
-        gridX = x;
-        gridY = y;
-        xLocation = 43 + (gridX * 23);
-        yLocation = 50 + (gridY * 23);
+        column = x;
+        row = y;
+        xLocation = 43 + (column * 23);
+        yLocation = 50 + (row * 23);
         currentRoom = null;
     }
 
@@ -49,111 +42,109 @@ public class Counter extends JComponent implements BoardPiece {
     }
 
     /**
-     * Sets the location of the counter
-     * @param x the x co-ordinate of the location
-     * @param y the y co-ordinate of the location
+     * Sets the (Row, Column) location of the counter - this also affects the xLocation/yLocation
      */
-    // TODO Make this work with the grid co-ordinates - possibly replace it with a method setting the grid locations
-    public void setXY(int x, int y) {
-        xLocation = x;
-        yLocation = y;
+    public void setRowColumn(int r, int c) {
+        row = r;
+        column = c;
+        xLocation = 43 + (column * 23);
+        yLocation = 50 + (row * 23);
     }
-
-    public void setGridXY(int x, int y) {
-        gridX = x;
-        gridY = y;
-        xLocation = 43 + (gridX * 23);
-        yLocation = 50 + (gridY * 23);
-    }
-
 
     /**
      * Sets the colour of the counter
-     * @param c the colour
      */
     public void setColor(Color c) {
         this.c = c;
     }
 
     /**
-     * Returns the X co-ordinate of the counter
-     * @return the X co-ordinate of the counter
+     * Returns the X co-ordinate of the counter location
      */
     public int getX() {
         return xLocation;
     }
 
     /**
-     * Returns the Y co-ordinate of the counter
-     * @return the Y co-ordinate of the counter
+     * Returns the Y co-ordinate of the counter location
      */
     public int getY() {
         return yLocation;
     }
 
     /**
-     * Returns the X co-ordinate of the counter
-     * @return the X co-ordinate of the counter
+     * Returns the column of the counter
      */
-    public int getGridX() {
-        return gridX;
+    public int getColumn() {
+        return column;
     }
 
     /**
-     * Returns the Y co-ordinate of the counter
-     * @return the Y co-ordinate of the counter
+     * Returns the row of the counter
      */
-    public int getGridY() {
-        return gridY;
+    public int getRow() {
+        return row;
     }
 
     /**
      * Moves the counter up the entered number of steps
-     * @param steps the number of steps to be moved
      */
     public void moveUp(int steps) {
-        setXY(xLocation, yLocation - (23 * steps));
-        gridY--;
+        setRowColumn(row - steps, column);
     }
 
     /**
      * Moves the counter down the entered number of steps
-     * @param steps the number of steps to be moved
      */
     public void moveDown(int steps) {
-        setXY(xLocation, yLocation + (23 * steps));
-        gridY++;
+        setRowColumn(row + steps, column);
     }
 
     /**
      * Moves the counter left the entered number of steps
-     * @param steps the number of steps to be moved
      */
     public void moveLeft(int steps) {
-        setXY(xLocation - (23 * steps), yLocation);
-        gridX--;
+        setRowColumn(row, column - steps);
     }
 
     /**
      * Moves the counter right the entered number of steps
-     * @param steps the number of steps to be moved
      */
     public void moveRight(int steps) {
-        setXY(xLocation + (23 * steps), yLocation);
-        gridX++;
+        setRowColumn(row, column + steps);
     }
 
-    public boolean hasCounterName(String counterName) {
-        return this.counterName.toLowerCase().equals(counterName.toLowerCase().trim());
-    }
-    public boolean hasUserName(String name) {
-        return this.userName.toLowerCase().equals(userName.toLowerCase().trim());
+    /**
+     * Checks if the counter has the character name
+     */
+    public boolean hasCharacterName(String characterName) {
+        return this.characterName.toLowerCase().equals(characterName.toLowerCase().trim());
     }
 
+    /**
+     * Gets the name originally entered by the user
+     */
+    public String getUserName(){
+        return userName;
+    }
+
+    /**
+     * Gets the name of the character represented by the counter
+     */
+    public String getCharacterName() {
+        return characterName;
+    }
+
+    /**
+     * Checks if the current room the counter is in is "r"
+     */
     public void setCurrentRoom(Room r) {
         currentRoom = r;
     }
 
+    /**
+     * Returns the name of the current room of the counter
+     */
     public Room getCurrentRoom() {
         return currentRoom;
     }

@@ -1,19 +1,27 @@
+/*  Cluedo - Sprint 2
+    Team: auroraBorealis
+    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
+    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
+
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 
 public class Counters implements Iterable<Counter>, Iterator<Counter> {
 
+    // This arraylist stores all of the different counters - this makes it easier to access individual counters
     private static final ArrayList<Counter> counters = new ArrayList<>();
     private Iterator<Counter> iterator;
 
     Counters() {
     }
 
+    /**
+     * Returns the counter of the
+     */
     public static Counter get(String name) {
         for (Counter c : counters) {
-            if (c.hasCounterName(name)) {
+            if (c.hasCharacterName(name)) {
                 return c;
             }
         }
