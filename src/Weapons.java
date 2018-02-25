@@ -50,8 +50,6 @@ public class Weapons implements Iterable<Weapon>, Iterator<Weapon> {
     }
 
     private void weaponLocationRandomiser() {
-        //array of valid locations of weapons each array will contain an XY coordinate
-
         Random rnd = ThreadLocalRandom.current();//creates random numbers
         for (int i = wepLocation.length - 1; i > 0; i--)//run this loop for the length of the array
         {
