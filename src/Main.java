@@ -17,7 +17,7 @@ public class Main{
     	GameSetup setup = new GameSetup(counters);
     	frame = new GUI(counters,weapons, rooms);
     	
-        Gameplay game = new Gameplay(frame);
+       // Gameplay game = new Gameplay(frame, counters, rooms);
     }
 
     public static void main(String args[]) {
