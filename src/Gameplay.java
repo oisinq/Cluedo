@@ -396,18 +396,22 @@ public class Gameplay {
             Room r = c.getCurrentRoom();
 
             squareType[c.getRow()][c.getColumn()] *= -1;
+            boolean entranceSelected = false;
 
             // Checks which room is selected
             switch (splitStr.toLowerCase()) {
                 case "1":
                     c.setRowColumn(r.getEntrances().get(0).getRow(), r.getEntrances().get(0).getCol());
+                    entranceSelected = true;
                     break;
                 case "2":
                     c.setRowColumn(r.getEntrances().get(1).getRow(), r.getEntrances().get(1).getCol());
+                    entranceSelected = true;
                     break;
                 case "3":
                     try {
                         c.setRowColumn(r.getEntrances().get(2).getRow(), r.getEntrances().get(2).getCol());
+                        entranceSelected = true;
                     } catch(IndexOutOfBoundsException e) {
                         frame.appendText("Select a valid entrance!");
                     }
@@ -415,6 +419,7 @@ public class Gameplay {
                 case "4":
                     try {
                         c.setRowColumn(r.getEntrances().get(3).getRow(), r.getEntrances().get(3).getCol());
+                        entranceSelected = true;
                     } catch(IndexOutOfBoundsException e) {
                         frame.appendText("Select a valid entrance!");
                     }
@@ -440,7 +445,7 @@ public class Gameplay {
                 }
                 // After swapping the room, the counter needs to be moved to the centrepoint
                 moveToRoomCentre(c);
-            } else {
+            } else if (entranceSelected) {
                 int col = c.getColumn();
                 int row = c.getRow();
                 if(squareType[row - 1][col] == 2) {
@@ -454,11 +459,14 @@ public class Gameplay {
                 }
                 if(squareType[row][col + 1] == 2) {
                     c.setRowColumn(row, col + 1);
-                }}
+                }
+            }
 
-            squareType[c.getRow()][c.getColumn()] *= -1;
-            frame.repaint();
-            dieResult--;
+            if (entranceSelected) {
+                squareType[c.getRow()][c.getColumn()] *= -1;
+                frame.repaint();
+                dieResult--;
+            }
         }
 
         else {
