@@ -369,9 +369,9 @@ public class Gameplay {
             if (dieRoll==0) {
                 Dice die = new Dice();
                 dieResult=die.roll();
+                //TODO - this is for testing only!
+                dieResult = 1000;
                 frame.appendText("You rolled a "+ dieResult);
-                //TODO This lets you move (basically) unlimitedly - for testing purposes only
-                // dieResult = 1000;
                 dieRoll++;
             }
             else {
@@ -380,99 +380,120 @@ public class Gameplay {
         }
 
         else if(splitStr.toLowerCase().equals("done")) {
-            dieResult=0;
-            dieRoll=0;
-            frame.appendText(currentPlayerName + "'s turn has ended!");
+            dieResult = 0;
+            dieRoll = 0;
+            frame.appendText(currentPlayerName + "'s turn has ended!\n");
             PlayTurn=(PlayTurn+1)%turnTrack;
-
-            turn();
             // Goes to the next players move
+            turn();
         } else if(checkInteger(splitStr) && dieResult > 0) {
-            Counter c = Counters.get(currentPlayerName);
-            if (c == null) {
-                throw new RuntimeException("Counter does not exist");
-            }
-
-            Room r = c.getCurrentRoom();
-
-            squareType[c.getRow()][c.getColumn()] *= -1;
-            boolean entranceSelected = false;
-
-            // Checks which room is selected
-            switch (splitStr.toLowerCase()) {
-                case "1":
-                    c.setRowColumn(r.getEntrances().get(0).getRow(), r.getEntrances().get(0).getCol());
-                    entranceSelected = true;
-                    break;
-                case "2":
-                    c.setRowColumn(r.getEntrances().get(1).getRow(), r.getEntrances().get(1).getCol());
-                    entranceSelected = true;
-                    break;
-                case "3":
-                    try {
-                        c.setRowColumn(r.getEntrances().get(2).getRow(), r.getEntrances().get(2).getCol());
-                        entranceSelected = true;
-                    } catch(IndexOutOfBoundsException e) {
-                        frame.appendText("Select a valid entrance!");
-                    }
-                    break;
-                case "4":
-                    try {
-                        c.setRowColumn(r.getEntrances().get(3).getRow(), r.getEntrances().get(3).getCol());
-                        entranceSelected = true;
-                    } catch(IndexOutOfBoundsException e) {
-                        frame.appendText("Select a valid entrance!");
-                    }
-                    break;
-
-            }
-            // If the co-ordinates are negative, then I know it's a secret passageway - I can then swap the room
-            if (c.getRow() == -1) {
-                String ugh = c.getCurrentRoom().getRoomName();
-                switch (ugh) {
-                    case "Conservatory":
-                        c.setCurrentRoom(Rooms.get("Lounge"));
-                        break;
-                    case "Lounge":
-                        c.setCurrentRoom(Rooms.get("Conservatory"));
-                        break;
-                    case "Kitchen":
-                        c.setCurrentRoom(Rooms.get("Study"));
-                        break;
-                    case "Study":
-                        c.setCurrentRoom(Rooms.get("Kitchen"));
-                        break;
-                }
-                // After swapping the room, the counter needs to be moved to the centrepoint
-                moveToRoomCentre(c);
-            } else if (entranceSelected) {
-                int col = c.getColumn();
-                int row = c.getRow();
-                if(squareType[row - 1][col] == 2) {
-                    c.setRowColumn(row - 1, col);
-                }
-                if(squareType[row + 1][col] == 2) {
-                    c.setRowColumn(row + 1, col);
-                }
-                if(squareType[row][col - 1] == 2) {
-                    c.setRowColumn(row, col - 1);
-                }
-                if(squareType[row][col + 1] == 2) {
-                    c.setRowColumn(row, col + 1);
-                }
-            }
-
-            if (entranceSelected) {
-                squareType[c.getRow()][c.getColumn()] *= -1;
-                frame.repaint();
-                dieResult--;
-            }
+            selectEntrance(splitStr);
         }
 
         else {
             frame.appendText("Invalid command entered!");
         }
 
+    }
+
+    /**
+     * Lets the user select an entrance and moves correspondingly
+     */
+    private void selectEntrance(String splitStr) {
+        Counter c = Counters.get(currentPlayerName);
+        if (c == null) {
+            throw new RuntimeException("Counter does not exist");
+        }
+
+        Room r = c.getCurrentRoom();
+
+        squareType[c.getRow()][c.getColumn()] *= -1;
+        boolean entranceSelected = false;
+        boolean moved = false;
+
+        // Checks which room is selected
+        switch (splitStr.toLowerCase()) {
+            case "1":
+                c.setRowColumn(r.getEntrances().get(0).getRow(), r.getEntrances().get(0).getCol());
+                entranceSelected = true;
+                break;
+            case "2":
+                c.setRowColumn(r.getEntrances().get(1).getRow(), r.getEntrances().get(1).getCol());
+                entranceSelected = true;
+                break;
+            case "3":
+                try {
+                    c.setRowColumn(r.getEntrances().get(2).getRow(), r.getEntrances().get(2).getCol());
+                    entranceSelected = true;
+                } catch(IndexOutOfBoundsException e) {
+                    frame.appendText("Select a valid entrance!");
+                }
+                break;
+            case "4":
+                try {
+                    c.setRowColumn(r.getEntrances().get(3).getRow(), r.getEntrances().get(3).getCol());
+                    entranceSelected = true;
+                } catch(IndexOutOfBoundsException e) {
+                    frame.appendText("Select a valid entrance!");
+                }
+                break;
+
+        }
+        // If the co-ordinates are negative, then I know it's a secret passageway - I can then swap the room
+        if (c.getRow() == -1) {
+            String ugh = c.getCurrentRoom().getRoomName();
+            switch (ugh) {
+                case "Conservatory":
+                    c.setCurrentRoom(Rooms.get("Lounge"));
+                    moved = true;
+                    break;
+                case "Lounge":
+                    c.setCurrentRoom(Rooms.get("Conservatory"));
+                    moved = true;
+                    break;
+                case "Kitchen":
+                    c.setCurrentRoom(Rooms.get("Study"));
+                    moved = true;
+                    break;
+                case "Study":
+                    c.setCurrentRoom(Rooms.get("Kitchen"));
+                    moved = true;
+                    break;
+            }
+            // After swapping the room, the counter needs to be moved to the centrepoint
+            moveToRoomCentre(c);
+        } else if (entranceSelected) {
+            int col = c.getColumn();
+            int row = c.getRow();
+            if(squareType[row - 1][col] == 2) {
+                c.setRowColumn(row - 1, col);
+                moved = true;
+            }
+            if(squareType[row + 1][col] == 2) {
+                c.setRowColumn(row + 1, col);
+                moved = true;
+            }
+            if(squareType[row][col - 1] == 2) {
+                c.setRowColumn(row, col - 1);
+                moved = true;
+            }
+            if(squareType[row][col + 1] == 2) {
+                c.setRowColumn(row, col + 1);
+                moved = true;
+            }
+        }
+
+
+        if (entranceSelected && moved) {
+            squareType[c.getRow()][c.getColumn()] *= -1;
+            frame.repaint();
+            dieResult--;
+        } else {
+            int tempResult = dieResult;
+            moveToRoomCentre(c);
+            dieResult = tempResult;
+            frame.appendText("Entrance is blocked - please select another entrance.");
+        }
     }
 
     /**
@@ -553,11 +574,14 @@ public class Gameplay {
     /**
      * Displays a help message in the infoField
      */
-    public void helpCommand() {
+    private void helpCommand() {
         frame.appendText("Commands:\nMove Player Piece:\n - letter corresponding to direction of movement e.g u/d/l/r \n" +
                 "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n");
     }
 
+    /**
+     * Returns the current player's name
+     */
     public String getCurrentPlayerName() {
         return currentPlayerName;
     }
