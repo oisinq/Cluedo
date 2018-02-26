@@ -5,14 +5,20 @@
 
 import java.util.Random;
 
+/**
+ * Dice used for user turns
+ */
 public class Dice {
 
-    Random rand;
+    private Random rand;
 
-    public Dice() {
+    Dice() {
         rand = new Random();
     }
 
+    /**
+     * Returns a number between 1 and 6
+     */
     int roll() {
         // This returns a random number between 1 and 6
         return rand.nextInt(6) + 1;

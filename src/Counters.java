@@ -17,7 +17,7 @@ public class Counters implements Iterable<Counter>, Iterator<Counter> {
     }
 
     /**
-     * Returns the counter of the
+     * Returns the counter with the entered string as its name
      */
     public static Counter get(String name) {
         for (Counter c : counters) {
@@ -40,9 +40,11 @@ public class Counters implements Iterable<Counter>, Iterator<Counter> {
         iterator = counters.iterator();
         return iterator;
     }
-    
-    public void createCounter(String userName,String userChoice){
-    	
+
+    /**
+     * Creates the corresponding counter and adds it to the arraylist
+     */
+    public void createCounter(String userName,String userChoice) {
     	 switch (userChoice) {
              case "Plum":
                  counters.add(new Counter(userName,"Plum", new Color(95, 24, 175), 23, 6));
@@ -62,7 +64,7 @@ public class Counters implements Iterable<Counter>, Iterator<Counter> {
              case "Peacock":
                  counters.add(new Counter(userName,"Peacock", Color.BLUE, 23, 19));
                  break;
-	        }	
+    	 }
     }
 
 

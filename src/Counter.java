@@ -52,13 +52,6 @@ public class Counter extends JComponent implements BoardPiece {
     }
 
     /**
-     * Sets the colour of the counter
-     */
-    public void setColor(Color c) {
-        this.c = c;
-    }
-
-    /**
      * Returns the X co-ordinate of the counter location
      */
     public int getX() {
@@ -115,7 +108,7 @@ public class Counter extends JComponent implements BoardPiece {
     }
 
     /**
-     * Checks if the counter has the character name
+     * Checks if the counter has the entered character name
      */
     public boolean hasCharacterName(String characterName) {
         return this.characterName.toLowerCase().equals(characterName.toLowerCase().trim());

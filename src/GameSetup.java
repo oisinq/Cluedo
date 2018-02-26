@@ -10,15 +10,19 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 //the class allows users to input user name and pick which token they wish to play
-public class GameSetup  {
+ class GameSetup  {
 
-    Counters counters;
+    private Counters counters;
+
 	GameSetup(Counters counters) {
 	    this.counters = counters;
 		playerCountSelect();
     }
-	
-	public void playerCountSelect(){
+
+    /**
+     * Lets the player select the number of characters
+     */
+	private void playerCountSelect(){
 		//the below two strings and jOptionPane are used to allow the user to pick how many users will play 
 			String[] playerCount =(new String[] {"2","3", "4","5", "6"});
 	        String userChoice = (String) JOptionPane.showInputDialog( null, "Select How Many Players You Want","Cluedo", JOptionPane.QUESTION_MESSAGE, null,playerCount, playerCount[0]);
@@ -48,13 +52,15 @@ public class GameSetup  {
 	        
 	        }	
 		}
-	
-	
-	public void CharacterSelect(int PlayerCount){
+
+    /**
+     * Lets the player select which character to play as and enter their own name
+     */
+    private void CharacterSelect(int PlayerCount){
 		//this string stores all the possible characters
 		String[] Characters =(new String[] {"Plum","White", "Scarlet","Green", "Mustard","Peacock"});
 		//this list will store the above string in list format , both are needed for the below loop
-		List<String> CharacterList = new ArrayList<String>(Arrays.asList(Characters));
+		List<String> CharacterList = new ArrayList<>(Arrays.asList(Characters));
 		for(int i=0;i<PlayerCount;i++){
 			String userName = JOptionPane.showInputDialog("Enter Your Username");
 			if(userName== null){//if the user cancels , exit the code

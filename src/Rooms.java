@@ -6,11 +6,17 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * This creates and contains each of the individual rooms
+ */
 public class Rooms implements Iterable<Room>, Iterator<Room> {
 
     private static final ArrayList<Room> rooms = new ArrayList<>();
     private Iterator<Room> iterator;
 
+    /**
+     * This constructor creats each of the different rooms
+     */
     Rooms() {
         createKitchen();
         createBallRoom();
@@ -24,6 +30,9 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
         createStudy();
     }
 
+    /**
+     * Returns the corresponding room to the entered name
+     */
     public static Room get(String name) {
         for (Room c : rooms) {
             if (c.hasRoomName(name)) {
@@ -46,11 +55,14 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
         return iterator;
     }
 
+    // The below methods create a room, add its entrances and counterSquares and adds it to the rooms arraylist
+
     private void createKitchen() {
         ArrayList<Coordinates> entrances = new ArrayList<>();
         ArrayList<Coordinates> counterSquares = new ArrayList<>();
         entrances.add(new Coordinates(4, 6));
-    //    entrances.add(new Coordinates(23, 24));
+        // We use (-1, -1) to signify a secret passageway - this is much easier than using the actual location, because we don't need to know the actual location
+        // This helped us avoid a lot of bugs when moving rooms via secret passageways
         entrances.add(new Coordinates(-1, -1));
         setCounterSquares(2, 3, counterSquares);
         rooms.add(new Room("Kitchen", entrances, counterSquares));
@@ -71,7 +83,8 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
         ArrayList<Coordinates> entrances = new ArrayList<>();
         ArrayList<Coordinates> counterSquares = new ArrayList<>();
         entrances.add(new Coordinates(18, 4));
-    //    entrances.add(new Coordinates(0, 24));
+        // We use (-1, -1) to signify a secret passageway - this is much easier than using the actual location, because we don't need to know the actual location
+        // This helped us avoid a lot of bugs when moving rooms via secret passageways
         entrances.add(new Coordinates(-1, -1));
         setCounterSquares(20, 2, counterSquares);
         rooms.add(new Room("Conservatory", entrances, counterSquares));
@@ -116,7 +129,8 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
         ArrayList<Coordinates> entrances = new ArrayList<>();
         ArrayList<Coordinates> counterSquares = new ArrayList<>();
         entrances.add(new Coordinates(6, 19));
-    //    entrances.add(new Coordinates(23, 1));
+        // We use (-1, -1) to signify a secret passageway - this is much easier than using the actual location, because we don't need to know the actual location
+        // This helped us avoid a lot of bugs when moving rooms via secret passageways
         entrances.add(new Coordinates(-1, -1));
         setCounterSquares(3, 20, counterSquares);
         rooms.add(new Room("Lounge", entrances, counterSquares));
@@ -136,12 +150,16 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
         ArrayList<Coordinates> entrances = new ArrayList<>();
         ArrayList<Coordinates> counterSquares = new ArrayList<>();
         entrances.add(new Coordinates(17, 21));
-    //    entrances.add(new Coordinates(0, 1));
+        // We use (-1, -1) to signify a secret passageway - this is much easier than using the actual location, because we don't need to know the actual location
+        // This helped us avoid a lot of bugs when moving rooms via secret passageways
         entrances.add(new Coordinates(-1, -1));
         setCounterSquares(19, 22, counterSquares);
         rooms.add(new Room("Study", entrances, counterSquares));
     }
 
+    /**
+     * This creates a 3*2 rectangle of counterSquares in each room - this saves us from reusing code for each room
+     */
     private void setCounterSquares(int colStartingGrid, int rowStartingGrid, ArrayList<Coordinates> counterSquares) {
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 2; j++) {
