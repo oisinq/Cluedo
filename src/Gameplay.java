@@ -389,7 +389,9 @@ public class Gameplay {
         else if(splitStr.toLowerCase().equals("roll")) {
             if (dieRoll == 0) {
                 Dice die = new Dice();
+                // There are two dice, so we roll twice
                 dieResult=die.roll();
+                dieResult += die.roll();
                 frame.appendText("You rolled a " + dieResult);
                 dieRoll++;
             }
