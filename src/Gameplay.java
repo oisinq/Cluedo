@@ -385,7 +385,7 @@ public class Gameplay {
             frame.appendText("Thank you for playing! Goodbye");
             System.exit(0);
         }
-
+        // This rolls the dice
         else if(splitStr.toLowerCase().equals("roll")) {
             if (dieRoll == 0) {
                 Dice die = new Dice();
@@ -540,7 +540,7 @@ public class Gameplay {
             frame.appendText("Entrance is blocked - please select another entrance.");
         }
 
-        // If the curr
+        // If the current square is a pathway, then set the room to null
         if (squareType[c.getRow()][c.getColumn()] == -1 || squareType[c.getRow()][c.getColumn()] == -2) {
             c.setCurrentRoom(null);
         }

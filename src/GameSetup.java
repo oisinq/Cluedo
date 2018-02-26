@@ -9,7 +9,9 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-//the class allows users to input user name and pick which token they wish to play
+/**
+ * This class allows users to input user name and pick which token they wish to play
+ */
  class GameSetup  {
 
     private Counters counters;
