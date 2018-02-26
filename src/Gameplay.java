@@ -16,6 +16,7 @@ public class Gameplay {
     private int dieRoll=0;//tracker used to stop more than one roll call per turn
     private int turnTrack=0;
     private String currentPlayerName;
+    private boolean enteredRoom;
 
     private int[][] squareType = {
             {0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
@@ -101,6 +102,7 @@ public class Gameplay {
         if (c != null && isRoom(c)) {
             listExits(c);
         }
+        enteredRoom = false;
 
     }
 
@@ -396,8 +398,10 @@ public class Gameplay {
         } else if(checkInteger(splitStr)) {
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");
-            } else if (dieResult > 0) {
+            } else if (dieResult > 0 && !enteredRoom) {
                 selectEntrance(splitStr);
+            } else {
+                frame.appendText("You cannot move after entering a room.");
             }
         }
 
@@ -506,6 +510,10 @@ public class Gameplay {
             squareType[c.getRow()][c.getColumn()] *= -1;
             frame.appendText("Entrance is blocked - please select another entrance.");
         }
+
+        if (squareType[c.getRow()][c.getColumn()] == -1) {
+            c.setCurrentRoom(null);
+        }
     }
 
     /**
@@ -568,10 +576,12 @@ public class Gameplay {
 
         // If the counter is now in a room, it finds what room the counter is in and moves it to the centre of that room
         if(isRoom(counter)) {
-            int tmp = dieResult;
+            int tmp;
+            tmp = dieResult;
             findCurrentRoom(counter);
             moveToRoomCentre(counter);
             dieResult = tmp;
+            enteredRoom = true;
         }
 
         frame.repaint(); // Repaints the board with the new location of the pieces
