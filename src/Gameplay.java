@@ -101,6 +101,7 @@ public class Gameplay {
         if (c != null && isRoom(c)) {
             listExits(c);
         }
+
     }
 
     /**
@@ -359,6 +360,8 @@ public class Gameplay {
                 if(moveCommand(splitStr, name)) {
                     dieResult=dieResult-1;
                 }
+            } else if (dieRoll == 0) {
+                frame.appendText("You must roll before you move.");
             }
             else {
                 frame.appendText("You have used all your movement.");
@@ -390,8 +393,12 @@ public class Gameplay {
             PlayTurn=(PlayTurn+1)%turnTrack;
             // Goes to the next players move
             turn();
-        } else if(checkInteger(splitStr) && dieResult > 0) {
-            selectEntrance(splitStr);
+        } else if(checkInteger(splitStr)) {
+            if (dieRoll == 0) {
+                frame.appendText("You must roll before you move.");
+            } else if (dieResult > 0) {
+                selectEntrance(splitStr);
+            }
         }
 
         else {
