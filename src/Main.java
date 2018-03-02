@@ -13,18 +13,18 @@ public class Main{
     private final Rooms rooms = new Rooms();
     private GUI frame;
 
+<<<<<<< HEAD
     Main() {
     	
+=======
+    private Main() {
+>>>>>>> c3b3f6c2c5b6a8d511ef4c4b399055ff4876e7ce
     	new GameSetup(counters);
     	new Cards(counters);
     	frame = new GUI(counters,weapons, rooms);
-    	
-       // Gameplay game = new Gameplay(frame, counters, rooms);
     }
 
     public static void main(String args[]) {
-        // Currently this method only creates the GUI - in the future it will do more as we add gameplay
-//        GUI frame = new GUI();
-    	Main main = new Main();
+    	new Main();
     }
 }

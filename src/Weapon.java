@@ -44,7 +44,7 @@ public class Weapon extends JComponent implements BoardPiece {
     /**
      * Sets the (Row, Column) location of the counter - this also affects the xLocation/yLocation
      */
-    public void setRowColumn(int r, int c) {
+    private void setRowColumn(int r, int c) {
         row = r;
         column = c;
         xLocation = 43 + (column * 23);
@@ -106,7 +106,6 @@ public class Weapon extends JComponent implements BoardPiece {
     public void moveRight(int steps) {
         setRowColumn(row, column + steps);
     }
-
 
     public String getName() {
         return name;

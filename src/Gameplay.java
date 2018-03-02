@@ -5,18 +5,29 @@
 
 import java.util.ArrayList;
 
+/**
+ * This class stores all of the gameplay components so far - e.g. turns, movement, accessing rooms and entrances
+ */
 public class Gameplay {
 
     private GUI frame;
     private Counters counters;
     private Rooms rooms;
-    private String[] play =new String[6];
-    private int dieResult=0;
-    private int PlayTurn=0;
-    private int dieRoll=0;//tracker used to stop more than one roll call per turn
-    private int turnTrack=0;
+    private String[] play = new String[6];
+    private int dieResult = 0;
+    private int PlayTurn = 0;
+    private int dieRoll = 0; //tracker used to stop more than one roll call per turn
+    private int turnTrack = 0;
     private String currentPlayerName;
+    private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
 
+    /* This array "squareType" stores what kind of square each square on the board is, which determines if it can be accessed by counters
+    Squares that are marked 0 are inaccessible by the player (they are out of bounds)
+    Squares that are marked 1 are pathways that the player can walk on
+    Sqaures that are marked 2 are pathway squares that are adjacent to room entrances - this is needed so we can exit rooms easily
+    Sqaures that are marked 3 are squares inside rooms - they cannot be accessed directly
+    Sqaures that are marked 4 are room squares that are adjacent to room entrances
+    All negative squares are occupied by another user (e.g. -1 is an occupied pathway square */
     private int[][] squareType = {
             {0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
             {3,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,3,0},
@@ -51,10 +62,11 @@ public class Gameplay {
         this.counters = counters;
         this.rooms=rooms;
 
-        // This each player into an array that tracks who's turn it is, and the order of turns
+        // This enters each player into an array that tracks who's turn it is, and the order of turns
         for (Counter currentCounter : this.counters) {
             play[turnTrack] = currentCounter.getCharacterName();
             turnTrack++;
+            // We set the starting position of each counter to -1 so we know it's occupied
             squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
         // This is the current player
@@ -69,6 +81,7 @@ public class Gameplay {
      * It paints the images and counters onto the board
      */
     private void turn() {
+        // This checks who's turn it currently is, and sets up the required variables for the turn
         switch (play[PlayTurn]) {
             case "Scarlet":
                 currentPlayerName = "Scarlet";
@@ -98,15 +111,19 @@ public class Gameplay {
 
         Counter c = Counters.get(currentPlayerName);
 
+        // If the counter is in a room, it should list the room exits
         if (c != null && isRoom(c)) {
             listExits(c);
         }
+        // We reset this boolean every turn
+        enteredRoom = false;
     }
 
     /**
      * This checks if the counter is currently in a room or not
      */
     private boolean isRoom(Counter counter) {
+        // All room squares have a number value in squareType of >= 3 or <= -3
         return squareType[counter.getRow()][counter.getColumn()] <= -3 || squareType[counter.getRow()][counter.getColumn()] >= 3;
     }
 
@@ -121,12 +138,12 @@ public class Gameplay {
         frame.appendText("Type the entrance number to leave through that entrance.");
         for (int i = 0; i < entrances.size(); i++) {
             Coordinates current = entrances.get(i);
-            // If it's a secret passageway, the coordinates are (-1, -1) - if that's the case, we don't want to print the actual coordinates
+            // If it's a secret passageway, we set the coordinates to (-1, -1) to make things easier for ourselves - if that's the case, we don't want to print the actual coordinates
             if (current.getRow() > -1) {
-                frame.appendText("Entrance " + (i + 1) + ": Row " + current.getRow() + ", column " + current.getCol());
+                frame.appendText("Entrance " + (i + 1) + ": Row " + current.getRow() + ", column " + current.getColumn());
             } else {
                 // If it's a secret entrance, we say where the secret entrance goes to
-                frame.appendText("Entrance " + (i + 1) + " - secret passageway to ");
+                frame.appendText("Entrance " + (i + 1) + ": Secret passageway to ");
                 switch (counter.getCurrentRoom().getRoomName()) {
                     case "Conservatory":
                         frame.appendText("Lounge");
@@ -152,10 +169,11 @@ public class Gameplay {
         Coordinates coord = new Coordinates(counter.getColumn(), counter.getRow());
         squareType[counter.getRow()][counter.getColumn()] *= -1;
 
+        // This searches through all of the rooms and entrances to find the current room
         for (Room r : rooms) {
             ArrayList<Coordinates> entrances = r.getEntrances();
             for (Coordinates entrance : entrances) {
-                if ((coord.getCol() == entrance.getCol()) && (coord.getRow() == entrance.getRow())) {
+                if ((coord.getColumn() == entrance.getColumn()) && (coord.getRow() == entrance.getRow())) {
                     counter.setCurrentRoom(r);
                 }
             }
@@ -174,28 +192,27 @@ public class Gameplay {
         // This searches through the tokenSquares arraylist to find one that isn't occupied
         for (int i = 0; i < tokenSquares.size() && !found; i++) {
             // Since occupied squares are negative, we check if the corresponding value in squareType is positive
-            if (squareType[tokenSquares.get(i).getRow()][tokenSquares.get(i).getCol()] > 0) {
+            if (squareType[tokenSquares.get(i).getRow()][tokenSquares.get(i).getColumn()] > 0) {
                 location = tokenSquares.get(i);
                 found = true;
             }
         }
-
-        c.setRowColumn(location.getRow(), location.getCol());
-        squareType[location.getRow()][location.getCol()] *= -1;
-        room.incremenetLastFilledToken();
+        c.setRowColumn(location.getRow(), location.getColumn());
+        // This shows that the current square is occupied
+        squareType[location.getRow()][location.getColumn()] *= -1;
+        // If you've moved to the centre of a room, you can't move again, so we set the dieResult to 0
         dieResult = 0;
     }
 
     /**
      * Checks if you can enter a certain room or not by looking at both the current square and the next square
-     * @param counter the counter to check
-     * @param direction the direction you want to remove
-     * @return a boolean representing if you can enter the room or not
      */
     private boolean isEnterable(Counter counter, String direction) {
         int nextSquareType;
         int currentSquareType = squareType[counter.getRow()][counter.getColumn()];
 
+        // If a room is enterable, then you must be currently standing in an entrance and trying to enter a room with square type "4"
+        // (This is the type given to a square across from an entrance)
         switch(direction) {
             case "u":
                 nextSquareType = squareType[counter.getRow()-1][counter.getColumn()];
@@ -227,14 +244,13 @@ public class Gameplay {
 
     /**
      * Checks if the next square is a pathway
-     * @param counter the colour of the token you want to move
-     * @param direction the direction you want to move
-     * @return a boolean representing if the next square is a pathway or not
      */
     private boolean isPathway(Counter counter, String direction) {
         int nextSquareType;
         int currentSquareType = squareType[counter.getRow()][counter.getColumn()];
 
+        // If you're currently standing in a room, return false
+        // Otherwise, if your next square is a pathway, return true
         switch(direction) {
             case "u":
                 nextSquareType = squareType[counter.getRow()-1][counter.getColumn()];
@@ -273,14 +289,12 @@ public class Gameplay {
     }
 
     /**
-     * Checks if the next square is a pathway
-     * @param counter the colour of the token you want to move
-     * @param direction the direction you want to move
-     * @return a boolean representing if the next square is a pathway or not
+     * Checks if the next square is occupied by another square
      */
     private boolean isNotOccupied(Counter counter, String direction) {
         int nextSquareType;
 
+        // If the nextSquare is negative, that means it's occupied, so return false
         switch(direction) {
             case "u":
                 nextSquareType = squareType[counter.getRow()-1][counter.getColumn()];
@@ -359,6 +373,9 @@ public class Gameplay {
                 if(moveCommand(splitStr, name)) {
                     dieResult=dieResult-1;
                 }
+            } else if (dieRoll == 0) {
+                // If you haven't rolled yet, we display this message
+                frame.appendText("You must roll before you move.");
             }
             else {
                 frame.appendText("You have used all your movement.");
@@ -368,21 +385,20 @@ public class Gameplay {
             frame.appendText("Thank you for playing! Goodbye");
             System.exit(0);
         }
-
+        // This rolls the dice
         else if(splitStr.toLowerCase().equals("roll")) {
             if (dieRoll == 0) {
                 Dice die = new Dice();
+                // There are two dice, so we roll twice
                 dieResult=die.roll();
-                //TODO - this is for testing only!
-                dieResult = 1000;
-                frame.appendText("You rolled a "+ dieResult);
+                dieResult += die.roll();
+                frame.appendText("You rolled a " + dieResult);
                 dieRoll++;
             }
             else {
                 frame.appendText("You have already rolled this turn!");
             }
         }
-
         else if(splitStr.toLowerCase().equals("done")) {
             dieResult = 0;
             dieRoll = 0;
@@ -390,14 +406,18 @@ public class Gameplay {
             PlayTurn=(PlayTurn+1)%turnTrack;
             // Goes to the next players move
             turn();
-        } else if(checkInteger(splitStr) && dieResult > 0) {
-            selectEntrance(splitStr);
+        } else if(checkInteger(splitStr)) {
+            if (dieRoll == 0) {
+                frame.appendText("You must roll before you move.");
+            } else if (dieResult > 0 && !enteredRoom && isRoom(Counters.get(currentPlayerName))) {
+                selectEntrance(splitStr);
+            } else {
+                frame.appendText("You cannot move here.");
+            }
         }
-
         else {
             frame.appendText("Invalid command entered!");
         }
-
     }
 
     /**
@@ -411,42 +431,59 @@ public class Gameplay {
 
         Room r = c.getCurrentRoom();
 
+        // We do this so the current square is no longer recorded as occupied
         squareType[c.getRow()][c.getColumn()] *= -1;
-        boolean entranceSelected = false;
+        boolean entranceSelected;
         boolean moved = false;
 
-        // Checks which room is selected
+        // Checks which entrance is selected
+        // If the selected entrance doesn't exist, we display an error
         switch (splitStr.toLowerCase()) {
             case "1":
-                c.setRowColumn(r.getEntrances().get(0).getRow(), r.getEntrances().get(0).getCol());
-                entranceSelected = true;
+                try {
+                    c.setRowColumn(r.getEntrances().get(0).getRow(), r.getEntrances().get(0).getColumn());
+                    entranceSelected = true;
+                } catch (IndexOutOfBoundsException | NullPointerException e) {
+                    frame.appendText("Select a valid entrance!");
+                    entranceSelected = false;
+                }
                 break;
             case "2":
-                c.setRowColumn(r.getEntrances().get(1).getRow(), r.getEntrances().get(1).getCol());
-                entranceSelected = true;
+                try {
+                    c.setRowColumn(r.getEntrances().get(1).getRow(), r.getEntrances().get(1).getColumn());
+                    entranceSelected = true;
+                } catch (IndexOutOfBoundsException | NullPointerException e) {
+                    frame.appendText("Select a valid entrance!");
+                    entranceSelected = false;
+                }
                 break;
             case "3":
                 try {
-                    c.setRowColumn(r.getEntrances().get(2).getRow(), r.getEntrances().get(2).getCol());
+                    c.setRowColumn(r.getEntrances().get(2).getRow(), r.getEntrances().get(2).getColumn());
                     entranceSelected = true;
-                } catch(IndexOutOfBoundsException e) {
+                } catch(IndexOutOfBoundsException | NullPointerException e) {
                     frame.appendText("Select a valid entrance!");
+                    entranceSelected = false;
                 }
                 break;
             case "4":
                 try {
-                    c.setRowColumn(r.getEntrances().get(3).getRow(), r.getEntrances().get(3).getCol());
+                    c.setRowColumn(r.getEntrances().get(3).getRow(), r.getEntrances().get(3).getColumn());
                     entranceSelected = true;
-                } catch(IndexOutOfBoundsException e) {
+                } catch(IndexOutOfBoundsException | NullPointerException e) {
                     frame.appendText("Select a valid entrance!");
+                    entranceSelected = false;
                 }
                 break;
-
+            default:
+                frame.appendText("Select a valid entrance!");
+                entranceSelected = false;
+                break;
         }
         // If the co-ordinates are negative, then I know it's a secret passageway - I can then swap the room
         if (c.getRow() == -1) {
-            String ugh = c.getCurrentRoom().getRoomName();
-            switch (ugh) {
+            String room = c.getCurrentRoom().getRoomName();
+            switch (room) {
                 case "Conservatory":
                     c.setCurrentRoom(Rooms.get("Lounge"));
                     moved = true;
@@ -464,9 +501,11 @@ public class Gameplay {
                     moved = true;
                     break;
             }
-            // After swapping the room, the counter needs to be moved to the centrepoint
+            // After swapping the room, the counter needs to be moved to the centre-point
             moveToRoomCentre(c);
         } else if (entranceSelected) {
+            // Otherwise if an entrance is selected, we need to find the proper square on the pathway to move to
+            // This will have squareType = 2, since this number is reserved for pathway squares beside an entrance
             int col = c.getColumn();
             int row = c.getRow();
             if(squareType[row - 1][col] == 2) {
@@ -487,17 +526,25 @@ public class Gameplay {
             }
         }
 
-
+        // If you've selected an entrance and successfully moved, we can repaint and set the new square to "occupied"
         if (entranceSelected && moved) {
             squareType[c.getRow()][c.getColumn()] *= -1;
             frame.repaint();
             dieResult--;
         } else {
+            // If we haven't moved, then we return to the centre of the original room
+            // We need to use a temporary variable to store the dieResult because moveToRoomCentre resets dieResult to 0
             int tempResult = dieResult;
             moveToRoomCentre(c);
             dieResult = tempResult;
+            // We now set our current square to "occupied" and display an error
             squareType[c.getRow()][c.getColumn()] *= -1;
             frame.appendText("Entrance is blocked - please select another entrance.");
+        }
+
+        // If the current square is a pathway, then set the room to null
+        if (squareType[c.getRow()][c.getColumn()] == -1 || squareType[c.getRow()][c.getColumn()] == -2) {
+            c.setCurrentRoom(null);
         }
     }
 
@@ -561,10 +608,13 @@ public class Gameplay {
 
         // If the counter is now in a room, it finds what room the counter is in and moves it to the centre of that room
         if(isRoom(counter)) {
-            int tmp = dieResult;
+            int tmp;
+            // We keep the dieResult because you may still be allowed to make a move and moveToRoomCentre resets dieResult to 0
+            tmp = dieResult;
             findCurrentRoom(counter);
             moveToRoomCentre(counter);
             dieResult = tmp;
+            enteredRoom = true;
         }
 
         frame.repaint(); // Repaints the board with the new location of the pieces
