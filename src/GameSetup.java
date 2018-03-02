@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
  class GameSetup  {
 
     private Counters counters;
+    private Cards cards;
 
 	GameSetup(Counters counters) {
 	    this.counters = counters;
@@ -77,6 +78,17 @@ import javax.swing.JOptionPane;
 	        CharacterList.remove(userChoice);//remove the player the user chose from the list
 	        Characters = CharacterList.toArray(new String[0]);//characters gets updated with the new list
 	        counters.createCounter(userName,userChoice);//send the username and their character choice to be created and placed on the board
+	        cards.createcard();
+			cards.Envelope();
+			  
+			  int Players=0;
+			  for (Counter currentCounter : counters) {
+	          Players++;
+	         
+	      }
+			  for (Counter currentCounter : counters) {
+			         cards.CardHolder(currentCounter.getCharacterName(), 18/Players);
+			      }
 		}
 	}
 	

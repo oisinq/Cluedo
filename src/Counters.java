@@ -40,6 +40,7 @@ public class Counters implements Iterable<Counter>, Iterator<Counter> {
         iterator = counters.iterator();
         return iterator;
     }
+   
 
     /**
      * Creates the corresponding counter and adds it to the arraylist

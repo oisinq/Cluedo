@@ -6,12 +6,14 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
  * Each counter represents a player on the board
  */
 public class Counter extends JComponent implements BoardPiece {
+	private static final ArrayList<Card> cards = new ArrayList<>();
 
     private int xLocation, yLocation;
     // 43, 50 is top of grid
@@ -144,7 +146,10 @@ public class Counter extends JComponent implements BoardPiece {
     public Room getCurrentRoom() {
         return currentRoom;
     }
-
+public void addCards(Card Cards)
+{
+	cards.add(Cards);
+}
     public String getNotesString() {
         String s = characterName+":\n";
         for (Map.Entry<String, String> entry : notes.values.entrySet()) {

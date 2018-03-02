@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Random;
 
 /*  Cluedo - Sprint 2
@@ -11,44 +12,37 @@ import java.util.Random;
 
 public class Cards  {
 	private Counters counters;
-	String[] CardList =(new String[] {"Scarlet","Mustard", "Green","Peacock", "White", "Plum",
+	private static final ArrayList<Card> cards = new ArrayList<>();
+	 
+	String[] CardList =(new String[] {"Scarlet", "Mustard", "Green","Peacock", "White", "Plum",
 			"Pistol", "Dagger", "Lead Pipe", "Candle Stick", "Rope", "Wrench",
 			"Ballroom", "Library", "Hall", "Conservatory", "Billiard Room", "Study", "Lounge", "Dining Room", "Kitchen"});
-	String[] Scarlet =new String[9];
-	String[] Mustard =new String[9];
-	String[] Green =new String[9];
-	String[] Peacock =new String[9];
-	String[] White =new String[9];
-	String[] Plum =new String[9];
+	
 	int[] Given = (new int[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
 	  
 	  Cards( Counters counters)
 	  { 
-		  Envelope();
-		  
-		  int Players=0;
-		  for (Counter currentCounter : counters) {
-          System.out.println("yes");
-          Players++;
-         
-      }
 		 
-		  for (Counter currentCounter : counters) {
-	         CardHolder(currentCounter.getCharacterName(), 18/Players);
-	      }
-	  int a=0;
-	  while(a<18/Players)
-	  {
-		  System.out.println(Plum[a]);
-		  a++;
 	  }
-	  }
+	  
+	  public static Card getCard(String name) {
+	        for (Card c : cards) {
+	            if (c.hasCardName(name)) {
+	                return c;
+	            }
+	        }
+	        return null;
+	    } 
+		  
+	 
+	  
 	  public Random Random()
 	  {
 		  Random rand;
 		  rand = new Random();
 		  return rand;
 	  }
+	 
 	  public void Envelope()
 	  {
 	  	String[] MurderFile = new String[3];
@@ -74,7 +68,7 @@ public class Cards  {
             	  if(Given[temp]==0)
             	  {
             		  System.out.println(track);
-            	  Plum[track]=CardList[temp];
+            	  Counters.get("plum").addCard(cards.getCard(CardList[temp]));
             	  Given[temp]=1;
             	  track++;
             	  }
@@ -87,8 +81,8 @@ public class Cards  {
         		  System.out.println(temp);
             	  if(Given[temp]==0)
             	  {
-            		  
-            	  White[track]=CardList[temp];
+                	  Counters.get("white").addCard(cards.getCard(CardList[temp]));
+
             	  Given[temp]=1;
             	  track++;
             	  }
@@ -100,7 +94,8 @@ public class Cards  {
               {
             	  if(Given[temp]==0)
             	  {
-            	  Scarlet[track]=CardList[temp];
+                	  Counters.get("scarlet").addCard(cards.getCard(CardList[temp]));
+
             	  Given[temp]=1;
             	  track++;
             	  }
@@ -112,7 +107,8 @@ public class Cards  {
               {
             	  if(Given[temp]==0)
             	  {
-            	  Green[track]=CardList[temp];
+                	  Counters.get("green").addCard(cards.getCard(CardList[temp]));
+
             	  Given[temp]=1;
             	  track++;
             	  }
@@ -124,7 +120,8 @@ public class Cards  {
               {
             	  if(Given[temp]==0)
             	  {
-            	  Mustard[track]=CardList[temp];
+                	  Counters.get("mustard").addCard(cards.getCard(CardList[temp]));
+
             	  Given[temp]=1;
             	  track++;
             	  }
@@ -136,7 +133,8 @@ public class Cards  {
               {
             	  if(Given[temp]==0)
             	  {
-            	  Peacock[track]=CardList[temp];
+                	  Counters.get("peacock").addCard(cards.getCard(CardList[temp]));
+
             	  Given[temp]=1;
             	  track++;
             	  }
@@ -145,4 +143,32 @@ public class Cards  {
               break;
 	        }	
 	  }
+	  public void createcard() {
+	    	 
+	                 
+	                 cards.add(new Card("Scarlet", "Person", false));
+	                 cards.add(new Card("Mustard", "Person", false));
+	                 cards.add(new Card("Green", "Person", false));
+	                 cards.add(new Card("Peacock", "Person", false));
+	                 cards.add(new Card("White", "Person", false));
+	                 cards.add(new Card("Plum", "Person", false));
+	                 cards.add(new Card("Pistol", "Weapon", false));
+	                 cards.add(new Card("Wrench", "Weapon", false));
+	                 cards.add(new Card("Lead Pipe", "Weapon", false));
+	                 cards.add(new Card("Candle Stick", "Weapon", false));
+	                 cards.add(new Card("Dagger", "Weapon", false));
+	                 cards.add(new Card("Rope","Weapon", false));
+	                 cards.add(new Card("Ballroom", "Room", false));
+	                 cards.add(new Card("Billiard Room", "Room", false));
+	                 cards.add(new Card("Conservatory", "Room", false));
+	                 cards.add(new Card("Lounge", "Room", false));
+	                 cards.add(new Card("Study", "Room", false));
+	                 cards.add(new Card("Dining Room", "Room", false));
+	                 cards.add(new Card("Hall", "Room", false));
+	                 cards.add(new Card("Library", "Room", false));
+	                 cards.add(new Card("Kitchen", "Room", false));
+	                
+	    	 }
+	  
 }
+
