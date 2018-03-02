@@ -78,7 +78,7 @@ import javax.swing.JOptionPane;
 	        CharacterList.remove(userChoice);//remove the player the user chose from the list
 	        Characters = CharacterList.toArray(new String[0]);//characters gets updated with the new list
 	        counters.createCounter(userName,userChoice);//send the username and their character choice to be created and placed on the board
-	        cards.createcard();
+            cards = new Cards();
 			cards.Envelope();
 			  
 			  int Players=0;
