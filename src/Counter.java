@@ -6,6 +6,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.util.Map;
 
 /**
  * Each counter represents a player on the board
@@ -19,6 +20,7 @@ public class Counter extends JComponent implements BoardPiece {
     private String userName;
     private String characterName;
     private Room currentRoom;
+    private Notes notes;
 
     Counter(String userName, String characterName, Color c, int x, int y) {
     	this.userName=userName;
@@ -29,6 +31,7 @@ public class Counter extends JComponent implements BoardPiece {
         xLocation = 43 + (column * 23);
         yLocation = 50 + (row * 23);
         currentRoom = null;
+        notes = new Notes();
     }
 
     /**
@@ -141,4 +144,17 @@ public class Counter extends JComponent implements BoardPiece {
     public Room getCurrentRoom() {
         return currentRoom;
     }
+
+    public String getNotesString() {
+        String s = characterName+":\n";
+        for (Map.Entry<String, String> entry : notes.values.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            s += key + " -> " + value + "\n";
+        }
+        s += "\n";
+
+        return s;
+    }
+
 }

@@ -117,6 +117,8 @@ public class Gameplay {
         }
         // We reset this boolean every turn
         enteredRoom = false;
+
+        frame.appendText(c.getNotesString());
     }
 
     /**
