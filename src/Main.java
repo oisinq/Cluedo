@@ -12,13 +12,8 @@ public class Main{
     private final Weapons weapons = new Weapons();
     private final Rooms rooms = new Rooms();
     private GUI frame;
-
-<<<<<<< HEAD
-    Main() {
-    	
-=======
+    
     private Main() {
->>>>>>> c3b3f6c2c5b6a8d511ef4c4b399055ff4876e7ce
     	new GameSetup(counters);
     	new Cards(counters);
     	frame = new GUI(counters,weapons, rooms);
