@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,17 +12,27 @@ public class Notes {
     Notes() {
         values = new HashMap<>();
 
-        for (String p : players) {
+        for(String p : players) {
             values.put(p, " ");
         }
 
-        for (String w : weapons) {
+        for(String w : weapons) {
             values.put(w, " ");
         }
 
-        for (String r : rooms) {
+        for(String r : rooms) {
 
             values.put(r, " ");
+        }
+    }
+
+    public void refresh(Counter counter, ArrayList<Card> sharedCards) {
+        for(Card c : counter.getCards()) {
+            values.put(c.getName(), "X");
+        }
+
+        for(Card c : sharedCards) {
+            values.put(c.getName(), "A");
         }
     }
 }

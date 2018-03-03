@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public class Counter extends JComponent implements BoardPiece {
 	private ArrayList<Card> cards = new ArrayList<>();
+    private ArrayList<Card> sharedCards = new ArrayList<>();
 
     private int xLocation, yLocation;
     // 43, 50 is top of grid
@@ -152,6 +153,10 @@ public class Counter extends JComponent implements BoardPiece {
 	cards.add(c);
 }
 
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
     public String getNotesString() {
         String s = characterName+":\n";
         for (Map.Entry<String, String> entry : notes.values.entrySet()) {
@@ -162,6 +167,10 @@ public class Counter extends JComponent implements BoardPiece {
         s += "\n";
 
         return s;
+    }
+
+    public void refreshNotes() {
+        notes.refresh(this, sharedCards);
     }
 
 }

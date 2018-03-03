@@ -117,8 +117,6 @@ public class Gameplay {
         }
         // We reset this boolean every turn
         enteredRoom = false;
-
-        frame.appendText(c.getNotesString());
     }
 
     /**
@@ -400,6 +398,10 @@ public class Gameplay {
             else {
                 frame.appendText("You have already rolled this turn!");
             }
+        } else if(splitStr.toLowerCase().equals("notes")) {
+            Counter c = Counters.get(currentPlayerName);
+            c.refreshNotes();
+            frame.appendText(c.getNotesString());
         }
         else if(splitStr.toLowerCase().equals("done")) {
             dieResult = 0;
