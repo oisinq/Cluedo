@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 /**
  * This class allows users to input user name and pick which token they wish to play
+ * it also decides which player goes first
  */
  class GameSetup  {
 
@@ -60,6 +61,7 @@ import javax.swing.JOptionPane;
      * Lets the player select which character to play as and enter their own name
      */
     private void CharacterSelect(int PlayerCount){
+    	int rollFirst;
 		//this string stores all the possible characters
 		String[] Characters =(new String[] {"Plum","White", "Scarlet","Green", "Mustard","Peacock"});
 		//this list will store the above string in list format , both are needed for the below loop
@@ -77,8 +79,17 @@ import javax.swing.JOptionPane;
 	        }
 	        CharacterList.remove(userChoice);//remove the player the user chose from the list
 	        Characters = CharacterList.toArray(new String[0]);//characters gets updated with the new list
-	        counters.createCounter(userName,userChoice);//send the username and their character choice to be created and placed on the board
-            cards = new Cards();
+	      
+	        
+	    
+	     // There are two dice, so we roll twice
+	        Dice die = new Dice();
+            rollFirst=die.roll();
+            rollFirst += die.roll();
+	        counters.createCounter(userName,userChoice,rollFirst);//send the username and their character choice to be created and placed on the board
+            
+
+	       cards = new Cards();
 			cards.Envelope();
 			  
 			  int Players=0;

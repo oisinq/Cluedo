@@ -18,6 +18,7 @@ public class Gameplay {
     private int PlayTurn = 0;
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
     private int turnTrack = 0;
+    private int highestRoll=0;
     private String currentPlayerName;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
 
@@ -62,6 +63,8 @@ public class Gameplay {
         this.counters = counters;
         this.rooms=rooms;
 
+        
+        
         // This enters each player into an array that tracks who's turn it is, and the order of turns
         for (Counter currentCounter : this.counters) {
             play[turnTrack] = currentCounter.getCharacterName();
@@ -69,6 +72,33 @@ public class Gameplay {
             // We set the starting position of each counter to -1 so we know it's occupied
             squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
+        //find highest
+        for (Counter currentCounter : this.counters) {
+        	if(currentCounter.getRollFirst()>highestRoll){
+        		highestRoll=currentCounter.getRollFirst();
+        	}
+        	else if(currentCounter.getRollFirst()==highestRoll){
+        		//reroll 
+        		
+        	}
+        }
+        //reassign stuff now
+        String[] temp = new String[6];
+        for (Counter currentCounter : this.counters) {
+        	if(currentCounter.getRollFirst()==highestRoll){
+        		temp[0]=play[0] ;
+        		play[0] = currentCounter.getCharacterName();
+                squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
+                
+                	for(int i=1;i<6;i++){
+                		temp[i]=play[i];
+                		play[i]=temp[i-1];
+                	}
+        	}
+        	
+        }
+        
+        
         // This is the current player
         currentPlayerName = play[0];
         // We display the help command in the infoField and start the first turn
