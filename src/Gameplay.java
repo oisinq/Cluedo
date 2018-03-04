@@ -72,42 +72,42 @@ public class Gameplay {
             // We set the starting position of each counter to -1 so we know it's occupied
             squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
-        int counter=0;
+        int counter = 0;
+        Counter highRoller = null;
         //find highest
         for (Counter currentCounter : this.counters) {
-        	if(currentCounter.getRollFirst()>highestRoll){
+        	if(currentCounter.getRollFirst()>highestRoll) {
         		highestRoll=currentCounter.getRollFirst();
+        		highRoller = currentCounter;
         	}
-        	else if(currentCounter.getRollFirst()==highestRoll){
+        	else if(currentCounter.getRollFirst()==highestRoll) {
         		boolean competitorWon = rollAgainst();
-        				if(competitorWon==true){//if competitor rolls higher
-        				currentCounter.setRollFirst(1);//increase it by one to show it won the roll
-        				highestRoll=currentCounter.getRollFirst();// set the highest roll to the winner
-        				}
+                if(competitorWon){//if competitor rolls higher
+                    currentCounter.setRollFirst(1);//increase it by one to show it won the roll
+                    highestRoll=currentCounter.getRollFirst();// set the highest roll to the winner
+                    highRoller = currentCounter;
+                }
         	}
         	counter++;//this is a int for how many counters there are cus i don't like improved for loops
         }
         //reassign stuff now
 
         String[] temp = new String[6];
-        for (Counter currentCounter : this.counters) {
-        	if(currentCounter.getRollFirst()==highestRoll){
-        		//temp[0]=play[0] ;
-        		temp[0] = currentCounter.getCharacterName();
-                squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
-                
-                	for(int i=1;i<counter;i++){
-                if(temp[0]==play[i-1]){
-                	//skip
-                }
-                else{
-                		temp[i]=play[i-1];
-                		
-                	}
-                
-                }
-        	}
-        	
+        int j = 0;
+
+        temp[0] = highRoller.getCharacterName();
+        for(int i = 1; i < counter; i++) {
+            if (temp[0] == play[j]) {
+                i--;
+            } else {
+                temp[i] = play[j];
+            }
+            j++;
+        }
+
+        int x = 0;
+        for (String p : temp) {
+            play[x++] = p;
         }
         
         
