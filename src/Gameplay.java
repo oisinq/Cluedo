@@ -72,6 +72,7 @@ public class Gameplay {
             // We set the starting position of each counter to -1 so we know it's occupied
             squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
+        int counter=0;
         //find highest
         for (Counter currentCounter : this.counters) {
         	if(currentCounter.getRollFirst()>highestRoll){
@@ -84,8 +85,10 @@ public class Gameplay {
         				highestRoll=currentCounter.getRollFirst();// set the highest roll to the winner
         				}
         	}
+        	counter++;//this is a int for how many counters there are cus i don't like improved for loops
         }
         //reassign stuff now
+
         String[] temp = new String[6];
         for (Counter currentCounter : this.counters) {
         	if(currentCounter.getRollFirst()==highestRoll){
@@ -93,9 +96,16 @@ public class Gameplay {
         		play[0] = currentCounter.getCharacterName();
                 squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
                 
-                	for(int i=1;i<6;i++){
+                	for(int i=1;i<counter;i++){
+                if(play[0]==play[i]){
+                //don't do that 	
+            
+                }
+                else{
                 		temp[i]=play[i];
                 		play[i]=temp[i-1];
+                		
+                	}
                 	}
         	}
         	
