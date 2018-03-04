@@ -92,21 +92,20 @@ public class Gameplay {
         String[] temp = new String[6];
         for (Counter currentCounter : this.counters) {
         	if(currentCounter.getRollFirst()==highestRoll){
-        		temp[0]=play[0] ;
-        		play[0] = currentCounter.getCharacterName();
+        		//temp[0]=play[0] ;
+        		temp[0] = currentCounter.getCharacterName();
                 squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
                 
                 	for(int i=1;i<counter;i++){
-                if(play[0]==play[i]){
-                //don't do that 	
-            
+                if(temp[0]==play[i-1]){
+                	//skip
                 }
                 else{
-                		temp[i]=play[i];
-                		play[i]=temp[i-1];
+                		temp[i]=play[i-1];
                 		
                 	}
-                	}
+                
+                }
         	}
         	
         }
