@@ -78,8 +78,11 @@ public class Gameplay {
         		highestRoll=currentCounter.getRollFirst();
         	}
         	else if(currentCounter.getRollFirst()==highestRoll){
-        		//reroll 
-        		
+        		boolean competitorWon = rollAgainst();
+        				if(competitorWon==true){//if competitor rolls higher
+        				currentCounter.setRollFirst(1);//increase it by one to show it won the roll
+        				highestRoll=currentCounter.getRollFirst();// set the highest roll to the winner
+        				}
         	}
         }
         //reassign stuff now
@@ -105,7 +108,20 @@ public class Gameplay {
         helpCommand();
         turn();
     }
-
+    public boolean rollAgainst(){//for when two players need to roll and highest gets to do something
+    	Dice die = new Dice();
+		//highest goes first
+		int original=die.roll();
+		int competitor=die.roll();
+				if(competitor>original){//if competitor rolls higher it relaces highestRoll
+    				return true;//if competitor wins return true
+				}
+				else if(competitor==original){
+					rollAgainst();
+				}
+				
+		return false;//if original wins return false
+    }
     /**
      * This method runs when we setVisible(true) and when we repaint()
      * It paints the images and counters onto the board

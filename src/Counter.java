@@ -81,6 +81,13 @@ public class Counter extends JComponent implements BoardPiece {
         return rollFirst;
     }
     /**
+    * set the roll first to a higher value(only for use with the turn methods in gameplay)
+    */
+    public void setRollFirst(int r) {
+    	
+        rollFirst+=r;
+    }
+    /**
      * Returns the column of the counter
      */
     public int getColumn() {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,7 +30,7 @@ import javax.swing.JOptionPane;
 	private void playerCountSelect(){
 		//the below two strings and jOptionPane are used to allow the user to pick how many users will play 
 			String[] playerCount =(new String[] {"2","3", "4","5", "6"});
-	        String userChoice = (String) JOptionPane.showInputDialog( null, "Select How Many Players You Want","Cluedo", JOptionPane.QUESTION_MESSAGE, null,playerCount, playerCount[0]);
+	        String userChoice = (String) JOptionPane.showInputDialog( null, "Select How Many Players You Want","Cluedo", JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/cluedo.png"),playerCount, playerCount[0]);
 		
 	        if(userChoice == null){//if the user hits cancel the game is quit
 	        	System.out.println("You have exited the game,Thanks For Playing!");
