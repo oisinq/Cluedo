@@ -75,7 +75,7 @@ class GameSetup {
                 System.out.println("You have exited the game,Thanks For Playing!");
                 System.exit(0);
             }
-            String userChoice = (String) JOptionPane.showInputDialog(null, "Player " + (i + 1) + " Please Select A Character", "Cluedo", JOptionPane.QUESTION_MESSAGE, null, Characters, Characters[0]);
+            String userChoice = (String) JOptionPane.showInputDialog(null, "Player " + (i + 1) + " Please Select A Character", "Cluedo", JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/cluedo.png"), Characters, Characters[0]);
             if (userChoice == null) {//if the user cancels exit the code
                 System.out.println("You have exited the game,Thanks For Playing!");
                 System.exit(0);
@@ -85,10 +85,10 @@ class GameSetup {
 
 
             // There are two dice, so we roll twice
-            Dice die = new Dice();
-            rollFirst = die.roll();
-            rollFirst += die.roll();
-            counters.createCounter(userName, userChoice, rollFirst);//send the username and their character choice to be created and placed on the board
+           //Dice die = new Dice();
+           //rollFirst = die.roll();
+           //rollFirst += die.roll();
+            counters.createCounter(userName, userChoice, 0);//send the username and their character choice to be created and placed on the board
 
 
             cards = new Cards();

@@ -18,7 +18,7 @@ public class Counter extends JComponent implements BoardPiece {
 
     private int xLocation, yLocation;
     // 43, 50 is top of grid
-    private int column, row,rollFirst;
+    private int column, row,rollForOrder;
     private Color c;
     private String userName;
     private String characterName;
@@ -26,7 +26,7 @@ public class Counter extends JComponent implements BoardPiece {
     private Notes notes;
 
 
-    Counter(String userName, String characterName, Color c, int x, int y,int rollFirst) {
+    Counter(String userName, String characterName, Color c, int x, int y,int rollForOrder) {
     	this.userName=userName;
         this.characterName = characterName;
         this.c = c;
@@ -36,7 +36,7 @@ public class Counter extends JComponent implements BoardPiece {
         yLocation = 50 + (row * 23);
         currentRoom = null;
         notes = new Notes();
-        this.rollFirst=rollFirst;
+        this.rollForOrder=rollForOrder;
     }
 
     /**
@@ -77,15 +77,15 @@ public class Counter extends JComponent implements BoardPiece {
     /**
      * Returns the roll
      */
-    public int getRollFirst() {
-        return rollFirst;
+    public int getRollForOrder() {
+        return rollForOrder;
     }
     /**
     * set the roll first to a higher value(only for use with the turn methods in gameplay)
     */
-    public void setRollFirst(int r) {
+    public void setRollForOrder(int r) {
     	
-        rollFirst+=r;
+        rollForOrder=r;
     }
     /**
      * Returns the column of the counter
