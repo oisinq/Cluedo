@@ -14,106 +14,104 @@ import javax.swing.JOptionPane;
  * This class allows users to input user name and pick which token they wish to play
  * it also decides which player goes first
  */
- class GameSetup  {
+class GameSetup {
 
     private Counters counters;
     private Cards cards;
-	 int a =0;
+    int a = 0;
 
 
-	GameSetup(Counters counters) {
-	    this.counters = counters;
-		playerCountSelect();
+    GameSetup(Counters counters) {
+        this.counters = counters;
+        playerCountSelect();
     }
 
     /**
      * Lets the player select the number of characters
      */
-	private void playerCountSelect(){
-		//the below two strings and jOptionPane are used to allow the user to pick how many users will play 
-			String[] playerCount =(new String[] {"2","3", "4","5", "6"});
-	        String userChoice = (String) JOptionPane.showInputDialog( null, "Select How Many Players You Want","Cluedo", JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/cluedo.png"),playerCount, playerCount[0]);
-		
-	        if(userChoice == null){//if the user hits cancel the game is quit
-	        	System.out.println("You have exited the game,Thanks For Playing!");
-	        	System.exit(0);
-	        }
-	        
-	        //depending on what they pick this switch statement sends the correct number of players to character select
-	        switch (userChoice) {
+    private void playerCountSelect() {
+        //the below two strings and jOptionPane are used to allow the user to pick how many users will play
+        String[] playerCount = (new String[]{"2", "3", "4", "5", "6"});
+        String userChoice = (String) JOptionPane.showInputDialog(null, "Select How Many Players You Want", "Cluedo", JOptionPane.QUESTION_MESSAGE, new ImageIcon("src/cluedo.png"), playerCount, playerCount[0]);
+
+        if (userChoice == null) {//if the user hits cancel the game is quit
+            System.out.println("You have exited the game,Thanks For Playing!");
+            System.exit(0);
+        }
+
+        //depending on what they pick this switch statement sends the correct number of players to character select
+        switch (userChoice) {
             case "2":
                 CharacterSelect(2);
                 break;
             case "3":
-            	CharacterSelect(3);
-                break;	        	
-			case "4":
-				CharacterSelect(4);
-				break;
-	       	case "5":
-	       		CharacterSelect(5);
-	       		break;
-	       	case "6":
-	       		CharacterSelect(6);
+                CharacterSelect(3);
                 break;
-	        
-	        }	
-		}
+            case "4":
+                CharacterSelect(4);
+                break;
+            case "5":
+                CharacterSelect(5);
+                break;
+            case "6":
+                CharacterSelect(6);
+                break;
+
+        }
+    }
 
     /**
      * Lets the player select which character to play as and enter their own name
      */
-    private void CharacterSelect(int PlayerCount){
-    	int rollFirst;
-		//this string stores all the possible characters
-		String[] Characters =(new String[] {"Plum","White", "Scarlet","Green", "Mustard","Peacock"});
-		//this list will store the above string in list format , both are needed for the below loop
-		List<String> CharacterList = new ArrayList<>(Arrays.asList(Characters));
-		for(int i=0;i<PlayerCount;i++){
-			String userName = JOptionPane.showInputDialog("Enter Your Username");
-			if(userName== null){//if the user cancels , exit the code
-	        	System.out.println("You have exited the game,Thanks For Playing!");
-	        	System.exit(0);
-	        }
-	        String userChoice = (String) JOptionPane.showInputDialog( null, "Player "+(i+1)+" Please Select A Character","Cluedo", JOptionPane.QUESTION_MESSAGE, null,Characters, Characters[0]);
-	        if(userChoice== null){//if the user cancels exit the code
-	        	System.out.println("You have exited the game,Thanks For Playing!");
-	        	System.exit(0);
-	        }
-	        CharacterList.remove(userChoice);//remove the player the user chose from the list
-	        Characters = CharacterList.toArray(new String[0]);//characters gets updated with the new list
-	      
-	        
-	    
-	     // There are two dice, so we roll twice
-	        Dice die = new Dice();
-            rollFirst=die.roll();
-            rollFirst += die.roll();
-	        counters.createCounter(userName,userChoice,rollFirst);//send the username and their character choice to be created and placed on the board
-            
+    private void CharacterSelect(int PlayerCount) {
+        int rollFirst;
+        //this string stores all the possible characters
+        String[] Characters = (new String[]{"Plum", "White", "Scarlet", "Green", "Mustard", "Peacock"});
+        //this list will store the above string in list format , both are needed for the below loop
+        List<String> CharacterList = new ArrayList<>(Arrays.asList(Characters));
+        for (int i = 0; i < PlayerCount; i++) {
+            String userName = JOptionPane.showInputDialog("Enter Your Username");
+            if (userName == null) {//if the user cancels , exit the code
+                System.out.println("You have exited the game,Thanks For Playing!");
+                System.exit(0);
+            }
+            String userChoice = (String) JOptionPane.showInputDialog(null, "Player " + (i + 1) + " Please Select A Character", "Cluedo", JOptionPane.QUESTION_MESSAGE, null, Characters, Characters[0]);
+            if (userChoice == null) {//if the user cancels exit the code
+                System.out.println("You have exited the game,Thanks For Playing!");
+                System.exit(0);
+            }
+            CharacterList.remove(userChoice);//remove the player the user chose from the list
+            Characters = CharacterList.toArray(new String[0]);//characters gets updated with the new list
 
-	       cards = new Cards();
-			cards.Envelope();
-			  
-			  int Players=0;
-			  for (Counter currentCounter : counters) {
-	          Players++;
-	      }
+
+            // There are two dice, so we roll twice
+            Dice die = new Dice();
+            rollFirst = die.roll();
+            rollFirst += die.roll();
+            counters.createCounter(userName, userChoice, rollFirst);//send the username and their character choice to be created and placed on the board
+
+
+            cards = new Cards();
+            cards.Envelope();
+
+            int Players = 0;
+            for (Counter currentCounter : counters) {
+                Players++;
+            }
 			 /* for (Counter currentCounter : counters) {
 			         cards.CardHolder(currentCounter.getCharacterName(), 18/Players);
 			         System.out.println(currentCounter.getCharacterName());
 			         //currentCounter.printCards();
 			      }*/
-			  String[] CardList =(new String[] {"Plum", "White", "Green","Peacock", "Mustard", "Scarlet"});
+            String[] CardList = (new String[]{"Plum", "White", "Green", "Peacock", "Mustard", "Scarlet"});
 
-			  if(a==1)
-			  {
-		          cards.CardHolder(CardList, 18/2, Players);
-		         
-			  }
-			 a++;
-			 
-		}
-	}
-	
+            if (a == 1) {
+                cards.CardHolder(CardList, 18 / 2, Players);
+
+            }
+            a++;
+
+        }
+    }
+
 }

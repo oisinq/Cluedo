@@ -12,8 +12,8 @@ public class Card  {
     	this.cardName=cardName;
     	this.Type=Type;
     	this.Owned=Owned;
-        
     }
+
     public String getName() {
         return cardName;
     }
@@ -24,6 +24,6 @@ public class Card  {
         return Owned;
     }
     public boolean hasCardName(String characterName) {
-        return this.cardName.toLowerCase().equals(cardName.toLowerCase().trim());
+        return this.cardName.toLowerCase().equals(characterName.toLowerCase().trim());
     }
 }
