@@ -56,8 +56,9 @@ public class Cards  {
       int x=0;
       int temp=Random().nextInt(21);
       while(x<number)
-      {track=0;
-    	  System.out.println(number+strArray[x]);
+      {
+    	  track=0;
+    	 
       switch (strArray[x]) {
       case "Plum":
           while(track<amount)
@@ -66,7 +67,7 @@ public class Cards  {
               {
                   
                   Counters.get("plum").addCard(getCard(CardList[temp]));
-                  System.out.println("Plum "+CardList[temp]);
+                  System.out.println(getCard(CardList[temp]).getName());
                   Given[temp]=1;
                 track++;
               }
