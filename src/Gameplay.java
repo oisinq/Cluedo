@@ -19,7 +19,7 @@ public class Gameplay {
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
     private int turnTrack = 0;
     private int highestRoll=0;
-    private ArrayList<Counter> topPlayers,players;
+    private ArrayList<Counter> topPlayers=new ArrayList<Counter>(),players=new ArrayList<Counter>(),init=new ArrayList<Counter>();
     private String currentPlayerName;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
 
@@ -68,17 +68,17 @@ public class Gameplay {
         
         // This enters each player into an array that tracks who's turn it is, and the order of turns
         for (Counter currentCounter : this.counters) {
-           // play[turnTrack] = currentCounter.getCharacterName();
-            players.add(currentCounter);
-          //  turnTrack++;
-            // We set the starting position of each counter to -1 so we know it's occupied
-           // squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
+            //play[turnTrack] = currentCounter.getCharacterName();
+            init.add(currentCounter);
+            //turnTrack++;
+            //We set the starting position of each counter to -1 so we know it's occupied
+            //squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
         
         
         int counter = 0;
         Counter highRoller = null;
-        highRoller = rollForOrder(players);
+        highRoller = rollForOrder(init);
 
         
         //reassign stuff now
@@ -132,7 +132,7 @@ public class Gameplay {
     	}
 	
     	else{
-		return	topPlayers.get(1);
+		return	topPlayers.get(0);
     	}
     }
     /**

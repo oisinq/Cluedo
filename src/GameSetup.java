@@ -70,7 +70,7 @@ class GameSetup {
         //this list will store the above string in list format , both are needed for the below loop
         List<String> CharacterList = new ArrayList<>(Arrays.asList(Characters));
         for (int i = 0; i < PlayerCount; i++) {
-            String userName = JOptionPane.showInputDialog("Enter Your Username");
+            String userName =(String) JOptionPane.showInputDialog(null,"Enter Your Username","Cluedo",JOptionPane.INFORMATION_MESSAGE,new ImageIcon("src/cluedo.png"),null,"");
             if (userName == null) {//if the user cancels , exit the code
                 System.out.println("You have exited the game,Thanks For Playing!");
                 System.exit(0);
