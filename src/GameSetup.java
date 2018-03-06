@@ -18,6 +18,8 @@ import javax.swing.JOptionPane;
 
     private Counters counters;
     private Cards cards;
+	 int a =0;
+
 
 	GameSetup(Counters counters) {
 	    this.counters = counters;
@@ -96,11 +98,24 @@ import javax.swing.JOptionPane;
 			  int Players=0;
 			  for (Counter currentCounter : counters) {
 	          Players++;
-	         
 	      }
-			  for (Counter currentCounter : counters) {
+			 /* for (Counter currentCounter : counters) {
 			         cards.CardHolder(currentCounter.getCharacterName(), 18/Players);
-			      }
+			         System.out.println(currentCounter.getCharacterName());
+			         //currentCounter.printCards();
+			      }*/
+			  if(a==0)
+			  {
+		          cards.CardHolder("Plum", 18/2);
+		          a++;
+			  }
+			  else 
+			  {
+		          System.out.println(a);
+
+				  cards.CardHolder("White", 9);
+			  }
+			 
 		}
 	}
 	

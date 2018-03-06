@@ -7,13 +7,14 @@ import java.util.Random;
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
 
 public class Cards  {
+	int[] Given = (new int[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
+
 	private ArrayList<Card> cards = new ArrayList<>();
 	 
 	String[] CardList =(new String[] {"Scarlet", "Mustard", "Green","Peacock", "White", "Plum",
 			"Pistol", "Dagger", "Lead Pipe", "Candle Stick", "Rope", "Wrench",
 			"Ballroom", "Library", "Hall", "Conservatory", "Billiard Room", "Study", "Lounge", "Dining Room", "Kitchen"});
 
-	int[] Given = (new int[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
 	  
     Cards() {
         createCard();
@@ -47,20 +48,21 @@ public class Cards  {
     temp=Random().nextInt(8)+12;
     MurderFile[2]=CardList[temp ];
     Given[temp]=1;
-    System.out.print(MurderFile[0]+MurderFile[1]+MurderFile[2]);
+    
     }
 
     public void CardHolder(String character, int amount) {
       int track=0;
-      int temp=Random().nextInt(18);
+      int temp=Random().nextInt(21);
       switch (character) {
       case "Plum":
           while(track<amount)
-          {
+          {System.out.println(Given[temp]);
               if(Given[temp]==0)
               {
-                  System.out.println(track);
+                  
                   Counters.get("plum").addCard(getCard(CardList[temp]));
+                  System.out.println("Plum "+CardList[temp]);
                   Given[temp]=1;
                 track++;
               }
@@ -69,10 +71,11 @@ public class Cards  {
           break;
       case "White":
           while(track<amount) {
-              System.out.println(temp);
+           
               if(Given[temp]==0) {
+            	  System.out.println(Given[temp]);
                   Counters.get("white").addCard(getCard(CardList[temp]));
-
+                  System.out.println("w "+CardList[temp]);
               Given[temp]=1;
               track++;
               }
