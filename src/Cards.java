@@ -42,92 +42,102 @@ public class Cards {
         int temp = Random().nextInt(6);
         MurderFile[0] = CardList[temp];
         Given[temp] = 1;
+        
         temp = Random().nextInt(6) + 6;
         MurderFile[1] = CardList[temp];
         Given[temp] = 1;
         temp = Random().nextInt(8) + 12;
         MurderFile[2] = CardList[temp];
         Given[temp] = 1;
+    	Envelope file = new Envelope(MurderFile[0], MurderFile[1], MurderFile[2]);
+    	file.addCard(getCard(MurderFile[0]));
+    	file.addCard(getCard(MurderFile[1]));
+    	file.addCard(getCard(MurderFile[2]));
 
     }
 
     public void CardHolder(String[] strArray, int amount, int number) {
-        int track = 0;
-        int x = 0;
-        int temp = Random().nextInt(21);
-        while (x < number) {
-            track = 0;
-            System.out.println(number + strArray[x]);
-            switch (strArray[x]) {
-                case "Plum":
-                    while (track < amount) {
-                        if (Given[temp] == 0) {
 
-                            Counters.get("plum").addCard(getCard(CardList[temp]));
-                            System.out.println("Plum " + CardList[temp]);
-                            Given[temp] = 1;
-                            track++;
-                        }
-                        temp = Random().nextInt(21);
-                    }
-                    break;
-                case "White":
-                    while (track < amount) {
+      int track=0;
+      int x=0;
+      int temp=Random().nextInt(21);
+      while(x<number)
+      {
+    	  track=0;
+    	 
+      switch (strArray[x]) {
+      case "Plum":
+          while(track<amount)
+          {
+              if(Given[temp]==0)
+              {
+                  
+                  Counters.get("plum").addCard(getCard(CardList[temp]));
+                  System.out.println(getCard(CardList[temp]).getName());
+                  Given[temp]=1;
+                track++;
+              }
+              temp=Random().nextInt(21);
+          }
+          break;
+      case "White":
+          while(track<amount) {
+           
+              if(Given[temp]==0) {
+                  Counters.get("white").addCard(getCard(CardList[temp]));
+                  System.out.println("w "+CardList[temp]);
+              Given[temp]=1;
+              track++;
+              }
+              temp=Random().nextInt(21);
+          }
+          break;
+      case "Scarlet":
+          while(track<amount) {
+              if(Given[temp]==0) {
+                  Counters.get("scarlet").addCard(getCard(CardList[temp]));
 
-                        if (Given[temp] == 0) {
-                            Counters.get("white").addCard(getCard(CardList[temp]));
-                            System.out.println("w " + CardList[temp]);
-                            Given[temp] = 1;
-                            track++;
-                        }
-                        temp = Random().nextInt(21);
-                    }
-                    break;
-                case "Scarlet":
-                    while (track < amount) {
-                        if (Given[temp] == 0) {
-                            Counters.get("scarlet").addCard(getCard(CardList[temp]));
+              Given[temp]=1;
+              track++;
+              }
+              temp=Random().nextInt(21);
+          }
+          break;
+      case "Green":
+          while(track<amount) {
+              if(Given[temp]==0) {
+                  Counters.get("green").addCard(getCard(CardList[temp]));
 
-                            Given[temp] = 1;
-                            track++;
-                        }
-                        temp = Random().nextInt(21);
-                    }
-                    break;
-                case "Green":
-                    while (track < amount) {
-                        if (Given[temp] == 0) {
-                            Counters.get("green").addCard(getCard(CardList[temp]));
+              Given[temp]=1;
+              track++;
+              }
+              temp=Random().nextInt(21);
+          }
+          break;
+      case "Mustard":
+          while(track<amount) {
+              if(Given[temp]==0) {
+                  Counters.get("mustard").addCard(getCard(CardList[temp]));
 
-                            Given[temp] = 1;
-                            track++;
-                        }
-                        temp = Random().nextInt(21);
-                    }
-                    break;
-                case "Mustard":
-                    while (track < amount) {
-                        if (Given[temp] == 0) {
-                            Counters.get("mustard").addCard(getCard(CardList[temp]));
+              Given[temp]=1;
+              track++;
+              }
+              temp=Random().nextInt(21);
+          }
+          break;
+      case "Peacock":
+          while(track<amount) {
+              if(Given[temp]==0) {
+                  Counters.get("peacock").addCard(getCard(CardList[temp]));
 
-                            Given[temp] = 1;
-                            track++;
-                        }
-                        temp = Random().nextInt(21);
-                    }
-                    break;
-                case "Peacock":
-                    while (track < amount) {
-                        if (Given[temp] == 0) {
-                            Counters.get("peacock").addCard(getCard(CardList[temp]));
-
-                            Given[temp] = 1;
-                            track++;
-                        }
-                        temp = Random().nextInt(21);
-                    }
-                    break;
-            }
+              Given[temp]=1;
+              track++;
+              }
+              temp=Random().nextInt(21);
+          }
+          break;
+      }
+      
             x++;
         }
     }
