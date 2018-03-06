@@ -104,17 +104,14 @@ import javax.swing.JOptionPane;
 			         System.out.println(currentCounter.getCharacterName());
 			         //currentCounter.printCards();
 			      }*/
-			  if(a==0)
-			  {
-		          cards.CardHolder("Plum", 18/2);
-		          a++;
-			  }
-			  else 
-			  {
-		          System.out.println(a);
+			  String[] CardList =(new String[] {"Plum", "White", "Green","Peacock", "Mustard", "Scarlet"});
 
-				  cards.CardHolder("White", 9);
+			  if(a==1)
+			  {
+		          cards.CardHolder(CardList, 18/2, Players);
+		         
 			  }
+			 a++;
 			 
 		}
 	}

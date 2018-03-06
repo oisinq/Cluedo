@@ -51,13 +51,17 @@ public class Cards  {
     
     }
 
-    public void CardHolder(String character, int amount) {
+    public void CardHolder(String[] strArray, int amount, int number) {
       int track=0;
+      int x=0;
       int temp=Random().nextInt(21);
-      switch (character) {
+      while(x<number)
+      {track=0;
+    	  System.out.println(number+strArray[x]);
+      switch (strArray[x]) {
       case "Plum":
           while(track<amount)
-          {System.out.println(Given[temp]);
+          {
               if(Given[temp]==0)
               {
                   
@@ -73,7 +77,6 @@ public class Cards  {
           while(track<amount) {
            
               if(Given[temp]==0) {
-            	  System.out.println(Given[temp]);
                   Counters.get("white").addCard(getCard(CardList[temp]));
                   System.out.println("w "+CardList[temp]);
               Given[temp]=1;
@@ -127,6 +130,8 @@ public class Cards  {
           }
           break;
         }
+      x++;
+      }
     }
 
     public void createCard() {
