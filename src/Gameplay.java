@@ -19,6 +19,7 @@ public class Gameplay {
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
     private int turnTrack = 0;
     private int highestRoll=0;
+    private ArrayList<Counter> topPlayers,players;
     private String currentPlayerName;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
 
@@ -67,29 +68,19 @@ public class Gameplay {
         
         // This enters each player into an array that tracks who's turn it is, and the order of turns
         for (Counter currentCounter : this.counters) {
-            play[turnTrack] = currentCounter.getCharacterName();
-            turnTrack++;
+           // play[turnTrack] = currentCounter.getCharacterName();
+            players.add(currentCounter);
+          //  turnTrack++;
             // We set the starting position of each counter to -1 so we know it's occupied
-            squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
+           // squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
+        
+        
         int counter = 0;
         Counter highRoller = null;
-        //find highest
-        for (Counter currentCounter : this.counters) {
-        	if(currentCounter.getRollFirst()>highestRoll) {
-        		highestRoll=currentCounter.getRollFirst();
-        		highRoller = currentCounter;
-        	}
-        	else if(currentCounter.getRollFirst()==highestRoll) {
-        		boolean competitorWon = rollAgainst();
-                if(competitorWon){//if competitor rolls higher
-                    currentCounter.setRollFirst(1);//increase it by one to show it won the roll
-                    highestRoll=currentCounter.getRollFirst();// set the highest roll to the winner
-                    highRoller = currentCounter;
-                }
-        	}
-        	counter++;//this is a int for how many counters there are cus i don't like improved for loops
-        }
+        highRoller = rollForOrder(players);
+
+        
         //reassign stuff now
 
         String[] temp = new String[6];
@@ -117,19 +108,32 @@ public class Gameplay {
         helpCommand();
         turn();
     }
-    public boolean rollAgainst(){//for when two players need to roll and highest gets to do something
+    
+    
+    public Counter rollForOrder(ArrayList<Counter> players){//for when two players need to roll and highest gets to do something
     	Dice die = new Dice();
-		//highest goes first
-		int original=die.roll();
-		int competitor=die.roll();
-				if(competitor>original){//if competitor rolls higher it relaces highestRoll
-    				return true;//if competitor wins return true
-				}
-				else if(competitor==original){
-					rollAgainst();
-				}
-				
-		return false;//if original wins return false
+		int counter=players.size(),highest=0,tiedFor=0;
+    	for(int i = 0;i<counter;i++){
+    		players.get(i).setRollForOrder(die.roll()+die.roll());
+    		if(players.get(i).getRollForOrder()>highest){
+    			highest=players.get(i).getRollForOrder();
+    		}
+    	}
+    	
+    	for(int i = 0;i<counter;i++){
+    		if(players.get(i).getRollForOrder()==highest){
+    			tiedFor++;
+    			topPlayers.add(players.get(i));
+    		}
+    	}
+    	
+    	if(tiedFor>1){
+    		return rollForOrder(topPlayers);
+    	}
+	
+    	else{
+		return	topPlayers.get(1);
+    	}
     }
     /**
      * This method runs when we setVisible(true) and when we repaint()
