@@ -4,7 +4,7 @@ public class Envelope  {
 
     private int xLocation, yLocation;
 
-    private ArrayList<Card> cards = new ArrayList<>();
+    public static ArrayList<Card> cards = new ArrayList<>();
     private String person;
     private String weapon;
     private String room;

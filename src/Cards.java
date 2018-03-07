@@ -140,6 +140,17 @@ public class Cards {
       
             x++;
         }
+      x=0;
+  	SpareCards hold = new SpareCards();
+
+      while(x<21)
+      {
+    	  if(Given[x]==0)
+    	  {
+    		  hold.addCard(getCard(CardList[temp]));
+    	  }
+    	  x++;
+      }
     }
 
     public void createCard() {
@@ -155,7 +166,7 @@ public class Cards {
         cards.add(new Card("Candle Stick", "Weapon", false));
         cards.add(new Card("Dagger", "Weapon", false));
         cards.add(new Card("Rope", "Weapon", false));
-        cards.add(new Card("Ballroom", "Room", false));
+        cards.add(new Card("Ball Room", "Room", false));
         cards.add(new Card("Billiard Room", "Room", false));
         cards.add(new Card("Conservatory", "Room", false));
         cards.add(new Card("Lounge", "Room", false));

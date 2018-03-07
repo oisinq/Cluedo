@@ -461,6 +461,8 @@ public class Gameplay {
             Counter c = Counters.get(currentPlayerName);
             c.refreshNotes();
             frame.appendText(c.getNotesString());
+        } else if(splitStr.toLowerCase().equals("cheat")) {
+            frame.appendText("Contents are " + Envelope.cards.get(0).getName() + ", " + Envelope.cards.get(1).getName() + ", " + Envelope.cards.get(2).getName());
         }
         else if(splitStr.toLowerCase().equals("done")) {
             dieResult = 0;
