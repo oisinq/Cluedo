@@ -36,7 +36,7 @@ public class GUI extends JFrame {
         board = new JPanel();
         // We use BorderLayout to easily have multiple components in the same panel
         setLayout(new BorderLayout());
-        setSize(900, 690);
+        setSize(950, 680);
         setTitle("Cluedo");
         // Places the frame in the centre of the screen
         setLocationRelativeTo(null);
@@ -51,9 +51,11 @@ public class GUI extends JFrame {
             JOptionPane.showMessageDialog(null, "Error: cannot load board image.");
         }
 
-        infoField = new JTextArea(10, 20);
+        infoField = new JTextArea(12, 29);
         // I setEditable to false so that the user can't edit the text on the right-hand size
         infoField.setEditable(false);
+        infoField.setBackground(new Color(107, 106, 104));
+        infoField.setForeground(Color.WHITE);
         infoField.setLineWrap(true);
         // I place the infoField inside a scrollpane so that the textArea doesn't fill up
         scrollPane = new JScrollPane(infoField);

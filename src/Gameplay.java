@@ -88,10 +88,10 @@ public class Gameplay {
 
         temp[0] = highRoller.getCharacterName();
         for(int i = 1; i < counter; i++) {
-            if (temp[0] == play[j]) {
+            if (temp[0] == init.get(j).getCharacterName()) {
                 i--;
             } else {
-                temp[i] = play[j];
+                temp[i] = init.get(j).getCharacterName();
             }
             j++;
         }
