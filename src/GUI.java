@@ -36,7 +36,7 @@ public class GUI extends JFrame {
         board = new JPanel();
         // We use BorderLayout to easily have multiple components in the same panel
         setLayout(new BorderLayout());
-        setSize(950, 680);
+        setSize(960, 680);
         setTitle("Cluedo");
         // Places the frame in the centre of the screen
         setLocationRelativeTo(null);
