@@ -100,8 +100,6 @@ public class Gameplay {
         for (String p : temp) {
             play[x++] = p;
         }
-        
-        
         // This is the current player
         currentPlayerName = play[0];
         // We display the help command in the infoField and start the first turn

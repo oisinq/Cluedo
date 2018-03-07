@@ -98,18 +98,8 @@ class GameSetup {
             for (Counter currentCounter : counters) {
                 Players++;
             }
-			 /* for (Counter currentCounter : counters) {
-			         cards.CardHolder(currentCounter.getCharacterName(), 18/Players);
-			         System.out.println(currentCounter.getCharacterName());
-			         //currentCounter.printCards();
-			      }*/
-            String[] CardList = (new String[]{"Plum", "White", "Green", "Peacock", "Mustard", "Scarlet"});
-
-            if (a == 1) {
-                cards.CardHolder(CardList, 18 / 2, Players);
-
-            }
-            a++;
+			
+			
 
         }
     }

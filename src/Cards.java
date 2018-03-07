@@ -96,6 +96,7 @@ public class Cards {
           while(track<amount) {
               if(Given[temp]==0) {
                   Counters.get("scarlet").addCard(getCard(CardList[temp]));
+                  System.out.println(getCard(CardList[temp]).getName());
 
               Given[temp]=1;
               track++;
@@ -107,6 +108,7 @@ public class Cards {
           while(track<amount) {
               if(Given[temp]==0) {
                   Counters.get("green").addCard(getCard(CardList[temp]));
+                  System.out.println(getCard(CardList[temp]).getName());
 
               Given[temp]=1;
               track++;
@@ -118,6 +120,7 @@ public class Cards {
           while(track<amount) {
               if(Given[temp]==0) {
                   Counters.get("mustard").addCard(getCard(CardList[temp]));
+                  System.out.println(getCard(CardList[temp]).getName());
 
               Given[temp]=1;
               track++;
@@ -129,6 +132,7 @@ public class Cards {
           while(track<amount) {
               if(Given[temp]==0) {
                   Counters.get("peacock").addCard(getCard(CardList[temp]));
+                  System.out.println(getCard(CardList[temp]).getName());
 
               Given[temp]=1;
               track++;
