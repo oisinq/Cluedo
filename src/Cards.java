@@ -140,6 +140,17 @@ public class Cards {
       
             x++;
         }
+      x=0;
+  	SpareCards hold = new SpareCards();
+
+      while(x<21)
+      {
+    	  if(Given[x]==0)
+    	  {
+    		  hold.addCard(getCard(CardList[temp]));
+    	  }
+    	  x++;
+      }
     }
 
     public void createCard() {
