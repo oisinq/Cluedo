@@ -100,7 +100,16 @@ public class Gameplay {
         for (String p : temp) {
             play[x++] = p;
         }
+        int r=0;
+        while(r<6)
+        {
+        	System.out.println(temp[r]);
+        	r++;
+		}
+        Cards cards = new Cards();
+        cards.CardHolder(play, 18 /play.length +1, play.length+1);
         // This is the current player
+        
         currentPlayerName = play[0];
         // We display the help command in the infoField and start the first turn
         helpCommand();
