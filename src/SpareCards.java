@@ -4,7 +4,7 @@ public class SpareCards  {
 
     private int xLocation, yLocation;
 
-    private ArrayList<Card> cards = new ArrayList<>();
+    public static ArrayList<Card> cards = new ArrayList<>();
    
    
     SpareCards() {
