@@ -103,7 +103,7 @@ public class Gameplay {
         int r=0;
         while(r<6)
         {
-        	System.out.println(temp[r]);
+        	System.out.println(play[r]);
         	r++;
 		}
         Cards cards = new Cards();
