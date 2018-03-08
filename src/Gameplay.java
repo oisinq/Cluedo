@@ -63,6 +63,7 @@ public class Gameplay {
         this.frame=frame;
         this.counters = counters;
         this.rooms=rooms;
+        int counter = 0;
 
         
         
@@ -70,13 +71,14 @@ public class Gameplay {
         for (Counter currentCounter : this.counters) {
             //play[turnTrack] = currentCounter.getCharacterName();
             init.add(currentCounter);
-            //turnTrack++;
+            counter++;
+            turnTrack++;
             //We set the starting position of each counter to -1 so we know it's occupied
             //squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
         
         
-        int counter = 0;
+
         Counter highRoller = null;
         highRoller = rollForOrder(init);
 
@@ -88,7 +90,7 @@ public class Gameplay {
 
         temp[0] = highRoller.getCharacterName();
         for(int i = 1; i < counter; i++) {
-            if (temp[0] == init.get(j).getCharacterName()) {
+            if (temp[0].equals(init.get(j).getCharacterName())) {
                 i--;
             } else {
                 temp[i] = init.get(j).getCharacterName();
