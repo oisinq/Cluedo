@@ -109,7 +109,7 @@ public class Gameplay {
         	r++;
 		}
         Cards cards = new Cards();
-        cards.CardHolder(play, 18 /play.length +1, play.length+1);
+        cards.CardHolder(play, 18 /turnTrack, turnTrack);
         // This is the current player
         
         currentPlayerName = play[0];
