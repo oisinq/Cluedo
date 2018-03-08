@@ -82,7 +82,7 @@ public class Cards {
 
                         if (Given[temp] == 0) {
                             Counters.get("white").addCard(getCard(CardList[temp]));
-                            System.out.println("w " + CardList[temp]);
+                            System.out.println("w " + getCard(CardList[temp]).getName());
                             Given[temp] = 1;
                             track++;
                         }
@@ -105,8 +105,7 @@ public class Cards {
                     while (track < amount) {
                         if (Given[temp] == 0) {
                             Counters.get("green").addCard(getCard(CardList[temp]));
-                            System.out.println(getCard("g " + CardList[temp]).getName());
-
+                            System.out.println("g " + getCard(CardList[temp]).getName());
                             Given[temp] = 1;
                             track++;
                         }
