@@ -109,6 +109,7 @@ public class Gameplay {
         	r++;
 		}
         Cards cards = new Cards();
+        cards.Envelope();
         cards.CardHolder(play, 18 /turnTrack, turnTrack);
         // This is the current player
         
