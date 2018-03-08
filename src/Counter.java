@@ -32,8 +32,8 @@ public class Counter extends JComponent implements BoardPiece {
         this.c = c;
         column = x;
         row = y;
-        xLocation = 43 + (column * 23);
-        yLocation = 50 + (row * 23);
+        xLocation = 43 + (column * 23);//43
+        yLocation = 50 + (row * 23);//50
         currentRoom = null;
         notes = new Notes();
         this.rollForOrder=rollForOrder;
