@@ -81,7 +81,7 @@ public class Gameplay {
 
         Counter highRoller = null;
         highRoller = rollForOrder(init);
-
+        frame.appendText(highRoller.getCharacterName()+" rolled the highest with "+ highRoller.getRollForOrder() );
         
         //reassign stuff now
 
