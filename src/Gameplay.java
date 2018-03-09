@@ -82,8 +82,6 @@ public class Gameplay {
         Counter highRoller = null;
         highRoller = rollForOrder(init);
 
-        
-        //reassign stuff now
 
         String[] temp = new String[6];
         int j = 0;
@@ -433,11 +431,13 @@ public class Gameplay {
 
         frame.appendText(">" + inputtedText);//puts it into the panel
         String splitStr = inputtedText.replaceAll("\\s+","");// Splits the inputted string into an array based spaces
+        String command = splitStr.toLowerCase();
 
-        if (splitStr.toLowerCase().equals("help")) {
+        if (command.equals("help")) {
             helpCommand();
         }
-        else if((splitStr.toLowerCase().equals("u") || splitStr.toLowerCase().equals("up")||splitStr.toLowerCase().equals("d") || splitStr.toLowerCase().equals("down")||splitStr.toLowerCase().equals("l") || splitStr.toLowerCase().equals("left")||splitStr.toLowerCase().equals("r") || splitStr.toLowerCase().equals("right"))) { // If the first word is move or m in any format
+        // Checks if the command is a movement direction
+        else if((command.equals("u") || command.equals("up")|| command.equals("d") || command.equals("down")|| command.equals("l") || command.equals("left") || command.equals("r") || command.equals("right"))) {
             if(dieResult>0) {
                 if(moveCommand(splitStr, name)) {
                     dieResult=dieResult-1;
@@ -450,12 +450,12 @@ public class Gameplay {
                 frame.appendText("You have used all your movement.");
             }
         }
-        else if(splitStr.toLowerCase().equals("quit")) {
+        else if(command.equals("quit")) {
             frame.appendText("Thank you for playing! Goodbye");
             System.exit(0);
         }
         // This rolls the dice
-        else if(splitStr.toLowerCase().equals("roll")) {
+        else if(command.equals("roll")) {
             if (dieRoll == 0) {
                 Dice die = new Dice();
                 // There are two dice, so we roll twice
@@ -467,12 +467,12 @@ public class Gameplay {
             else {
                 frame.appendText("You have already rolled this turn!");
             }
-        } else if(splitStr.toLowerCase().equals("notes")) {
+        } else if(command.equals("notes")) {
             Counter c = Counters.get(currentPlayerName);
             c.refreshNotes();
             frame.appendText(c.getNotesString());
-        } else if(splitStr.toLowerCase().equals("cheat")) {
-            frame.appendText("Contents are " + Envelope.cards.get(0).getName() + ", " + Envelope.cards.get(1).getName() + ", " + Envelope.cards.get(2).getName());
+        } else if(command.equals("cheat")) {
+            frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
         }
         else if(splitStr.toLowerCase().equals("done")) {
             dieResult = 0;

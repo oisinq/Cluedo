@@ -49,10 +49,10 @@ public class Cards {
         temp = Random().nextInt(8) + 12;
         MurderFile[2] = CardList[temp];
         Given[temp] = 1;
-        Envelope file = new Envelope(MurderFile[0], MurderFile[1], MurderFile[2]);
-        file.addCard(getCard(MurderFile[0]));
-        file.addCard(getCard(MurderFile[1]));
-        file.addCard(getCard(MurderFile[2]));
+        Envelope file = new Envelope();
+        file.setPerson(getCard(MurderFile[0]));
+        file.setWeapon(getCard(MurderFile[1]));
+        file.setRoom(getCard(MurderFile[2]));
 
     }
 

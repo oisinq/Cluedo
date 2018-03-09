@@ -173,11 +173,13 @@ public class Counter extends JComponent implements BoardPiece {
     public ArrayList<Card> getCards() {
         return cards;
     }
+
     public void printCards() {
     	 for (Card currentCounter : cards) {
 	         System.out.println(currentCounter);
 	      }
     }
+
     public String getNotesString() {
         String s = characterName+":\n";
         for (Map.Entry<String, String> entry : notes.values.entrySet()) {

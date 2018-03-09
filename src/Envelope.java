@@ -5,27 +5,35 @@ public class Envelope  {
     private int xLocation, yLocation;
 
     public static ArrayList<Card> cards = new ArrayList<>();
-    private String person;
-    private String weapon;
-    private String room;
+    private static Card person;
+    private static Card weapon;
+    private static Card room;
    
-    Envelope(String person, String weapon, String room) {
-    	this.person=person;
-    	this.weapon=weapon;
-    	this.room=room;
+    Envelope() {
+
     }
 
-    public String getPerson() {
+    public void setPerson(Card c) {
+    	person = c;
+    }
+
+    public void setWeapon(Card c) {
+        weapon = c;
+    }
+
+    public void setRoom(Card c) {
+        room = c;
+    }
+
+    public static Card getPerson() {
         return person;
     }
-    public String getWeapon() {
+
+    public static Card getWeapon() {
         return weapon;
     }
-    public String getRoom() {
+
+    public static Card getRoom() {
         return room;
-    }
-    public void addCard(Card c)
-    {
-    	cards.add(c);
     }
 }
