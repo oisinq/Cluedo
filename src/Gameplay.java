@@ -682,7 +682,7 @@ public class Gameplay {
         }
 
         // If the counter is now in a room, it finds what room the counter is in and moves it to the centre of that room
-        if(isRoom(counter)) {
+        if(isRoom(counter) && moved) {
             int tmp;
             // We keep the dieResult because you may still be allowed to make a move and moveToRoomCentre resets dieResult to 0
             tmp = dieResult;
