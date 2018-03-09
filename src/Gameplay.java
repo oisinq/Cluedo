@@ -74,7 +74,7 @@ public class Gameplay {
             counter++;
             turnTrack++;
             //We set the starting position of each counter to -1 so we know it's occupied
-            //squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
+            squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
         
         
