@@ -82,7 +82,6 @@ public class Gameplay {
         Counter highRoller = null;
         highRoller = rollForOrder(init);
 
-
         String[] temp = new String[6];
         int j = 0;
 
@@ -114,6 +113,7 @@ public class Gameplay {
         currentPlayerName = play[0];
         // We display the help command in the infoField and start the first turn
         helpCommand();
+        frame.appendText(highRoller.getCharacterName()+" rolled the highest with "+ highRoller.getRollForOrder() +"so they will go first\n");
         turn();
     }
     
