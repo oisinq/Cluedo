@@ -12,7 +12,7 @@ public class Cards {
     private ArrayList<Card> cards = new ArrayList<>();
 
     String[] CardList = (new String[]{"Mustard", "Scarlet", "Green", "Peacock", "White", "Plum",
-            "Pistol", "Dagger", "Lead Pipe", "Candle Stick", "Rope", "Wrench",
+            "Pistol", "Dagger", "Lead Pipe", "Candlestick", "Rope", "Wrench",
             "Ball Room", "Library", "Hall", "Conservatory", "Billiard Room", "Study", "Lounge", "Dining Room", "Kitchen"});
 
 
@@ -70,7 +70,6 @@ public class Cards {
                         if (Given[temp] == 0) {
 
                             Counters.get("plum").addCard(getCard(CardList[temp]));
-                            System.out.println("pl " + getCard(CardList[temp]).getName());
                             Given[temp] = 1;
                             track++;
                         }
@@ -82,7 +81,6 @@ public class Cards {
 
                         if (Given[temp] == 0) {
                             Counters.get("white").addCard(getCard(CardList[temp]));
-                            System.out.println("w " + getCard(CardList[temp]).getName());
                             Given[temp] = 1;
                             track++;
                         }
@@ -93,7 +91,6 @@ public class Cards {
                     while (track < amount) {
                         if (Given[temp] == 0) {
                             Counters.get("scarlet").addCard(getCard(CardList[temp]));
-                            System.out.println("s " + getCard(CardList[temp]).getName());
 
                             Given[temp] = 1;
                             track++;
@@ -105,7 +102,6 @@ public class Cards {
                     while (track < amount) {
                         if (Given[temp] == 0) {
                             Counters.get("green").addCard(getCard(CardList[temp]));
-                            System.out.println("g " + getCard(CardList[temp]).getName());
                             Given[temp] = 1;
                             track++;
                         }
@@ -116,7 +112,6 @@ public class Cards {
                     while (track < amount) {
                         if (Given[temp] == 0) {
                             Counters.get("mustard").addCard(getCard(CardList[temp]));
-                            System.out.println("m " + getCard(CardList[temp]).getName());
 
                             Given[temp] = 1;
                             track++;
@@ -128,7 +123,6 @@ public class Cards {
                     while (track < amount) {
                         if (Given[temp] == 0) {
                             Counters.get("peacock").addCard(getCard(CardList[temp]));
-                            System.out.println("pe " + getCard(CardList[temp]).getName());
 
                             Given[temp] = 1;
                             track++;
@@ -161,7 +155,7 @@ public class Cards {
         cards.add(new Card("Pistol", "Weapon", false));
         cards.add(new Card("Dagger", "Weapon", false));
         cards.add(new Card("Lead Pipe", "Weapon", false));
-        cards.add(new Card("Candle Stick", "Weapon", false));
+        cards.add(new Card("Candlestick", "Weapon", false));
         cards.add(new Card("Rope", "Weapon", false));
         cards.add(new Card("Wrench", "Weapon", false));
         cards.add(new Card("Ball Room", "Room", false));
@@ -174,9 +168,4 @@ public class Cards {
         cards.add(new Card("Dining Room", "Room", false));
         cards.add(new Card("Kitchen", "Room", false));
     }
-
-    /** "Mustard", "Scarlet", "Green", "Peacock", "White", "Plum",
-     "Pistol", "Dagger", "Lead Pipe", "Candle Stick", "Rope", "Wrench",
-     "Ball Room", "Library", "Hall", "Conservatory", "Billiard Room", "Study", "Lounge", "Dining Room", "Kitchen" */
-
 }

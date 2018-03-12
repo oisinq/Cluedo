@@ -52,12 +52,14 @@ public class GUI extends JFrame {
             JOptionPane.showMessageDialog(null, "Error: cannot load board image.");
         }
 
-        infoField = new JTextArea(12, 29);
+        infoField = new JTextArea(12, 42);
         // I setEditable to false so that the user can't edit the text on the right-hand size
         infoField.setEditable(false);
         infoField.setBackground(new Color(107, 106, 104));
         infoField.setForeground(Color.WHITE);
         infoField.setLineWrap(true);
+        infoField.setWrapStyleWord(true);
+        infoField.setMargin(new Insets(5,5,5,5));
         // I place the infoField inside a scrollpane so that the textArea doesn't fill up
         scrollPane = new JScrollPane(infoField);
 
@@ -66,13 +68,13 @@ public class GUI extends JFrame {
 
         userInput = new JTextField();
         userInput.setText("Enter text here (type 'help' for help)");
-        //infoField.append("Commands: \nMove Player Piece\n - intial for direction of movement e.g U/D/L/R \n" +
-        //        "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n\n");
+
         // This method creates the Counter objects
         initialiseCounters(counters);
         // This method creates the Weapon objects
         initialiseWeapons(weapons);
 
+        infoField.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
 
         // Adds the different sections to the GUI
         addComponents();

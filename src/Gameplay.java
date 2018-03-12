@@ -18,8 +18,6 @@ public class Gameplay {
     private int PlayTurn = 0;
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
     private int turnTrack = 0;
-    private int highestRoll=0;
-    private ArrayList<Counter> topPlayers=new ArrayList<Counter>(),players=new ArrayList<Counter>(),init=new ArrayList<Counter>();
     private String currentPlayerName;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
 
@@ -65,9 +63,8 @@ public class Gameplay {
         this.rooms=rooms;
         int counter = 0;
 
-        
-        
         // This enters each player into an array that tracks who's turn it is, and the order of turns
+        ArrayList<Counter> init = new ArrayList<>();
         for (Counter currentCounter : this.counters) {
             //play[turnTrack] = currentCounter.getCharacterName();
             init.add(currentCounter);
@@ -76,10 +73,10 @@ public class Gameplay {
             //We set the starting position of each counter to -1 so we know it's occupied
             squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
-        
-        
 
-        Counter highRoller = null;
+
+
+        Counter highRoller;
         highRoller = rollForOrder(init);
 
         String[] temp = new String[6];
@@ -99,48 +96,41 @@ public class Gameplay {
         for (String p : temp) {
             play[x++] = p;
         }
-        int r=0;
-        while(r<6)
-        {
-        	System.out.println(play[r]);
-        	r++;
-		}
         Cards cards = new Cards();
         cards.Envelope();
         cards.CardHolder(play, 18 /turnTrack, turnTrack);
         // This is the current player
-        
+
         currentPlayerName = play[0];
         // We display the help command in the infoField and start the first turn
         helpCommand();
-        frame.appendText(highRoller.getCharacterName()+" rolled the highest with "+ highRoller.getRollForOrder() +"so they will go first\n");
+        frame.appendText(highRoller.getCharacterName()+" rolled the highest with "+ highRoller.getRollForOrder() +", so they will go first\n");
         turn();
     }
-    
-    
-    public Counter rollForOrder(ArrayList<Counter> players){//for when two players need to roll and highest gets to do something
+
+    private Counter rollForOrder(ArrayList<Counter> players){//for when two players need to roll and highest gets to do something
     	Dice die = new Dice();
-		int counter=players.size(),highest=0,tiedFor=0;
-    	for(int i = 0;i<counter;i++){
-    		players.get(i).setRollForOrder(die.roll()+die.roll());
-    		if(players.get(i).getRollForOrder()>highest){
-    			highest=players.get(i).getRollForOrder();
-    		}
-    	}
-    	
-    	for(int i = 0;i<counter;i++){
-    		if(players.get(i).getRollForOrder()==highest){
-    			tiedFor++;
-    			topPlayers.add(players.get(i));
-    		}
-    	}
-    	
-    	if(tiedFor>1){
-    		return rollForOrder(topPlayers);
-    	}
-	
-    	else{
-		return	topPlayers.get(0);
+    	ArrayList<Counter> topPlayers=new ArrayList<>();
+
+		int highest = 0, tiedFor = 0;
+        for (Counter player : players) {
+            player.setRollForOrder(die.roll() + die.roll());
+            if (player.getRollForOrder() > highest) {
+                highest = player.getRollForOrder();
+            }
+        }
+
+        for (Counter player : players) {
+            if (player.getRollForOrder() == highest) {
+                tiedFor++;
+                topPlayers.add(player);
+            }
+        }
+
+    	if(tiedFor > 1) {
+    		return  rollForOrder(topPlayers);
+    	} else {
+		    return topPlayers.get(0);
     	}
     }
     /**
@@ -469,7 +459,6 @@ public class Gameplay {
             }
         } else if(command.equals("notes")) {
             Counter c = Counters.get(currentPlayerName);
-            c.refreshNotes();
             frame.appendText(c.getNotesString());
         } else if(command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());

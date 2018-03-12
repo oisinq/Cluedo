@@ -15,7 +15,6 @@ public class Main{
     
     private Main() {
     	new GameSetup(counters);
-    //	new Cards();
     	frame = new GUI(counters,weapons, rooms);
     }
 

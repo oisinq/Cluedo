@@ -174,22 +174,36 @@ public class Counter extends JComponent implements BoardPiece {
         return cards;
     }
 
-    public void printCards() {
-    	 for (Card currentCounter : cards) {
-	         System.out.println(currentCounter);
-	      }
-    }
-
+    /**
+     * This reads the values in notes, and returns the details to a string
+     * This can then be displayed in the infoField
+     */
     public String getNotesString() {
-        String s = characterName+":\n";
+        refreshNotes();
+        StringBuilder s = new StringBuilder();
+        int i = 0;
         for (Map.Entry<String, String> entry : notes.values.entrySet()) {
+            if (i == 0) {
+                s.append("\nPlayers:\n");
+            } else if (i == 6) {
+                s.append("\nWeapons:\n");
+            } else if (i == 12) {
+                s.append("\nRooms:\n");
+            }
             String key = entry.getKey();
             String value = entry.getValue();
-            s += key + " -> " + value + "\n";
+        //    String builder = String.format("%-14s -> %3s\n", key.trim(), value.trim());
+            s.append(String.format("%-14s -> %3s\n", key.trim(), value.trim()));
+        //    s += key + " -> " + value + "\n";
+        //   s.append(key + " -> " + value + "\n");
+        //     System.out.println(String.format("%-14s -> %s\n", key.trim(), value.trim()));
+            i++;
         }
-        s += "\n";
+        s.append("\n");
 
-        return s;
+        //System.out.println(s.toString());
+
+        return s.toString();
     }
 
     public void refreshNotes() {
