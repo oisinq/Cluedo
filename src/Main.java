@@ -6,19 +6,19 @@
 /**
  * This is the main class that is ran when the program starts
  */
-public class Main{
+public class Main {
 
     private final Counters counters = new Counters();
     private final Weapons weapons = new Weapons();
     private final Rooms rooms = new Rooms();
     private GUI frame;
-    
+
     private Main() {
-    	new GameSetup(counters);
-    	frame = new GUI(counters,weapons, rooms);
+        new GameSetup(counters);
+        frame = new GUI(counters, weapons, rooms);
     }
 
     public static void main(String args[]) {
-    	new Main();
+        new Main();
     }
 }

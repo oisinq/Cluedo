@@ -7,21 +7,17 @@ import java.util.Random;
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
 
 public class Cards {
-    int[] Given = (new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
-
-    private ArrayList<Card> cards = new ArrayList<>();
-
-    String[] CardList = (new String[]{"Mustard", "Scarlet", "Green", "Peacock", "White", "Plum",
+    private String[] cardList = (new String[]{"Mustard", "Scarlet", "Green", "Peacock", "White", "Plum",
             "Pistol", "Dagger", "Lead Pipe", "Candlestick", "Rope", "Wrench",
             "Ball Room", "Library", "Hall", "Conservatory", "Billiard Room", "Study", "Lounge", "Dining Room", "Kitchen"});
-
+    private int[] given = (new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+    private ArrayList<Card> cards = new ArrayList<>();
 
     Cards() {
         createCard();
     }
 
-
-    public Card getCard(String name) {
+    private Card getCard(String name) {
         for (Card c : cards) {
             if (c.hasCardName(name)) {
                 return c;
@@ -31,7 +27,7 @@ public class Cards {
     }
 
 
-    public Random Random() {
+    private Random Random() {
         Random rand;
         rand = new Random();
         return rand;
@@ -40,15 +36,15 @@ public class Cards {
     public void Envelope() {
         String[] MurderFile = new String[3];
         int temp = Random().nextInt(6);
-        MurderFile[0] = CardList[temp];
-        Given[temp] = 1;
+        MurderFile[0] = cardList[temp];
+        given[temp] = 1;
 
         temp = Random().nextInt(6) + 6;
-        MurderFile[1] = CardList[temp];
-        Given[temp] = 1;
+        MurderFile[1] = cardList[temp];
+        given[temp] = 1;
         temp = Random().nextInt(8) + 12;
-        MurderFile[2] = CardList[temp];
-        Given[temp] = 1;
+        MurderFile[2] = cardList[temp];
+        given[temp] = 1;
         Envelope file = new Envelope();
         file.setPerson(getCard(MurderFile[0]));
         file.setWeapon(getCard(MurderFile[1]));
@@ -58,7 +54,7 @@ public class Cards {
 
     public void CardHolder(String[] strArray, int amount, int number) {
 
-        int track = 0;
+        int track;
         int x = 0;
         int temp = Random().nextInt(21);
         while (x < number) {
@@ -67,10 +63,9 @@ public class Cards {
             switch (strArray[x]) {
                 case "Plum":
                     while (track < amount) {
-                        if (Given[temp] == 0) {
-
-                            Counters.get("plum").addCard(getCard(CardList[temp]));
-                            Given[temp] = 1;
+                        if (given[temp] == 0) {
+                            Counters.get("plum").addCard(getCard(cardList[temp]));
+                            given[temp] = 1;
                             track++;
                         }
                         temp = Random().nextInt(21);
@@ -79,9 +74,9 @@ public class Cards {
                 case "White":
                     while (track < amount) {
 
-                        if (Given[temp] == 0) {
-                            Counters.get("white").addCard(getCard(CardList[temp]));
-                            Given[temp] = 1;
+                        if (given[temp] == 0) {
+                            Counters.get("white").addCard(getCard(cardList[temp]));
+                            given[temp] = 1;
                             track++;
                         }
                         temp = Random().nextInt(21);
@@ -89,10 +84,10 @@ public class Cards {
                     break;
                 case "Scarlet":
                     while (track < amount) {
-                        if (Given[temp] == 0) {
-                            Counters.get("scarlet").addCard(getCard(CardList[temp]));
+                        if (given[temp] == 0) {
+                            Counters.get("scarlet").addCard(getCard(cardList[temp]));
 
-                            Given[temp] = 1;
+                            given[temp] = 1;
                             track++;
                         }
                         temp = Random().nextInt(21);
@@ -100,9 +95,9 @@ public class Cards {
                     break;
                 case "Green":
                     while (track < amount) {
-                        if (Given[temp] == 0) {
-                            Counters.get("green").addCard(getCard(CardList[temp]));
-                            Given[temp] = 1;
+                        if (given[temp] == 0) {
+                            Counters.get("green").addCard(getCard(cardList[temp]));
+                            given[temp] = 1;
                             track++;
                         }
                         temp = Random().nextInt(21);
@@ -110,10 +105,10 @@ public class Cards {
                     break;
                 case "Mustard":
                     while (track < amount) {
-                        if (Given[temp] == 0) {
-                            Counters.get("mustard").addCard(getCard(CardList[temp]));
+                        if (given[temp] == 0) {
+                            Counters.get("mustard").addCard(getCard(cardList[temp]));
 
-                            Given[temp] = 1;
+                            given[temp] = 1;
                             track++;
                         }
                         temp = Random().nextInt(21);
@@ -121,10 +116,10 @@ public class Cards {
                     break;
                 case "Peacock":
                     while (track < amount) {
-                        if (Given[temp] == 0) {
-                            Counters.get("peacock").addCard(getCard(CardList[temp]));
+                        if (given[temp] == 0) {
+                            Counters.get("peacock").addCard(getCard(cardList[temp]));
 
-                            Given[temp] = 1;
+                            given[temp] = 1;
                             track++;
                         }
                         temp = Random().nextInt(21);
@@ -138,14 +133,14 @@ public class Cards {
         SpareCards spares = new SpareCards();
 
         while (x < 21) {
-            if (Given[x] == 0) {
-                spares.addCard(getCard(CardList[x]));
+            if (given[x] == 0) {
+                spares.addCard(getCard(cardList[x]));
             }
             x++;
         }
     }
 
-    public void createCard() {
+    private void createCard() {
         cards.add(new Card("Mustard", "Person", false));
         cards.add(new Card("Scarlet", "Person", false));
         cards.add(new Card("Green", "Person", false));

@@ -38,7 +38,7 @@ public class GUI extends JFrame {
         setLayout(new BorderLayout());
         setSize(982, 680);
         setTitle("Cluedo");
-        setBackground(new Color(76,133,99));
+        setBackground(new Color(76, 133, 99));
         // Places the frame in the centre of the screen
         setLocationRelativeTo(null);
         setResizable(false);
@@ -59,11 +59,11 @@ public class GUI extends JFrame {
         infoField.setForeground(Color.WHITE);
         infoField.setLineWrap(true);
         infoField.setWrapStyleWord(true);
-        infoField.setMargin(new Insets(5,5,5,5));
+        infoField.setMargin(new Insets(5, 5, 5, 5));
         // I place the infoField inside a scrollpane so that the textArea doesn't fill up
         scrollPane = new JScrollPane(infoField);
 
-        DefaultCaret caret = (DefaultCaret)infoField.getCaret();
+        DefaultCaret caret = (DefaultCaret) infoField.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         userInput = new JTextField();
@@ -109,7 +109,7 @@ public class GUI extends JFrame {
      * Draws the counters on top of the board in the correct locations
      */
     private void drawCounters(Graphics g) {
-        for(Counter c : counters) {
+        for (Counter c : counters) {
             c.paintComponent(g);
         }
     }
@@ -118,7 +118,7 @@ public class GUI extends JFrame {
      * Draws the weapons on top of the board in the correct locations
      */
     private void drawWeapons(Graphics g) {
-        for(Weapon w : weapons) {
+        for (Weapon w : weapons) {
             w.paintComponent(g);
         }
     }

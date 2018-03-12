@@ -13,21 +13,22 @@ import java.util.Map;
  * Each counter represents a player on the board
  */
 public class Counter extends JComponent implements BoardPiece {
-	private ArrayList<Card> cards = new ArrayList<>();
+    private String characterName;
+    private String userName;
+    private ArrayList<Card> cards = new ArrayList<>();
     private ArrayList<Card> sharedCards;
 
     private int xLocation, yLocation;
     // 43, 50 is top of grid
-    private int column, row,rollForOrder;
+    private int column, row, rollForOrder;
     private Color c;
-    private String userName;
-    private String characterName;
+
     private Room currentRoom;
     private Notes notes;
 
 
-    Counter(String userName, String characterName, Color c, int x, int y,int rollForOrder) {
-    	this.userName=userName;
+    Counter(String userName, String characterName, Color c, int x, int y, int rollForOrder) {
+        this.userName = userName;
         this.characterName = characterName;
         this.c = c;
         column = x;
@@ -36,7 +37,7 @@ public class Counter extends JComponent implements BoardPiece {
         yLocation = 50 + (row * 23);//50
         currentRoom = null;
         notes = new Notes();
-        this.rollForOrder=rollForOrder;
+        this.rollForOrder = rollForOrder;
         sharedCards = SpareCards.cards;
     }
 
@@ -73,21 +74,23 @@ public class Counter extends JComponent implements BoardPiece {
     public int getY() {
         return yLocation;
     }
-    
-    
+
+
     /**
      * Returns the roll
      */
     public int getRollForOrder() {
         return rollForOrder;
     }
+
     /**
-    * set the roll first to a higher value(only for use with the turn methods in gameplay)
-    */
+     * set the roll first to a higher value(only for use with the turn methods in gameplay)
+     */
     public void setRollForOrder(int r) {
-    	
-        rollForOrder=r;
+
+        rollForOrder = r;
     }
+
     /**
      * Returns the column of the counter
      */
@@ -140,7 +143,7 @@ public class Counter extends JComponent implements BoardPiece {
     /**
      * Gets the name originally entered by the user
      */
-    public String getUserName(){
+    public String getUserName() {
         return userName;
     }
 
@@ -152,23 +155,22 @@ public class Counter extends JComponent implements BoardPiece {
     }
 
     /**
-     * Checks if the current room the counter is in is "r"
-     */
-    public void setCurrentRoom(Room r) {
-        currentRoom = r;
-    }
-
-    /**
      * Returns the name of the current room of the counter
      */
     public Room getCurrentRoom() {
         return currentRoom;
     }
 
-    public void addCard(Card c)
-{
-	cards.add(c);
-}
+    /**
+     * Checks if the current room the counter is in is "r"
+     */
+    public void setCurrentRoom(Room r) {
+        currentRoom = r;
+    }
+
+    public void addCard(Card c) {
+        cards.add(c);
+    }
 
     public ArrayList<Card> getCards() {
         return cards;
@@ -192,21 +194,14 @@ public class Counter extends JComponent implements BoardPiece {
             }
             String key = entry.getKey();
             String value = entry.getValue();
-        //    String builder = String.format("%-14s -> %3s\n", key.trim(), value.trim());
             s.append(String.format("%-14s -> %3s\n", key.trim(), value.trim()));
-        //    s += key + " -> " + value + "\n";
-        //   s.append(key + " -> " + value + "\n");
-        //     System.out.println(String.format("%-14s -> %s\n", key.trim(), value.trim()));
             i++;
         }
-        s.append("\n");
-
-        //System.out.println(s.toString());
 
         return s.toString();
     }
 
-    public void refreshNotes() {
+    private void refreshNotes() {
         notes.refresh(this, sharedCards);
     }
 

@@ -29,38 +29,38 @@ public class Gameplay {
     Sqaures that are marked 4 are room squares that are adjacent to room entrances
     All negative squares are occupied by another user (e.g. -1 is an occupied pathway square */
     private int[][] squareType = {
-            {0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
-            {3,3,3,3,3,3,0,1,1,1,3,3,3,3,1,1,1,0,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,3,1,1,4,3,3,3,3,3,0},
-            {3,3,3,3,3,3,1,2,4,3,3,3,3,3,3,4,2,1,2,3,3,3,3,0,0},
-            {3,3,3,3,4,3,1,1,3,3,3,3,3,3,3,3,1,1,1,1,1,1,1,1,0},
-            {1,1,1,1,2,1,1,1,3,4,3,3,3,3,4,3,1,1,1,1,1,1,1,0,0},
-            {0,1,1,1,1,1,1,1,1,2,1,1,1,1,2,1,1,1,3,3,3,3,3,3,0},
-            {3,3,3,3,3,1,1,1,1,1,1,1,1,1,1,1,1,2,4,3,3,3,3,3,0},
-            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,3,4,2,1,3,3,3,3,3,1,1,1,3,3,3,3,4,3,0},
-            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,1,1,2,1,2,0,0},
-            {3,3,3,3,3,3,3,3,1,1,3,3,3,3,3,1,1,1,3,3,4,3,3,0,0},
-            {3,3,3,3,3,3,4,3,1,1,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
-            {0,1,1,1,1,1,2,1,1,1,3,3,4,3,3,1,2,4,3,3,3,3,3,3,0},
-            {1,1,1,1,1,1,1,1,1,1,1,2,2,1,1,1,1,3,3,3,3,3,3,3,0},
-            {0,1,1,1,1,1,2,1,1,3,3,4,4,3,3,1,1,1,3,3,3,3,3,0,0},
-            {3,3,3,3,3,3,4,1,1,3,3,3,3,3,3,1,1,1,1,1,1,1,1,1,0},
-            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,4,2,1,2,1,1,1,1,1,0,0},
-            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,4,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,3,1,1,3,3,3,3,3,3,1,1,3,3,3,3,3,3,3,0},
-            {3,3,3,3,3,3,0,1,0,0,0,0,0,0,0,0,1,0,3,3,3,3,3,3,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {3, 3, 3, 3, 3, 3, 0, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 0, 3, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 4, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 3, 1, 2, 4, 3, 3, 3, 3, 3, 3, 4, 2, 1, 2, 3, 3, 3, 3, 0, 0},
+            {3, 3, 3, 3, 4, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {1, 1, 1, 1, 2, 1, 1, 1, 3, 4, 3, 3, 3, 3, 4, 3, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+            {0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 3, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 4, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 3, 3, 4, 2, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 3, 3, 4, 3, 0},
+            {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 2, 1, 2, 0, 0},
+            {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 4, 3, 3, 0, 0},
+            {3, 3, 3, 3, 3, 3, 4, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
+            {0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 3, 3, 4, 3, 3, 1, 2, 4, 3, 3, 3, 3, 3, 3, 0},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
+            {0, 1, 1, 1, 1, 1, 2, 1, 1, 3, 3, 4, 4, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3, 0, 0},
+            {3, 3, 3, 3, 3, 3, 4, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 4, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0},
+            {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 4, 3, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
+            {3, 3, 3, 3, 3, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 3, 3, 3, 3, 3, 3, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
     Gameplay(GUI frame, Counters counters, Rooms rooms) {
-        this.frame=frame;
+        this.frame = frame;
         this.counters = counters;
-        this.rooms=rooms;
+        this.rooms = rooms;
         int counter = 0;
 
         // This enters each player into an array that tracks who's turn it is, and the order of turns
@@ -75,7 +75,6 @@ public class Gameplay {
         }
 
 
-
         Counter highRoller;
         highRoller = rollForOrder(init);
 
@@ -83,7 +82,7 @@ public class Gameplay {
         int j = 0;
 
         temp[0] = highRoller.getCharacterName();
-        for(int i = 1; i < counter; i++) {
+        for (int i = 1; i < counter; i++) {
             if (temp[0].equals(init.get(j).getCharacterName())) {
                 i--;
             } else {
@@ -98,21 +97,50 @@ public class Gameplay {
         }
         Cards cards = new Cards();
         cards.Envelope();
-        cards.CardHolder(play, 18 /turnTrack, turnTrack);
+        cards.CardHolder(play, 18 / turnTrack, turnTrack);
         // This is the current player
 
         currentPlayerName = play[0];
         // We display the help command in the infoField and start the first turn
         helpCommand();
-        frame.appendText(highRoller.getCharacterName()+" rolled the highest with "+ highRoller.getRollForOrder() +", so they will go first\n");
+        frame.appendText(highRoller.getCharacterName() + " rolled the highest with " + highRoller.getRollForOrder() + ", so they will go first\n");
         turn();
     }
 
-    private Counter rollForOrder(ArrayList<Counter> players){//for when two players need to roll and highest gets to do something
-    	Dice die = new Dice();
-    	ArrayList<Counter> topPlayers=new ArrayList<>();
+    /**
+     * Checks if a string is an integer
+     */
+    private static boolean checkInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        char c;
+        while (i < length) {
+            c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
 
-		int highest = 0, tiedFor = 0;
+    private Counter rollForOrder(ArrayList<Counter> players) {//for when two players need to roll and highest gets to do something
+        Dice die = new Dice();
+        ArrayList<Counter> topPlayers = new ArrayList<>();
+
+        int highest = 0, tiedFor = 0;
         for (Counter player : players) {
             player.setRollForOrder(die.roll() + die.roll());
             if (player.getRollForOrder() > highest) {
@@ -127,12 +155,13 @@ public class Gameplay {
             }
         }
 
-    	if(tiedFor > 1) {
-    		return  rollForOrder(topPlayers);
-    	} else {
-		    return topPlayers.get(0);
-    	}
+        if (tiedFor > 1) {
+            return rollForOrder(topPlayers);
+        } else {
+            return topPlayers.get(0);
+        }
     }
+
     /**
      * This method runs when we setVisible(true) and when we repaint()
      * It paints the images and counters onto the board
@@ -270,27 +299,27 @@ public class Gameplay {
 
         // If a room is enterable, then you must be currently standing in an entrance and trying to enter a room with square type "4"
         // (This is the type given to a square across from an entrance)
-        switch(direction) {
+        switch (direction) {
             case "u":
-                nextSquareType = squareType[counter.getRow()-1][counter.getColumn()];
+                nextSquareType = squareType[counter.getRow() - 1][counter.getColumn()];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "d":
-                nextSquareType = squareType[counter.getRow()+1][counter.getColumn()];
+                nextSquareType = squareType[counter.getRow() + 1][counter.getColumn()];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "l":
-                nextSquareType = squareType[counter.getRow()][counter.getColumn()-1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn() - 1];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
                 break;
             case "r":
-                nextSquareType = squareType[counter.getRow()][counter.getColumn()+1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn() + 1];
                 if (nextSquareType == 4 && currentSquareType == -2) {
                     return true;
                 }
@@ -308,9 +337,9 @@ public class Gameplay {
 
         // If you're currently standing in a room, return false
         // Otherwise, if your next square is a pathway, return true
-        switch(direction) {
+        switch (direction) {
             case "u":
-                nextSquareType = squareType[counter.getRow()-1][counter.getColumn()];
+                nextSquareType = squareType[counter.getRow() - 1][counter.getColumn()];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -318,7 +347,7 @@ public class Gameplay {
                 }
                 break;
             case "d":
-                nextSquareType = squareType[counter.getRow()+1][counter.getColumn()];
+                nextSquareType = squareType[counter.getRow() + 1][counter.getColumn()];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -326,7 +355,7 @@ public class Gameplay {
                 }
                 break;
             case "l":
-                nextSquareType = squareType[counter.getRow()][counter.getColumn()-1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn() - 1];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -334,7 +363,7 @@ public class Gameplay {
                 }
                 break;
             case "r":
-                nextSquareType = squareType[counter.getRow()][counter.getColumn()+1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn() + 1];
                 if (currentSquareType == 4 && nextSquareType == 1) {
                     return false;
                 } else if (nextSquareType == 2 || nextSquareType == 1) {
@@ -352,61 +381,31 @@ public class Gameplay {
         int nextSquareType;
 
         // If the nextSquare is negative, that means it's occupied, so return false
-        switch(direction) {
+        switch (direction) {
             case "u":
-                nextSquareType = squareType[counter.getRow()-1][counter.getColumn()];
+                nextSquareType = squareType[counter.getRow() - 1][counter.getColumn()];
                 if (nextSquareType < 0) {
                     return false;
                 }
                 break;
             case "d":
-                nextSquareType = squareType[counter.getRow()+1][counter.getColumn()];
+                nextSquareType = squareType[counter.getRow() + 1][counter.getColumn()];
                 if (nextSquareType < 0) {
                     return false;
                 }
                 break;
             case "l":
-                nextSquareType = squareType[counter.getRow()][counter.getColumn()-1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn() - 1];
                 if (nextSquareType < 0) {
                     return false;
                 }
                 break;
             case "r":
-                nextSquareType = squareType[counter.getRow()][counter.getColumn()+1];
+                nextSquareType = squareType[counter.getRow()][counter.getColumn() + 1];
                 if (nextSquareType < 0) {
                     return false;
                 }
                 break;
-        }
-        return true;
-    }
-
-    /**
-     * Checks if a string is an integer
-     */
-    private static boolean checkInteger(String str) {
-        if (str == null) {
-            return false;
-        }
-        int length = str.length();
-        if (length == 0) {
-            return false;
-        }
-        int i = 0;
-        if (str.charAt(0) == '-') {
-            if (length == 1) {
-                return false;
-            }
-            i = 1;
-        }
-        char c;
-        while(i<length)
-        {
-            c = str.charAt(i);
-            if (c < '0' || c > '9') {
-                return false;
-            }
-            i++;
         }
         return true;
     }
@@ -414,63 +413,58 @@ public class Gameplay {
     /**
      * Reads text from userInput and interprets text accordingly
      */
-    public void interpretInput( String name) {
+    public void interpretInput(String name) {
         String inputtedText = frame.getUserInput().getText();//takes info from the field
         frame.getUserInput().setText("");//wipes the field after
 
 
         frame.appendText(">" + inputtedText);//puts it into the panel
-        String splitStr = inputtedText.replaceAll("\\s+","");// Splits the inputted string into an array based spaces
+        String splitStr = inputtedText.replaceAll("\\s+", "");// Splits the inputted string into an array based spaces
         String command = splitStr.toLowerCase();
 
         if (command.equals("help")) {
             helpCommand();
         }
         // Checks if the command is a movement direction
-        else if((command.equals("u") || command.equals("up")|| command.equals("d") || command.equals("down")|| command.equals("l") || command.equals("left") || command.equals("r") || command.equals("right"))) {
-            if(dieResult>0) {
-                if(moveCommand(splitStr, name)) {
-                    dieResult=dieResult-1;
+        else if ((command.equals("u") || command.equals("up") || command.equals("d") || command.equals("down") || command.equals("l") || command.equals("left") || command.equals("r") || command.equals("right"))) {
+            if (dieResult > 0) {
+                if (moveCommand(splitStr, name)) {
+                    dieResult = dieResult - 1;
                 }
             } else if (dieRoll == 0) {
                 // If you haven't rolled yet, we display this message
                 frame.appendText("You must roll before you move.");
-            }
-            else {
+            } else {
                 frame.appendText("You have used all your movement.");
             }
-        }
-        else if(command.equals("quit")) {
+        } else if (command.equals("quit")) {
             frame.appendText("Thank you for playing! Goodbye");
             System.exit(0);
         }
         // This rolls the dice
-        else if(command.equals("roll")) {
+        else if (command.equals("roll")) {
             if (dieRoll == 0) {
                 Dice die = new Dice();
                 // There are two dice, so we roll twice
-                dieResult=die.roll();
-                dieResult += die.roll();
+                dieResult = die.roll() + die.roll();
                 frame.appendText("You rolled a " + dieResult);
                 dieRoll++;
-            }
-            else {
+            } else {
                 frame.appendText("You have already rolled this turn!");
             }
-        } else if(command.equals("notes")) {
+        } else if (command.equals("notes")) {
             Counter c = Counters.get(currentPlayerName);
             frame.appendText(c.getNotesString());
-        } else if(command.equals("cheat")) {
+        } else if (command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
-        }
-        else if(splitStr.toLowerCase().equals("done")) {
+        } else if (splitStr.toLowerCase().equals("done")) {
             dieResult = 0;
             dieRoll = 0;
             frame.appendText(currentPlayerName + "'s turn has ended!\n");
-            PlayTurn=(PlayTurn+1)%turnTrack;
+            PlayTurn = (PlayTurn + 1) % turnTrack;
             // Goes to the next players move
             turn();
-        } else if(checkInteger(splitStr)) {
+        } else if (checkInteger(splitStr)) {
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");
             } else if (dieResult > 0 && !enteredRoom && isRoom(Counters.get(currentPlayerName))) {
@@ -478,8 +472,7 @@ public class Gameplay {
             } else {
                 frame.appendText("You cannot move here.");
             }
-        }
-        else {
+        } else {
             frame.appendText("Invalid command entered!");
         }
     }
@@ -525,7 +518,7 @@ public class Gameplay {
                 try {
                     c.setRowColumn(r.getEntrances().get(2).getRow(), r.getEntrances().get(2).getColumn());
                     entranceSelected = true;
-                } catch(IndexOutOfBoundsException | NullPointerException e) {
+                } catch (IndexOutOfBoundsException | NullPointerException e) {
                     frame.appendText("Select a valid entrance!");
                     entranceSelected = false;
                 }
@@ -534,7 +527,7 @@ public class Gameplay {
                 try {
                     c.setRowColumn(r.getEntrances().get(3).getRow(), r.getEntrances().get(3).getColumn());
                     entranceSelected = true;
-                } catch(IndexOutOfBoundsException | NullPointerException e) {
+                } catch (IndexOutOfBoundsException | NullPointerException e) {
                     frame.appendText("Select a valid entrance!");
                     entranceSelected = false;
                 }
@@ -572,19 +565,19 @@ public class Gameplay {
             // This will have squareType = 2, since this number is reserved for pathway squares beside an entrance
             int col = c.getColumn();
             int row = c.getRow();
-            if(squareType[row - 1][col] == 2) {
+            if (squareType[row - 1][col] == 2) {
                 c.setRowColumn(row - 1, col);
                 moved = true;
             }
-            if(squareType[row + 1][col] == 2) {
+            if (squareType[row + 1][col] == 2) {
                 c.setRowColumn(row + 1, col);
                 moved = true;
             }
-            if(squareType[row][col - 1] == 2) {
+            if (squareType[row][col - 1] == 2) {
                 c.setRowColumn(row, col - 1);
                 moved = true;
             }
-            if(squareType[row][col + 1] == 2) {
+            if (squareType[row][col + 1] == 2) {
                 c.setRowColumn(row, col + 1);
                 moved = true;
             }
@@ -617,7 +610,7 @@ public class Gameplay {
      */
     private boolean moveCommand(String splitStr, String colour) {
         // We can only move if the next square is either a pathway or is a room square adjacent to an entrance
-        boolean moved=false;
+        boolean moved = false;
 
         Counter counter = Counters.get(colour);
         if (counter == null) {
@@ -627,7 +620,7 @@ public class Gameplay {
         switch (splitStr.toLowerCase()) { // Checks the movement direction entered
             case "up":
             case "u":
-                if ( counter.getRow() > 0 && (isPathway(counter, "u") || isEnterable(counter, "u")) && isNotOccupied(counter, "u")) {
+                if (counter.getRow() > 0 && (isPathway(counter, "u") || isEnterable(counter, "u")) && isNotOccupied(counter, "u")) {
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
                     counter.moveUp(1);
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
@@ -645,7 +638,7 @@ public class Gameplay {
                 break;
             case "left":
             case "l":
-                if ( counter.getColumn() > 0 && (isPathway(counter, "l") || isEnterable(counter, "l")) && isNotOccupied(counter, "l")) {
+                if (counter.getColumn() > 0 && (isPathway(counter, "l") || isEnterable(counter, "l")) && isNotOccupied(counter, "l")) {
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
                     counter.moveLeft(1);
                     squareType[counter.getRow()][counter.getColumn()] *= -1;
@@ -666,12 +659,12 @@ public class Gameplay {
                 moved = false;
         }
 
-        if(!moved) {
+        if (!moved) {
             frame.appendText("Error - unable to make this move.");
         }
 
         // If the counter is now in a room, it finds what room the counter is in and moves it to the centre of that room
-        if(isRoom(counter) && moved) {
+        if (isRoom(counter) && moved) {
             int tmp;
             // We keep the dieResult because you may still be allowed to make a move and moveToRoomCentre resets dieResult to 0
             tmp = dieResult;
