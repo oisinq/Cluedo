@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 2
+/*  Cluedo - Sprint 3
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -81,7 +81,9 @@ public class Gameplay {
         String[] temp = new String[6];
         int j = 0;
 
+        // The highest roller goes first
         temp[0] = highRoller.getCharacterName();
+        // We add everyone else in after that (making sure not to have the highRoller in twice)
         for (int i = 1; i < counter; i++) {
             if (temp[0].equals(init.get(j).getCharacterName())) {
                 i--;
@@ -92,6 +94,7 @@ public class Gameplay {
         }
 
         int x = 0;
+        // We copy temp to play
         for (String p : temp) {
             play[x++] = p;
         }
@@ -136,11 +139,16 @@ public class Gameplay {
         return true;
     }
 
-    private Counter rollForOrder(ArrayList<Counter> players) {//for when two players need to roll and highest gets to do something
+    /**
+     * This lets a list of players roll, and returns the highest roller
+     * It's recursive in cases where there is a tie for 1st
+     */
+    private Counter rollForOrder(ArrayList<Counter> players) {
         Dice die = new Dice();
         ArrayList<Counter> topPlayers = new ArrayList<>();
 
         int highest = 0, tiedFor = 0;
+        // Goes through the players and lets each of them roll, and tracks the highest value
         for (Counter player : players) {
             player.setRollForOrder(die.roll() + die.roll());
             if (player.getRollForOrder() > highest) {
@@ -148,6 +156,7 @@ public class Gameplay {
             }
         }
 
+        // Counts how many people have the highest roll, and adds them to the arraylist "players"
         for (Counter player : players) {
             if (player.getRollForOrder() == highest) {
                 tiedFor++;
@@ -155,9 +164,11 @@ public class Gameplay {
             }
         }
 
+        // If multiple people are tied, we repeat the function with only the highest rollers
         if (tiedFor > 1) {
             return rollForOrder(topPlayers);
         } else {
+            // Otherwise, we return the highest roller
             return topPlayers.get(0);
         }
     }

@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 2
+/*  Cluedo - Sprint 3
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -77,7 +77,7 @@ class GameSetup {
             }
             CharacterList.remove(userChoice);//remove the player the user chose from the list
             Characters = CharacterList.toArray(new String[0]);//characters gets updated with the new list
-            
+
             counters.createCounter(userName, userChoice, 0);//send the username and their character choice to be created and placed on the board
         }
     }
