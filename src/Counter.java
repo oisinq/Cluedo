@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 2
+/*  Cluedo - Sprint 3
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -13,21 +13,22 @@ import java.util.Map;
  * Each counter represents a player on the board
  */
 public class Counter extends JComponent implements BoardPiece {
-	private ArrayList<Card> cards = new ArrayList<>();
+    private String characterName;
+    private String userName;
+    private ArrayList<Card> cards = new ArrayList<>();
     private ArrayList<Card> sharedCards;
 
     private int xLocation, yLocation;
     // 43, 50 is top of grid
-    private int column, row,rollForOrder;
+    private int column, row, rollForOrder;
     private Color c;
-    private String userName;
-    private String characterName;
+
     private Room currentRoom;
     private Notes notes;
 
 
-    Counter(String userName, String characterName, Color c, int x, int y,int rollForOrder) {
-    	this.userName=userName;
+    Counter(String userName, String characterName, Color c, int x, int y, int rollForOrder) {
+        this.userName = userName;
         this.characterName = characterName;
         this.c = c;
         column = x;
@@ -36,7 +37,7 @@ public class Counter extends JComponent implements BoardPiece {
         yLocation = 50 + (row * 23);//50
         currentRoom = null;
         notes = new Notes();
-        this.rollForOrder=rollForOrder;
+        this.rollForOrder = rollForOrder;
         sharedCards = SpareCards.cards;
     }
 
@@ -73,21 +74,23 @@ public class Counter extends JComponent implements BoardPiece {
     public int getY() {
         return yLocation;
     }
-    
-    
+
+
     /**
      * Returns the roll
      */
     public int getRollForOrder() {
         return rollForOrder;
     }
+
     /**
-    * set the roll first to a higher value(only for use with the turn methods in gameplay)
-    */
+     * set the roll first to a higher value(only for use with the turn methods in gameplay)
+     */
     public void setRollForOrder(int r) {
-    	
-        rollForOrder=r;
+
+        rollForOrder = r;
     }
+
     /**
      * Returns the column of the counter
      */
@@ -140,7 +143,7 @@ public class Counter extends JComponent implements BoardPiece {
     /**
      * Gets the name originally entered by the user
      */
-    public String getUserName(){
+    public String getUserName() {
         return userName;
     }
 
@@ -152,45 +155,53 @@ public class Counter extends JComponent implements BoardPiece {
     }
 
     /**
-     * Checks if the current room the counter is in is "r"
-     */
-    public void setCurrentRoom(Room r) {
-        currentRoom = r;
-    }
-
-    /**
      * Returns the name of the current room of the counter
      */
     public Room getCurrentRoom() {
         return currentRoom;
     }
 
-    public void addCard(Card c)
-{
-	cards.add(c);
-}
+    /**
+     * Checks if the current room the counter is in is "r"
+     */
+    public void setCurrentRoom(Room r) {
+        currentRoom = r;
+    }
+
+    public void addCard(Card c) {
+        cards.add(c);
+    }
 
     public ArrayList<Card> getCards() {
         return cards;
     }
-    public void printCards() {
-    	 for (Card currentCounter : cards) {
-	         System.out.println(currentCounter);
-	      }
-    }
+
+    /**
+     * This reads the values in notes, and returns the details to a string
+     * This can then be displayed in the infoField
+     */
     public String getNotesString() {
-        String s = characterName+":\n";
+        refreshNotes();
+        StringBuilder s = new StringBuilder();
+        int i = 0;
         for (Map.Entry<String, String> entry : notes.values.entrySet()) {
+            if (i == 0) {
+                s.append("\nPlayers:\n");
+            } else if (i == 6) {
+                s.append("\nWeapons:\n");
+            } else if (i == 12) {
+                s.append("\nRooms:\n");
+            }
             String key = entry.getKey();
             String value = entry.getValue();
-            s += key + " -> " + value + "\n";
+            s.append(String.format("%-14s -> %3s\n", key.trim(), value.trim()));
+            i++;
         }
-        s += "\n";
 
-        return s;
+        return s.toString();
     }
 
-    public void refreshNotes() {
+    private void refreshNotes() {
         notes.refresh(this, sharedCards);
     }
 

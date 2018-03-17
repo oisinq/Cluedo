@@ -1,31 +1,40 @@
-import java.util.ArrayList;
+/*  Cluedo - Sprint 3
+    Team: auroraBorealis
+    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
+    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
 
-public class Envelope  {
+/**
+ * The envelope contains the cards that are held in the murder envelope
+ */
+public class Envelope {
+    private static Card person;
+    private static Card weapon;
+    private static Card room;
 
-    private int xLocation, yLocation;
-
-    public static ArrayList<Card> cards = new ArrayList<>();
-    private String person;
-    private String weapon;
-    private String room;
-   
-    Envelope(String person, String weapon, String room) {
-    	this.person=person;
-    	this.weapon=weapon;
-    	this.room=room;
+    Envelope() {
     }
 
-    public String getPerson() {
+    public static Card getPerson() {
         return person;
     }
-    public String getWeapon() {
+
+    public void setPerson(Card c) {
+        person = c;
+    }
+
+    public static Card getWeapon() {
         return weapon;
     }
-    public String getRoom() {
+
+    public void setWeapon(Card c) {
+        weapon = c;
+    }
+
+    public static Card getRoom() {
         return room;
     }
-    public void addCard(Card c)
-    {
-    	cards.add(c);
+
+    public void setRoom(Card c) {
+        room = c;
     }
 }

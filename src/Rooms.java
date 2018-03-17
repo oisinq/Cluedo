@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 2
+/*  Cluedo - Sprint 3
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -161,8 +161,8 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
      * This creates a 3*2 rectangle of counterSquares in each room - this saves us from reusing code for each room
      */
     private void setCounterSquares(int colStartingGrid, int rowStartingGrid, ArrayList<Coordinates> counterSquares) {
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 2; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 2; j++) {
                 counterSquares.add(new Coordinates(colStartingGrid + j, rowStartingGrid + i));
             }
         }

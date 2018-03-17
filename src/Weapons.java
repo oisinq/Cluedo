@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 2
+/*  Cluedo - Sprint 3
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -12,8 +12,9 @@ public class Weapons implements Iterable<Weapon>, Iterator<Weapon> {
 
     private final ArrayList<Weapon> weapons = new ArrayList<>();
     private Iterator<Weapon> iterator;
-    private int[][] wepLocation = new int[][]		{{40, 70}, {554, 70}, {40, 371}, {554, 235}, {40, 585}, {554, 585}, {554, 393}, {365, 99}, {254, 574}};
- //this will say what room each coord is linked to  kitchen   conservatory   dining  billiard    lounge      study        library   ball room       hall                 
+    private int[][] wepLocation = new int[][]{{40, 70}, {554, 70}, {40, 371}, {554, 235}, {40, 585}, {554, 585}, {554, 393}, {365, 99}, {254, 574}};
+    //this will say what room each coord is linked to  kitchen   conservatory   dining  billiard    lounge      study        library   ball room       hall
+
     /**
      * Randomly allocates a location to weapons on each game launch
      */

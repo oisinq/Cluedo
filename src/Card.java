@@ -1,29 +1,37 @@
+/*  Cluedo - Sprint 3
+    Team: auroraBorealis
+    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
+    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
 
-public class Card  {
-
-    private int xLocation, yLocation;
-    // 43, 50 is top of grid
-  
+/**
+ * This represents a single card that is assigned to another object
+ */
+public class Card {
     private String cardName;
-    private String Type;
-    private Boolean Owned;
+    private String type;
+    private Boolean owned;
 
-    Card(String cardName, String Type, Boolean Owned) {
-    	this.cardName=cardName;
-    	this.Type=Type;
-    	this.Owned=Owned;
+    Card(String cardName, String type, Boolean owned) {
+        this.cardName = cardName;
+        this.type = type;
+        this.owned = owned;
     }
 
     public String getName() {
         return cardName;
     }
+
     public String getType() {
-        return Type;
+        return type;
     }
 
     public Boolean isOwned() {
-        return Owned;
+        return owned;
     }
+
+    /**
+     * Checks if the entered name matches the card's name
+     */
     public boolean hasCardName(String characterName) {
         return this.cardName.toLowerCase().equals(characterName.toLowerCase().trim());
     }
