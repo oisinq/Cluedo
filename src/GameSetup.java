@@ -90,10 +90,6 @@ class GameSetup {
            //rollFirst += die.roll();
             counters.createCounter(userName, userChoice, 0);//send the username and their character choice to be created and placed on the board
 
-
-            cards = new Cards();
-            cards.Envelope();
-
             int Players = 0;
             for (Counter currentCounter : counters) {
                 Players++;

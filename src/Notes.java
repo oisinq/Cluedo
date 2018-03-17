@@ -27,12 +27,14 @@ public class Notes {
     }
 
     public void refresh(Counter counter, ArrayList<Card> sharedCards) {
-        for(Card c : counter.getCards()) {
-            values.put(c.getName(), "X");
-        }
 
         for(Card c : sharedCards) {
             values.put(c.getName(), "A");
         }
+
+        for(Card c : counter.getCards()) {
+            values.put(c.getName(), "X");
+        }
+
     }
 }

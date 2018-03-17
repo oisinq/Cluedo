@@ -109,6 +109,7 @@ public class Gameplay {
         	r++;
 		}
         Cards cards = new Cards();
+        cards.Envelope();
         cards.CardHolder(play, 18 /turnTrack, turnTrack);
         // This is the current player
         
@@ -480,7 +481,12 @@ public class Gameplay {
             PlayTurn=(PlayTurn+1)%turnTrack;
             // Goes to the next players move
             turn();
-        } else if(checkInteger(splitStr)) {
+        }
+        else if(splitStr.toLowerCase().equals("question")&& counters.get(name).getCurrentRoom()!=null)
+        {
+        	question(counters.get(name).getCurrentRoom().getRoomName());
+        }
+        else if(checkInteger(splitStr)) {
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");
             } else if (dieResult > 0 && !enteredRoom && isRoom(Counters.get(currentPlayerName))) {
@@ -493,7 +499,65 @@ public class Gameplay {
             frame.appendText("Invalid command entered!");
         }
     }
-
+    private void question(String room) {
+    	frame.appendText("Enter the person to question:");
+    	String person = frame.getUserInput().getText().toLowerCase();
+    	Boolean personFound=false;
+    	Boolean weaponFound=false;
+    	while(personFound==false)
+    	{
+    	switch (person) {
+        case "scarlet":
+            personFound=true;
+            break;
+        case "mustard":
+            personFound=true;
+            break;
+        case "peacock":
+            personFound=true;
+            break;
+        case "green":
+            personFound=true;
+            break;
+        case "white":
+            personFound=true;
+            break;
+        case "plum":
+            personFound=true;
+            break;
+        default:
+        	frame.appendText("Invalid entry. Please try again!");
+    }
+    	}
+    	frame.appendText("Enter the weapon you want to question:");
+    	String weapon = frame.getUserInput().getText().toLowerCase();
+    	while(weaponFound==false)
+    	{
+    	switch (weapon) {
+        case "dagger":
+        	weaponFound=true;
+            break;
+        case "pistol":
+        	weaponFound=true;
+            break;
+        case "leadpipe":
+        	weaponFound=true;
+            break;
+        case "wrench":
+        	weaponFound=true;
+            break;
+        case "candlestick":
+        	weaponFound=true;
+            break;
+        case "rope":
+        	weaponFound=true;
+            break;
+        default:
+        	frame.appendText("Invalid entry. Please try again!");
+    }
+    	}
+    	frame.appendText("You have accused "+person+ " of commiting a murder with a "+ weapon +" in the "+ room);
+    }
     /**
      * Lets the user select an entrance and moves correspondingly
      */
@@ -549,6 +613,10 @@ public class Gameplay {
                     entranceSelected = false;
                 }
                 break;
+            case "question":
+            	question(r.getRoomName());
+            	entranceSelected=false;
+            break;
             default:
                 frame.appendText("Select a valid entrance!");
                 entranceSelected = false;

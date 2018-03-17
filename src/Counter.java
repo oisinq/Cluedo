@@ -37,7 +37,7 @@ public class Counter extends JComponent implements BoardPiece {
         currentRoom = null;
         notes = new Notes();
         this.rollForOrder=rollForOrder;
-        sharedCards = Envelope.cards;
+        sharedCards = SpareCards.cards;
     }
 
     /**
