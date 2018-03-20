@@ -12,7 +12,7 @@ public class Question {
         frame.appendText("Enter the person to question:");
     }
 
-    public void interpretInput(String command) {
+    public boolean interpretInput(String command) {
         command = command.toLowerCase();
         if (counter == null) {
             selectCounter(command.toLowerCase());
@@ -24,11 +24,14 @@ public class Question {
         } else if (weapon == null) {
             selectWeapon(command.toLowerCase());
             if (weapon != null) {
+                counter.setCurrentRoom(room);
                 frame.appendText("You have accused " + counter.getCharacterName() + " of committing a murder with the " +  weapon.getName() + " in the "+ room.getRoomName());
+                return false;
             } else {
                 frame.appendText("Invalid input. Please try again!");
             }
         }
+        return true;
     }
 
     //TODO - We probably don't need a switch statement here - get() should return null if the counter doesn't exist
@@ -38,5 +41,17 @@ public class Question {
 
     private void selectWeapon(String weaponName) {
         weapon = Weapons.get(weaponName.toLowerCase());
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public Counter getCounter() {
+        return counter;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
     }
 }
