@@ -14,6 +14,8 @@ public class Gameplay {
     private Counters counters;
     private Rooms rooms;
     private String[] play = new String[6];
+    private boolean questionTriggered = false;
+    private Question question;
     private int dieResult = 0;
     private int PlayTurn = 0;
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
@@ -435,6 +437,8 @@ public class Gameplay {
 
         if (command.equals("help")) {
             helpCommand();
+        } else if(questionTriggered) {
+            question.interpretInput(command);
         }
         // Checks if the command is a movement direction
         else if ((command.equals("u") || command.equals("up") || command.equals("d") || command.equals("down") || command.equals("l") || command.equals("left") || command.equals("r") || command.equals("right"))) {
@@ -468,7 +472,7 @@ public class Gameplay {
             frame.appendText(c.getNotesString());
         } else if (command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
-        } else if (splitStr.toLowerCase().equals("done")) {
+        } else if (command.equals("done")) {
             dieResult = 0;
             dieRoll = 0;
             frame.appendText(currentPlayerName + "'s turn has ended!\n");
@@ -476,15 +480,16 @@ public class Gameplay {
             // Goes to the next players move
             turn();
         }
-        else if(splitStr.toLowerCase().equals("question")&& counters.get(name).getCurrentRoom()!=null)
-        {
-        	question(counters.get(name).getCurrentRoom().getRoomName());
+        else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null) {
+            questionTriggered = true;
+            question = new Question(counters.get(name).getCurrentRoom(), frame);
+        //	question(counters.get(name).getCurrentRoom().getRoomName());
         }
-        else if(checkInteger(splitStr)) {
+        else if(checkInteger(command)) {
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");
             } else if (dieResult > 0 && !enteredRoom && isRoom(Counters.get(currentPlayerName))) {
-                selectEntrance(splitStr);
+                selectEntrance(command);
             } else {
                 frame.appendText("You cannot move here.");
             }
@@ -495,62 +500,63 @@ public class Gameplay {
     private void question(String room) {
     	frame.appendText("Enter the person to question:");
     	String person = frame.getUserInput().getText().toLowerCase();
-    	Boolean personFound=false;
-    	Boolean weaponFound=false;
-    	while(personFound==false)
-    	{
-    	switch (person) {
-        case "scarlet":
-            personFound=true;
-            break;
-        case "mustard":
-            personFound=true;
-            break;
-        case "peacock":
-            personFound=true;
-            break;
-        case "green":
-            personFound=true;
-            break;
-        case "white":
-            personFound=true;
-            break;
-        case "plum":
-            personFound=true;
-            break;
-        default:
-        	frame.appendText("Invalid entry. Please try again!");
-    }
+    	boolean personFound = false;
+        boolean weaponFound = false;
+
+    	while(!personFound) {
+            System.out.println("looooop");
+            switch (person) {
+            case "scarlet":
+                personFound=true;
+                break;
+            case "mustard":
+                personFound=true;
+                break;
+            case "peacock":
+                personFound=true;
+                break;
+            case "green":
+                personFound=true;
+                break;
+            case "white":
+                personFound=true;
+                break;
+            case "plum":
+                personFound=true;
+                break;
+            default:
+                frame.appendText("Invalid entry. Please try again!");
+            }
     	}
     	frame.appendText("Enter the weapon you want to question:");
     	String weapon = frame.getUserInput().getText().toLowerCase();
-    	while(weaponFound==false)
-    	{
-    	switch (weapon) {
-        case "dagger":
-        	weaponFound=true;
-            break;
-        case "pistol":
-        	weaponFound=true;
-            break;
-        case "leadpipe":
-        	weaponFound=true;
-            break;
-        case "wrench":
-        	weaponFound=true;
-            break;
-        case "candlestick":
-        	weaponFound=true;
-            break;
-        case "rope":
-        	weaponFound=true;
-            break;
-        default:
-        	frame.appendText("Invalid entry. Please try again!");
-    }
+    	while(!weaponFound) {
+            switch (weapon) {
+            case "dagger":
+                weaponFound=true;
+                break;
+            case "pistol":
+                weaponFound=true;
+                break;
+            case "leadpipe":
+                weaponFound=true;
+                break;
+            case "wrench":
+                weaponFound=true;
+                break;
+            case "candlestick":
+                weaponFound=true;
+                break;
+            case "rope":
+                weaponFound=true;
+                break;
+            default:
+                frame.appendText("Invalid entry. Please try again!");
+            }
     	}
-    	frame.appendText("You have accused "+person+ " of commiting a murder with a "+ weapon +" in the "+ room);
+    	frame.appendText("You have accused " + person + " of commiting a murder with a " + weapon + " in the " + room);
     }
+
     /**
      * Lets the user select an entrance and moves correspondingly
      */
