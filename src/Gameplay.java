@@ -475,16 +475,12 @@ public class Gameplay {
             PlayTurn = (PlayTurn + 1) % turnTrack;
             // Goes to the next players move
             turn();
-<<<<<<< HEAD
         }
         else if(splitStr.toLowerCase().equals("question")&& counters.get(name).getCurrentRoom()!=null)
         {
         	question(counters.get(name).getCurrentRoom().getRoomName());
         }
         else if(checkInteger(splitStr)) {
-=======
-        } else if (checkInteger(splitStr)) {
->>>>>>> 519c35b062bd74bb0cc8488aba6b3ef142bd219c
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");
             } else if (dieResult > 0 && !enteredRoom && isRoom(Counters.get(currentPlayerName))) {
