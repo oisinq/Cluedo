@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 2
+/*  Cluedo - Sprint 3
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -14,6 +14,9 @@ public class Gameplay {
     private Counters counters;
     private Rooms rooms;
     private String[] play = new String[6];
+    private boolean questionTriggered = false;
+    private boolean accusationMode = false;
+    private Question question;
     private int dieResult = 0;
     private int PlayTurn = 0;
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
@@ -81,7 +84,9 @@ public class Gameplay {
         String[] temp = new String[6];
         int j = 0;
 
+        // The highest roller goes first
         temp[0] = highRoller.getCharacterName();
+        // We add everyone else in after that (making sure not to have the highRoller in twice)
         for (int i = 1; i < counter; i++) {
             if (temp[0].equals(init.get(j).getCharacterName())) {
                 i--;
@@ -92,6 +97,7 @@ public class Gameplay {
         }
 
         int x = 0;
+        // We copy temp to play
         for (String p : temp) {
             play[x++] = p;
         }
@@ -102,8 +108,6 @@ public class Gameplay {
 
         currentPlayerName = play[0];
         // We display the help command in the infoField and start the first turn
-        helpCommand();
-        frame.appendText(highRoller.getCharacterName() + " rolled the highest with " + highRoller.getRollForOrder() + ", so they will go first\n");
         turn();
     }
 
@@ -136,11 +140,16 @@ public class Gameplay {
         return true;
     }
 
-    private Counter rollForOrder(ArrayList<Counter> players) {//for when two players need to roll and highest gets to do something
+    /**
+     * This lets a list of players roll, and returns the highest roller
+     * It's recursive in cases where there is a tie for 1st
+     */
+    private Counter rollForOrder(ArrayList<Counter> players) {
         Dice die = new Dice();
         ArrayList<Counter> topPlayers = new ArrayList<>();
 
         int highest = 0, tiedFor = 0;
+        // Goes through the players and lets each of them roll, and tracks the highest value
         for (Counter player : players) {
             player.setRollForOrder(die.roll() + die.roll());
             if (player.getRollForOrder() > highest) {
@@ -148,6 +157,7 @@ public class Gameplay {
             }
         }
 
+        // Counts how many people have the highest roll, and adds them to the arraylist "players"
         for (Counter player : players) {
             if (player.getRollForOrder() == highest) {
                 tiedFor++;
@@ -155,9 +165,11 @@ public class Gameplay {
             }
         }
 
+        // If multiple people are tied, we repeat the function with only the highest rollers
         if (tiedFor > 1) {
             return rollForOrder(topPlayers);
         } else {
+            // Otherwise, we return the highest roller
             return topPlayers.get(0);
         }
     }
@@ -171,27 +183,21 @@ public class Gameplay {
         switch (play[PlayTurn]) {
             case "Scarlet":
                 currentPlayerName = "Scarlet";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Mustard":
                 currentPlayerName = "Mustard";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Peacock":
                 currentPlayerName = "Peacock";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Plum":
                 currentPlayerName = "Plum";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "White":
                 currentPlayerName = "White";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Green":
                 currentPlayerName = "Green";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
         }
 
@@ -203,6 +209,9 @@ public class Gameplay {
         }
         // We reset this boolean every turn
         enteredRoom = false;
+        frame.resetInfoField();
+        helpCommand();
+        frame.appendText(currentPlayerName + " has started their turn");
     }
 
     /**
@@ -410,6 +419,7 @@ public class Gameplay {
         return true;
     }
 
+
     /**
      * Reads text from userInput and interprets text accordingly
      */
@@ -424,6 +434,21 @@ public class Gameplay {
 
         if (command.equals("help")) {
             helpCommand();
+        } else if (accusationMode) {
+            question.accusation(command);
+        } else if(questionTriggered) {
+            questionTriggered = question.createAccusation(command);
+            if (!questionTriggered) {
+                if (question.getCounter() != Counters.get(currentPlayerName)) {
+                    accusationMode = true;
+                    moveToRoomCentre(question.getCounter());
+                    //TODO We also need to move the weapons to the room
+                }
+                frame.repaint();
+            }
+        } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null) {
+            questionTriggered = true;
+            question = new Question(counters.get(name), frame, play);
         }
         // Checks if the command is a movement direction
         else if ((command.equals("u") || command.equals("up") || command.equals("d") || command.equals("down") || command.equals("l") || command.equals("left") || command.equals("r") || command.equals("right"))) {
@@ -457,18 +482,18 @@ public class Gameplay {
             frame.appendText(c.getNotesString());
         } else if (command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
-        } else if (splitStr.toLowerCase().equals("done")) {
+        } else if (command.equals("done")) {
             dieResult = 0;
             dieRoll = 0;
             frame.appendText(currentPlayerName + "'s turn has ended!\n");
             PlayTurn = (PlayTurn + 1) % turnTrack;
             // Goes to the next players move
             turn();
-        } else if (checkInteger(splitStr)) {
+        } else if(checkInteger(command)) {
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");
             } else if (dieResult > 0 && !enteredRoom && isRoom(Counters.get(currentPlayerName))) {
-                selectEntrance(splitStr);
+                selectEntrance(command);
             } else {
                 frame.appendText("You cannot move here.");
             }
@@ -532,6 +557,7 @@ public class Gameplay {
                     entranceSelected = false;
                 }
                 break;
+
             default:
                 frame.appendText("Select a valid entrance!");
                 entranceSelected = false;
