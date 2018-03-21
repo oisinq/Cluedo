@@ -1,3 +1,8 @@
+/*  Cluedo - Sprint 4
+    Team: auroraBorealis
+    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
+    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
+
 import javax.swing.*;
 
 public class Question {
@@ -67,7 +72,7 @@ public class Question {
 
     private void confirmReset() {
         frame.resetInfoField();
-        
+
     }
 
     public Room getRoom() {
