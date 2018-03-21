@@ -4,15 +4,33 @@ public class Question {
     private GUI frame;
     private Room room;
     private Counter counter;
-    private  Weapon weapon;
+    private Weapon weapon;
+    private Counter accuser;
+    private String[] playerOrder;
+    private int orderStart;
+    private int currentPlayer;
 
-    Question(Room room, GUI frame) {
-        this.room = room;
+    Question(Counter accuser, GUI frame, String[] playerOrder) {
+        this.accuser = accuser;
+        this.room = accuser.getCurrentRoom();
         this.frame = frame;
+        this.playerOrder = playerOrder;
+
+        int i = 0;
+        for (String s : playerOrder) {
+            if (accuser.getCharacterName().equals(s)) {
+                orderStart = i;
+            }
+            i++;
+            if (s == null) {
+                i--;
+            }
+        }
+        currentPlayer = (orderStart + 1)  % i;
         frame.appendText("Enter the person to question:");
     }
 
-    public boolean interpretInput(String command) {
+    public boolean createAccusation(String command) {
         command = command.toLowerCase();
         if (counter == null) {
             selectCounter(command.toLowerCase());
@@ -34,13 +52,22 @@ public class Question {
         return true;
     }
 
-    //TODO - We probably don't need a switch statement here - get() should return null if the counter doesn't exist
     private void selectCounter(String person) {
         counter = Counters.get(person.substring(0, 1).toUpperCase() + person.substring(1));
     }
 
     private void selectWeapon(String weaponName) {
         weapon = Weapons.get(weaponName.toLowerCase());
+    }
+
+
+    public void accusation(String command) {
+
+    }
+
+    private void confirmReset() {
+        frame.resetInfoField();
+        
     }
 
     public Room getRoom() {

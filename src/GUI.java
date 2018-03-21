@@ -163,4 +163,8 @@ public class GUI extends JFrame {
     public JTextField getUserInput() {
         return userInput;
     }
+
+    public void resetInfoField() {
+        infoField.setText("");
+    }
 }

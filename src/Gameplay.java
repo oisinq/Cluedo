@@ -15,6 +15,7 @@ public class Gameplay {
     private Rooms rooms;
     private String[] play = new String[6];
     private boolean questionTriggered = false;
+    private boolean accusationMode = false;
     private Question question;
     private int dieResult = 0;
     private int PlayTurn = 0;
@@ -107,8 +108,6 @@ public class Gameplay {
 
         currentPlayerName = play[0];
         // We display the help command in the infoField and start the first turn
-        helpCommand();
-        frame.appendText(highRoller.getCharacterName() + " rolled the highest with " + highRoller.getRollForOrder() + ", so they will go first\n");
         turn();
     }
 
@@ -184,27 +183,21 @@ public class Gameplay {
         switch (play[PlayTurn]) {
             case "Scarlet":
                 currentPlayerName = "Scarlet";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Mustard":
                 currentPlayerName = "Mustard";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Peacock":
                 currentPlayerName = "Peacock";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Plum":
                 currentPlayerName = "Plum";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "White":
                 currentPlayerName = "White";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
             case "Green":
                 currentPlayerName = "Green";
-                frame.appendText(currentPlayerName + " has started their turn");
                 break;
         }
 
@@ -216,6 +209,9 @@ public class Gameplay {
         }
         // We reset this boolean every turn
         enteredRoom = false;
+        frame.resetInfoField();
+        helpCommand();
+        frame.appendText(currentPlayerName + " has started their turn");
     }
 
     /**
@@ -423,6 +419,7 @@ public class Gameplay {
         return true;
     }
 
+
     /**
      * Reads text from userInput and interprets text accordingly
      */
@@ -437,14 +434,21 @@ public class Gameplay {
 
         if (command.equals("help")) {
             helpCommand();
+        } else if (accusationMode) {
+            question.accusation(command);
         } else if(questionTriggered) {
-            questionTriggered = question.interpretInput(command);
+            questionTriggered = question.createAccusation(command);
             if (!questionTriggered) {
                 if (question.getCounter() != Counters.get(currentPlayerName)) {
+                    accusationMode = true;
                     moveToRoomCentre(question.getCounter());
+                    //TODO We also need to move the weapons to the room
                 }
                 frame.repaint();
             }
+        } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null) {
+            questionTriggered = true;
+            question = new Question(counters.get(name), frame, play);
         }
         // Checks if the command is a movement direction
         else if ((command.equals("u") || command.equals("up") || command.equals("d") || command.equals("down") || command.equals("l") || command.equals("left") || command.equals("r") || command.equals("right"))) {
@@ -485,13 +489,7 @@ public class Gameplay {
             PlayTurn = (PlayTurn + 1) % turnTrack;
             // Goes to the next players move
             turn();
-        }
-        else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null) {
-            questionTriggered = true;
-            question = new Question(counters.get(name).getCurrentRoom(), frame);
-        //	question(counters.get(name).getCurrentRoom().getRoomName());
-        }
-        else if(checkInteger(command)) {
+        } else if(checkInteger(command)) {
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");
             } else if (dieResult > 0 && !enteredRoom && isRoom(Counters.get(currentPlayerName))) {
