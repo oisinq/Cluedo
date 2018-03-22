@@ -5,6 +5,7 @@
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -18,11 +19,13 @@ public class Weapon extends JComponent implements BoardPiece {
     private int column, row;
     private BufferedImage Image;//this will hold the image of the weapon once its passed in
     private String name;
+    private Room currentRoom;
 
-    Weapon(String name, int x, int y, String imageLocation) {
+    Weapon(String name, int x, int y, String imageLocation,Room room) {
         this.name = name;
         xLocation = x;
         yLocation = y;
+        this.currentRoom = room;
         try {
             Image = ImageIO.read(this.getClass().getResource(imageLocation));
         } catch (IOException e) {
@@ -40,6 +43,9 @@ public class Weapon extends JComponent implements BoardPiece {
         Graphics2D g2 = (Graphics2D) g;
         g2.drawImage(Image, xLocation, yLocation, 40, 40, null);
     }
+    
+    
+
 
     /**
      * Sets the (Row, Column) location of the counter - this also affects the xLocation/yLocation
@@ -65,6 +71,21 @@ public class Weapon extends JComponent implements BoardPiece {
         return yLocation;
     }
 
+    
+    /**
+     * Returns the X co-ordinate of the counter location
+     */
+    public void setX(int x) {
+        xLocation=x;
+    }
+
+    /**
+     * Returns the Y co-ordinate of the counter location
+     */
+    public void setY(int y) {
+        yLocation=y;
+    }
+    
     /**
      * Returns the column of the counter
      */
@@ -114,5 +135,61 @@ public class Weapon extends JComponent implements BoardPiece {
     public boolean hasName(String name) {
         return this.name.toLowerCase().equals(name.toLowerCase().trim());
     }
+    
+    /**
+     * Returns the name of the current room of the weapon
+     */
+    public Room getCurrRoom() {
+    	System.out.println("this should be 9");
+        return currentRoom;
+    }
+    
+    /**
+     * Checks if the current room the weapon is in is "r"
+     */
+    public void setCurrentRoom(Room r) {
+    
+    	if(r==Rooms.get("Kitchen")){
+    		xLocation=40;
+    		yLocation=70;
+    	}
+    	else if(r==Rooms.get("Conservatory")){
+    		xLocation=554;
+    		yLocation=70;
+    	}
+    	else if(r==Rooms.get("Dining Room")){
+    		xLocation=40;
+    		yLocation=371;
+    	}
+    	else if(r==Rooms.get("Billiard Room")){
+    		xLocation=554;
+    		yLocation=235;
+    	}
+    	else if(r==Rooms.get("Lounge")){
+    		xLocation=40;
+    		yLocation=585;
+    	}
+    	else if(r==Rooms.get("Study")){
+    		xLocation=554;
+    		yLocation=585;
+    	}
+    	else if(r==Rooms.get("Library")){
+    		xLocation=40;
+    		yLocation=585;
+    	}	
+		else if(r==Rooms.get("Ball Room")){
+    		xLocation=365;
+    		yLocation=99;
+    	}
+		else if(r==Rooms.get("Hall")){
+    		xLocation=254;
+    		yLocation=574;
+    	}
+
+    	
+        currentRoom = r;
+        
+    }
+
 
 }

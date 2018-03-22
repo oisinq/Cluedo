@@ -13,6 +13,7 @@ public class Gameplay {
     private GUI frame;
     private Counters counters;
     private Rooms rooms;
+    private Weapons weapons;
     private String[] play = new String[6];
     private boolean questionTriggered = false;
     private boolean accusationMode = false;
@@ -60,10 +61,11 @@ public class Gameplay {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
-    Gameplay(GUI frame, Counters counters, Rooms rooms) {
+    Gameplay(GUI frame, Counters counters, Rooms rooms,Weapons weapons) {
         this.frame = frame;
         this.counters = counters;
         this.rooms = rooms;
+        this.weapons=weapons;
         int counter = 0;
 
         // This enters each player into an array that tracks who's turn it is, and the order of turns
@@ -275,6 +277,11 @@ public class Gameplay {
         }
     }
 
+    
+    
+    
+    
+    
     /**
      * Moves the counter to the next available spot in the centre of the room
      */
@@ -298,7 +305,43 @@ public class Gameplay {
         // If you've moved to the centre of a room, you can't move again, so we set the dieResult to 0
         dieResult = 0;
     }
-
+    
+    /**
+     * Moves the weapon into the room
+     */
+    private void moveWeaponToRoom(Weapon w, Room r){
+    	Room Room = w.getCurrRoom();//the room where the weapon is to begin with
+    	//Coordinates location = null;
+    	//Boolean found= false;
+    	Boolean found=false;
+    	
+    	Room destination= r;
+    	
+    	if(Room==destination){
+		//leave this place we're flying	
+		}
+    	for(Weapon hld :weapons){
+    		Room test= hld.getCurrRoom();
+    		if(test==destination){
+    			//room is already occupied 
+    			Weapon tmp = w;
+    			tmp.setCurrentRoom(w.getCurrRoom());
+    			w.setCurrentRoom(hld.getCurrRoom());
+    			hld.setCurrentRoom(tmp.getCurrRoom());
+    			found=true;
+    			System.out.println("Mother");
+    		}
+    		System.out.println(destination+"Hello"+test);
+    	}
+    	if(found=false){
+    		//means nothing is in that room
+    		w.setCurrentRoom(destination);
+    	}
+    	
+    	
+    }
+    
+    
     /**
      * Checks if you can enter a certain room or not by looking at both the current square and the next square
      */
@@ -443,6 +486,7 @@ public class Gameplay {
                     accusationMode = true;
                     moveToRoomCentre(question.getCounter());
                     //TODO We also need to move the weapons to the room
+                    moveWeaponToRoom(question.getWeapon(),question.getRoom());
                 }
                 frame.repaint();
             }

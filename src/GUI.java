@@ -82,7 +82,7 @@ public class GUI extends JFrame {
         // Displays the frame to the user
         setVisible(true);
 
-        Gameplay gp = new Gameplay(this, counters, rooms);
+        Gameplay gp = new Gameplay(this, counters, rooms,weapons);
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
