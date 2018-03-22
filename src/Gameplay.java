@@ -320,13 +320,15 @@ public class Gameplay {
 		}
     	for(Weapon hld : weapons){
     		//Room test= hld.getCurrRoom();
-    		if(hld.getCurrRoom().getRoomName() == r.getRoomName()) {
+    		if(hld.getCurrRoom().getRoomName().equals(r.getRoomName())) {
+                System.out.println("YES LAWD!");
+                Room tmpRoom = w.getCurrRoom();
+                w.setCurrentRoom(r);
+                hld.setCurrentRoom(tmpRoom);
     			//room is already occupied 
-    			tmp.setCurrentRoom(w.getCurrRoom());
-    			w.setCurrentRoom(hld.getCurrRoom());
-    			hld.setCurrentRoom(tmp.getCurrRoom());
     			found=true;
     			System.out.println("Mother");
+    			break;
     		}
     		System.out.println(r.getRoomName()+"Hello"+hld.getCurrRoom().getRoomName());
     	}
