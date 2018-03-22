@@ -175,8 +175,8 @@ public class Weapon extends JComponent implements BoardPiece {
     		yLocation=585;
     	}
     	else if(r==Rooms.get("Library")){
-    		xLocation=40;
-    		yLocation=585;
+    		xLocation=554;
+    		yLocation=393;
     	}	
 		else if(r==Rooms.get("Ball Room")){
     		xLocation=365;
