@@ -314,28 +314,25 @@ public class Gameplay {
     	//Coordinates location = null;
     	//Boolean found= false;
     	Boolean found=false;
-    	
-    	Room destination= r;
-    	
-    	if(Room==destination){
+    	Weapon tmp = w;
+    	if(Room==r){
 		//leave this place we're flying	
 		}
     	for(Weapon hld : weapons){
-    		Room test= hld.getCurrRoom();
-    		if(test == destination) {
+    		//Room test= hld.getCurrRoom();
+    		if(hld.getCurrRoom().getRoomName() == r.getRoomName()) {
     			//room is already occupied 
-    			Weapon tmp = w;
     			tmp.setCurrentRoom(w.getCurrRoom());
     			w.setCurrentRoom(hld.getCurrRoom());
     			hld.setCurrentRoom(tmp.getCurrRoom());
     			found=true;
     			System.out.println("Mother");
     		}
-    		System.out.println(destination+"Hello"+test);
+    		System.out.println(r.getRoomName()+"Hello"+hld.getCurrRoom().getRoomName());
     	}
-    	if(found=false){
+    	if(found==false){
     		//means nothing is in that room
-    		w.setCurrentRoom(destination);
+    		w.setCurrentRoom(r);
     	}
     	
     	
