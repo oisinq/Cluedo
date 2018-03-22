@@ -320,9 +320,9 @@ public class Gameplay {
     	if(Room==destination){
 		//leave this place we're flying	
 		}
-    	for(Weapon hld :weapons){
+    	for(Weapon hld : weapons){
     		Room test= hld.getCurrRoom();
-    		if(test==destination){
+    		if(test == destination) {
     			//room is already occupied 
     			Weapon tmp = w;
     			tmp.setCurrentRoom(w.getCurrRoom());

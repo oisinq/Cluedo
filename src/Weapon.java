@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Weapons are randomly allocated in each room and are moved when used in a questioning
@@ -21,11 +22,11 @@ public class Weapon extends JComponent implements BoardPiece {
     private String name;
     private Room currentRoom;
 
-    Weapon(String name, int x, int y, String imageLocation,Room room) {
+    Weapon(String name, int x, int y, String imageLocation, Room room) {
         this.name = name;
         xLocation = x;
         yLocation = y;
-        this.currentRoom = room;
+        currentRoom = room;
         try {
             Image = ImageIO.read(this.getClass().getResource(imageLocation));
         } catch (IOException e) {

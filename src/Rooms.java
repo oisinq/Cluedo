@@ -34,9 +34,9 @@ public class Rooms implements Iterable<Room>, Iterator<Room> {
      * Returns the corresponding room to the entered name
      */
     public static Room get(String name) {
-        for (Room c : rooms) {
-            if (c.hasRoomName(name)) {
-                return c;
+        for (Room r : rooms) {
+            if (r.hasRoomName(name)) {
+                return r;
             }
         }
         return null;

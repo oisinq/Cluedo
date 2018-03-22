@@ -9,8 +9,8 @@
 public class Main {
 
     private final Counters counters = new Counters();
-    private final Weapons weapons = new Weapons();
     private final Rooms rooms = new Rooms();
+    private final Weapons weapons = new Weapons();
     private GUI frame;
 
     private Main() {
