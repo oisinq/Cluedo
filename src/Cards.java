@@ -28,7 +28,7 @@ public class Cards {
         }
         return null;
     }
-
+    
 
     /**
      * Used to generate random numbers
@@ -38,7 +38,28 @@ public class Cards {
         rand = new Random();
         return rand;
     }
-
+ 	public void checkCards(String CardName1,String CardName2,String CardName3, String[] strArray, int position, int number)
+	{
+ 		int tracker=0;
+ 		while(tracker<number)
+ 		{
+ 			if(Counters.get(strArray[position]).findCard(CardName1)==true)
+ 			{
+ 				System.out.println(strArray[position]+" has "+CardName1);
+ 			}
+ 			if(Counters.get(strArray[position]).findCard(CardName2)==true)
+ 			{
+ 				System.out.println(strArray[position]+" has "+CardName2);
+ 			}
+ 			if(Counters.get(strArray[position]).findCard(CardName3)==true)
+ 			{
+ 				System.out.println(strArray[position]+" has "+CardName3);
+ 			}
+ 			tracker++;
+ 			position=(position+1)%number;
+ 		}
+	
+	}
     /**
      * Inserts three cards into the Envelope class
      */

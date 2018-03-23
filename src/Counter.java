@@ -171,7 +171,17 @@ public class Counter extends JComponent implements BoardPiece {
     public void addCard(Card c) {
         cards.add(c);
     }
-
+    public Boolean findCard(String CardName)
+    {
+    	
+    	for (Card c : cards) {
+            if (c.getName().equals(CardName)) {
+                return true;
+            }
+        }
+    	return false;
+    	
+    }
     public ArrayList<Card> getCards() {
         return cards;
     }

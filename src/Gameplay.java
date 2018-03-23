@@ -476,6 +476,8 @@ public class Gameplay {
 
         if (command.equals("help")) {
             helpCommand();
+            Cards cards = new Cards();
+            cards.checkCards("Scarlet", "Candlestick", "Dining Room", play, PlayTurn, turnTrack);
         } else if (accusationMode) {
             question.accusation(command);
         } else if(questionTriggered) {
