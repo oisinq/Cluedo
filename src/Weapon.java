@@ -141,7 +141,6 @@ public class Weapon extends JComponent implements BoardPiece {
      * Returns the name of the current room of the weapon
      */
     public Room getCurrRoom() {
-    	System.out.println("this should be 9");
         return currentRoom;
     }
     

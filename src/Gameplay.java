@@ -321,16 +321,13 @@ public class Gameplay {
     	for(Weapon hld : weapons){
     		//Room test= hld.getCurrRoom();
     		if(hld.getCurrRoom().getRoomName().equals(r.getRoomName())) {
-                System.out.println("YES LAWD!");
                 Room tmpRoom = w.getCurrRoom();
                 w.setCurrentRoom(r);
                 hld.setCurrentRoom(tmpRoom);
     			//room is already occupied 
     			found=true;
-    			System.out.println("Mother");
     			break;
     		}
-    		System.out.println(r.getRoomName()+"Hello"+hld.getCurrRoom().getRoomName());
     	}
     	if(found==false){
     		//means nothing is in that room
@@ -476,8 +473,7 @@ public class Gameplay {
 
         if (command.equals("help")) {
             helpCommand();
-            Cards cards = new Cards();
-            cards.checkCards("Scarlet", "Candlestick", "Dining Room", play, PlayTurn, turnTrack);
+        //    question.checkCards("Scarlet", "Candlestick", "Dining Room");
         } else if (accusationMode) {
             question.accusation(command);
         } else if(questionTriggered) {

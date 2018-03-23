@@ -14,6 +14,7 @@ public class Question {
     private String[] playerOrder;
     private int orderStart;
     private int currentPlayer;
+    private int numPlayers;
 
     Question(Counter accuser, GUI frame, String[] playerOrder) {
         this.accuser = accuser;
@@ -21,17 +22,17 @@ public class Question {
         this.frame = frame;
         this.playerOrder = playerOrder;
 
-        int i = 0;
+        numPlayers = 0;
         for (String s : playerOrder) {
             if (accuser.getCharacterName().equals(s)) {
-                orderStart = i;
+                orderStart = numPlayers;
             }
-            i++;
+            numPlayers++;
             if (s == null) {
-                i--;
+                numPlayers--;
             }
         }
-        currentPlayer = (orderStart + 1)  % i;
+        currentPlayer = (orderStart + 1)  % numPlayers;
         frame.appendText("Enter the person to question:");
     }
 
@@ -48,8 +49,8 @@ public class Question {
             selectWeapon(command.toLowerCase());
             if (weapon != null) {
                 counter.setCurrentRoom(room);
-                //weapon.setCurrentRoom(room);
                 frame.appendText("You have accused " + counter.getCharacterName() + " of committing a murder with the " +  weapon.getName() + " in the "+ room.getRoomName());
+                checkCards(counter.getCharacterName(), weapon.getName(), room.getRoomName());
                 return false;
             } else {
                 frame.appendText("Invalid input. Please try again!");
@@ -66,6 +67,24 @@ public class Question {
         weapon = Weapons.get(weaponName.toLowerCase());
     }
 
+    private void checkCards(String counterName, String weaponName, String roomName) {
+        int tracker=0;
+        int position = currentPlayer;
+        while(tracker < numPlayers) {
+            if(Counters.get(playerOrder[position]).hasCardName(counterName)) {
+                System.out.println(playerOrder[position] + " has " + counterName);
+            }
+            if(Counters.get(playerOrder[position]).hasCardName(weaponName)) {
+                System.out.println(playerOrder[position] + " has " + weaponName);
+            }
+            if(Counters.get(playerOrder[position]).hasCardName(roomName)) {
+                System.out.println(playerOrder[position] + " has " + roomName);
+            }
+            tracker++;
+            position = (position+1) % numPlayers;
+        }
+
+    }
 
     public void accusation(String command) {
 
