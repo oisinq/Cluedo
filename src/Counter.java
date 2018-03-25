@@ -87,7 +87,6 @@ public class Counter extends JComponent implements BoardPiece {
      * set the roll first to a higher value(only for use with the turn methods in gameplay)
      */
     public void setRollForOrder(int r) {
-
         rollForOrder = r;
     }
 
@@ -180,6 +179,7 @@ public class Counter extends JComponent implements BoardPiece {
         }
     	return false;
     }
+
     public ArrayList<Card> getCards() {
         return cards;
     }
