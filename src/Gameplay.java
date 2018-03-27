@@ -475,7 +475,7 @@ public class Gameplay {
             helpCommand();
         //    question.checkCards("Scarlet", "Candlestick", "Dining Room");
         } else if (accusationMode) {
-            question.createAccusation(command);
+         //   question.createAccusation(command);
             question.accusation(command);
         } else if(questionTriggered) {
             questionTriggered = question.createAccusation(command);

@@ -51,7 +51,6 @@ public class Question {
                 frame.appendText("You have accused " + counter.getCharacterName() + " of committing a murder with the "
                         +  weapon.getName() + " in the "+ room.getRoomName());
                // checkCards(counter.getCharacterName(), weapon.getName(), room.getRoomName());
-                accusation("");
                 return false;
             } else {
                 frame.appendText("Invalid input. Please try again!");
@@ -91,6 +90,9 @@ public class Question {
             currentPlayerIndex = (currentPlayerIndex +1) % numPlayers;
             frame.resetInfoField();
         }
+        if (counter == null || weapon == null || room == null) {
+            createAccusation(command);
+        }
         if (checkInteger(command)) {
             int selection = Integer.parseInt(command);
             if (selection >= 1 && selection <= 3) {
@@ -120,23 +122,23 @@ public class Question {
             }
         }
 
-        boolean haveCards = false;
+        boolean haveCounter = false, haveWeapon = false, haveRoom = false;
         currentPlayer = Counters.get(playerOrder[currentPlayerIndex]);
         if (currentPlayer.hasCardName(counter.getCharacterName())) {
-            frame.appendText("Enter '1' to show " + counter.getCharacterName());
-            haveCards = true;
+            haveCounter = true;
         }
         if (currentPlayer.hasCardName(weapon.getName())) {
-            frame.appendText("Enter '2' to show "  + weapon.getName());
-            haveCards = true;
+            haveWeapon = true;
         }
         if (currentPlayer.hasCardName(room.getRoomName())) {
-            frame.appendText("Enter '3' to show "  + room.getRoomName());
-            haveCards = true;
+            haveRoom = true;
         }
 
-        if (haveCards) {
+        if (haveCounter || haveWeapon || haveRoom) {
             frame.appendText("You have some of the cards:");
+            if (haveCounter) frame.appendText("Enter '1' to show " + counter.getCharacterName());
+            if (haveWeapon) frame.appendText("Enter '2' to show "  + weapon.getName());
+            if (haveRoom) frame.appendText("Enter '3' to show "  + room.getRoomName());
         } else {
             frame.appendText("You have no cards - type 'done' to finish your turn");
         }
