@@ -477,7 +477,15 @@ public class Gameplay {
         } else if (accusationMode) {
          //   question.createAccusation(command);
             question.accusation(command);
-        } else if(questionTriggered) {
+        } else if (command.equals("done")&&!questionTriggered) {
+        	System.out.println("Its in gameplay");
+            dieResult = 0;
+            dieRoll = 0;
+            frame.appendText(currentPlayerName + "'s turn has ended!\n");
+            PlayTurn = (PlayTurn + 1) % turnTrack;
+            // Goes to the next players move
+            turn();
+        }else if(questionTriggered) {
             questionTriggered = question.createAccusation(command);
             accusationMode = true;
             if (!questionTriggered) {
@@ -525,14 +533,7 @@ public class Gameplay {
             frame.appendText(c.getNotesString());
         } else if (command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
-        } else if (command.equals("done")) {
-            dieResult = 0;
-            dieRoll = 0;
-            frame.appendText(currentPlayerName + "'s turn has ended!\n");
-            PlayTurn = (PlayTurn + 1) % turnTrack;
-            // Goes to the next players move
-            turn();
-        } else if(checkInteger(command)) {
+        }  else if(checkInteger(command)) {
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");
             } else if (dieResult > 0 && !enteredRoom && isRoom(Counters.get(currentPlayerName))) {

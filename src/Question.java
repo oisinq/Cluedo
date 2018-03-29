@@ -14,6 +14,7 @@ public class Question {
     private int orderStart;
     private int currentPlayerIndex;
     private int numPlayers;
+    private boolean accusing=false;
 
     Question(Counter accuser, GUI frame, String[] playerOrder) {
         this.accuser = accuser;
@@ -86,7 +87,7 @@ public class Question {
     }
 
     public void accusation(String command) {
-        if (command.equals("done")) {
+        if (command.equals("done")&&!accusing) {
             currentPlayerIndex = (currentPlayerIndex +1) % numPlayers;
             frame.resetInfoField();
         }
@@ -135,11 +136,13 @@ public class Question {
         }
 
         if (haveCounter || haveWeapon || haveRoom) {
-            frame.appendText("You have some of the cards:");
+        	accusing= true;
+            frame.appendText(currentPlayer.getName()+" have some of the cards:");
             if (haveCounter) frame.appendText("Enter '1' to show " + counter.getCharacterName());
             if (haveWeapon) frame.appendText("Enter '2' to show "  + weapon.getName());
             if (haveRoom) frame.appendText("Enter '3' to show "  + room.getRoomName());
         } else {
+        	accusing=false;
             frame.appendText("You have no cards - type 'done' to finish your turn");
         }
     }
