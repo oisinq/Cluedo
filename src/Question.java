@@ -22,7 +22,7 @@ public class Question {
         this.frame = frame;
         this.playerOrder = playerOrder;
 
-        numPlayers = 0;
+        numPlayers = 0; 
         for (String s : playerOrder) {
             if (accuser.getCharacterName().equals(s)) {
                 orderStart = numPlayers;
@@ -137,7 +137,7 @@ public class Question {
 
         if (haveCounter || haveWeapon || haveRoom) {
         	accusing= true;
-            frame.appendText(currentPlayer.getName()+" have some of the cards:");
+            frame.appendText(playerOrder[currentPlayerIndex]+" have some of the cards:");
             if (haveCounter) frame.appendText("Enter '1' to show " + counter.getCharacterName());
             if (haveWeapon) frame.appendText("Enter '2' to show "  + weapon.getName());
             if (haveRoom) frame.appendText("Enter '3' to show "  + room.getRoomName());
