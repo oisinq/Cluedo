@@ -6,8 +6,11 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -91,6 +94,21 @@ public class GUI extends JFrame {
             }
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
+        
+        
+        userInput.addFocusListener(new FocusListener() {
+        	@Override
+            public void focusGained(FocusEvent e) {
+                userInput.setText(null); // Empty the text field when it receives focus
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // You could do something here when the field loses focus, if you like
+            	userInput.setText("Enter text here (type 'help' for help)");
+            }
+
+        });
     }
 
 
