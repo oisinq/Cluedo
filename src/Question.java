@@ -51,7 +51,7 @@ public class Question {
             if (weapon != null) {
                 counter.setCurrentRoom(room);
                 frame.appendText("You have accused " + counter.getCharacterName() + " of committing a murder with the "
-                        + weapon.getName() + " in the " + room.getRoomName());
+                        + weapon.getName() + " in the " + room.getRoomName() + "\n");
                 // checkCards(counter.getCharacterName(), weapon.getName(), room.getRoomName());
                 return false;
             } else {
@@ -111,7 +111,7 @@ public class Question {
                             return showPlayer();
 
                         } else {
-                            frame.appendText("You don't have " + shownCard);
+                            frame.appendText("You don't have " + counter.getCharacterName());
                         }
                         break;
                     case 2:
@@ -121,7 +121,7 @@ public class Question {
                             accuser.addNotes(shownCard);
                             return showPlayer();
                         } else {
-                            frame.appendText("You don't have " + shownCard);
+                            frame.appendText("You don't have " + weapon.getName());
                         }
                         break;
                     case 3:
@@ -131,7 +131,7 @@ public class Question {
                             accuser.addNotes(shownCard);
                             return showPlayer();
                         } else {
-                            frame.appendText("You don't have " + shownCard);
+                            frame.appendText("You don't have " + room.getRoomName());
                         }
                         break;
                 }
@@ -159,7 +159,7 @@ public class Question {
             if (haveRoom) frame.appendText("Enter '3' to show " + room.getRoomName());
         } else {
             accusing = false;
-            frame.appendText("You have no cards - type 'done' to finish your turn");
+            frame.appendText(playerOrder[currentPlayerIndex] + " - you have no cards. Type 'done' to finish your turn");
         }
         return false;
     }
@@ -167,7 +167,7 @@ public class Question {
     private boolean showPlayer() {
         frame.resetInfoField();
         frame.appendText(accuser.getCharacterName() + ": Here are the results from the questioning!");
-        int loopIndex = orderStart;
+        int loopIndex = orderStart+1;
         while (!playerOrder[currentPlayerIndex].equals(playerOrder[loopIndex])) {
             frame.appendText(playerOrder[loopIndex] + " had no cards");
             loopIndex++;

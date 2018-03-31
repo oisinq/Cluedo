@@ -23,6 +23,7 @@ public class Gameplay {
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
     private int turnTrack = 0;
     private String currentPlayerName;
+    private boolean questionAsked = false;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
 
     /* This array "squareType" stores what kind of square each square on the board is, which determines if it can be accessed by counters
@@ -213,6 +214,7 @@ public class Gameplay {
         enteredRoom = false;
         frame.resetInfoField();
         helpCommand();
+        questionAsked = false;
         frame.appendText(currentPlayerName + " has started their turn");
     }
 
@@ -468,7 +470,7 @@ public class Gameplay {
 
 
         frame.appendText(">" + inputtedText);//puts it into the panel
-        String splitStr = inputtedText.replaceAll("\\s+", "");// Splits the inputted string into an array based spaces
+        String splitStr = inputtedText.replaceAll("\\s+", ""); //Splits the inputted string into an array based spaces
         String command = splitStr.toLowerCase();
 
         if (command.equals("help")) {
@@ -476,7 +478,11 @@ public class Gameplay {
         //    question.checkCards("Scarlet", "Candlestick", "Dining Room");
         } else if (accusationMode) {
          //   question.createAccusation(command);
-            if (question.accusation(command)) accusationMode = false;
+            if (question.accusation(command)) {
+                accusationMode = false;
+                dieResult = 0;
+                questionAsked = true;
+            }
         } else if (command.equals("done")&&!questionTriggered) {
             dieResult = 0;
             dieRoll = 0;
@@ -496,7 +502,7 @@ public class Gameplay {
                 }
                 frame.repaint();
             }
-        } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null) {
+        } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null && !questionAsked) {
             questionTriggered = true;
             question = new Question(counters.get(name), frame, play);
         }
