@@ -473,6 +473,9 @@ public class Gameplay {
         }  else if (command.equals("notes")) {
             Counter c = Counters.get(currentPlayerName);
             frame.appendText(c.getNotesString());
+        } else if (command.equals("quit")) {
+            frame.appendText("Thank you for playing! Goodbye");
+            System.exit(0);
         } else if (command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
         }else if (accusationMode) {
@@ -492,13 +495,13 @@ public class Gameplay {
         }else if(questionTriggered) {
             questionTriggered = question.createAccusation(command);
             if (!questionTriggered) {
+                accusationMode = true;
                 if (question.getCounter() != Counters.get(currentPlayerName)) {
-                    accusationMode = true;
                     moveToRoomCentre(question.getCounter());
-                    //TODO We also need to move the weapons to the room
-                    moveWeaponToRoom(question.getWeapon(),question.getRoom());
-                    question.confirmHandoff();
                 }
+                //TODO We also need to move the weapons to the room
+                moveWeaponToRoom(question.getWeapon(),question.getRoom());
+                question.confirmHandoff();
                 frame.repaint();
             }
         } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null && !questionAsked) {
@@ -517,9 +520,6 @@ public class Gameplay {
             } else {
                 frame.appendText("You have used all your movement.");
             }
-        } else if (command.equals("quit")) {
-            frame.appendText("Thank you for playing! Goodbye");
-            System.exit(0);
         }
         // This rolls the dice
         else if (command.equals("roll")) {

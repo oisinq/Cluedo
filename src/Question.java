@@ -99,16 +99,19 @@ public class Question {
 
     public void confirmHandoff() {
         frame.appendText("Pass the screen to " + playerOrder[(currentPlayerIndex + 1) % numPlayers]);
-        frame.appendText("To confirm that " + playerOrder[currentPlayerIndex + 1 % numPlayers] + " now has the screen, type 'swapped'");
+        frame.appendText("To confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " now has the screen, type 'swapped'");
         waitingForConfirmation = true;
     }
 
     public boolean accusation(String command) {
         if (waitingForConfirmation) {
             if (command.equals("swapped")) {
+                if (playerOrder[(currentPlayerIndex + 1) % numPlayers].equals(accuser.getCharacterName())) {
+                    return showPlayer();
+                }
                 done();
             } else {
-                frame.appendText("Incorrect command - type 'swapped' to confirm that " + playerOrder[currentPlayerIndex + 1] + " now has the screen");
+                frame.appendText("Incorrect command - type 'swapped' to confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " now has the screen");
                 return false;
             }
         }
@@ -189,11 +192,18 @@ public class Question {
         frame.resetInfoField();
         frame.appendText(accuser.getCharacterName() + ": Here are the results from the questioning!");
         int loopIndex = orderStart+1;
-        while (!playerOrder[currentPlayerIndex].equals(playerOrder[loopIndex])) {
-            frame.appendText(playerOrder[loopIndex] + " had no cards");
-            loopIndex++;
+        if (accuser.getCharacterName().equals(playerOrder[(currentPlayerIndex+1)%numPlayers])) {
+            frame.appendText("Nobody had the cards you asked.");
+        } else {
+            while (!playerOrder[currentPlayerIndex].equals(playerOrder[loopIndex])) {
+                frame.appendText(playerOrder[loopIndex] + " had no cards");
+                loopIndex++;
+                if (loopIndex == numPlayers) {
+                    loopIndex = loopIndex % numPlayers;
+                }
+            }
+            frame.appendText(playerOrder[currentPlayerIndex] + " showed you the " + shownCard + " card");
         }
-        frame.appendText(playerOrder[currentPlayerIndex] + " showed you the " + shownCard + " card");
         frame.appendText("You can now type 'done' to end your turn");
 
         return true;
