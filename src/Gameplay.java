@@ -206,16 +206,18 @@ public class Gameplay {
 
         Counter c = Counters.get(currentPlayerName);
 
-        // If the counter is in a room, it should list the room exits
-        if (c != null && isRoom(c)) {
-            listExits(c);
-        }
         // We reset this boolean every turn
         enteredRoom = false;
         frame.resetInfoField();
         helpCommand();
+
         questionAsked = false;
-        frame.appendText(currentPlayerName + " has started their turn");
+        frame.appendText(currentPlayerName + " has started their turn\n");
+
+        // If the counter is in a room, it should list the room exits
+        if (c != null && isRoom(c)) {
+            listExits(c);
+        }
     }
 
     /**
