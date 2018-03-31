@@ -52,4 +52,8 @@ public class Notes {
             values.put(c.getName(), "X");
         }
     }
+
+    public void addSeenCard(String cardName) {
+        values.put(cardName, "V");
+    }
 }

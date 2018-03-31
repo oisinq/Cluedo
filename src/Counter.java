@@ -209,6 +209,10 @@ public class Counter extends JComponent implements BoardPiece {
         return s.toString();
     }
 
+    public void addNotes(String cardName) {
+        notes.addSeenCard(cardName);
+    }
+
     private void refreshNotes() {
         notes.refresh(this, sharedCards);
     }

@@ -14,7 +14,8 @@ public class Question {
     private int orderStart;
     private int currentPlayerIndex;
     private int numPlayers;
-    private boolean accusing=false;
+    private boolean accusing = false;
+    private String shownCard;
 
     Question(Counter accuser, GUI frame, String[] playerOrder) {
         this.accuser = accuser;
@@ -22,7 +23,7 @@ public class Question {
         this.frame = frame;
         this.playerOrder = playerOrder;
 
-        numPlayers = 0; 
+        numPlayers = 0;
         for (String s : playerOrder) {
             if (accuser.getCharacterName().equals(s)) {
                 orderStart = numPlayers;
@@ -32,7 +33,7 @@ public class Question {
                 numPlayers--;
             }
         }
-        currentPlayerIndex = (orderStart + 1)  % numPlayers;
+        currentPlayerIndex = (orderStart + 1) % numPlayers;
         frame.appendText("Enter the person to question:");
     }
 
@@ -50,8 +51,8 @@ public class Question {
             if (weapon != null) {
                 counter.setCurrentRoom(room);
                 frame.appendText("You have accused " + counter.getCharacterName() + " of committing a murder with the "
-                        +  weapon.getName() + " in the "+ room.getRoomName());
-               // checkCards(counter.getCharacterName(), weapon.getName(), room.getRoomName());
+                        + weapon.getName() + " in the " + room.getRoomName());
+                // checkCards(counter.getCharacterName(), weapon.getName(), room.getRoomName());
                 return false;
             } else {
                 frame.appendText("Invalid input. Please try again!");
@@ -69,26 +70,26 @@ public class Question {
     }
 
     private void checkCards(String counterName, String weaponName, String roomName) {
-        int tracker=0;
+        int tracker = 0;
         int position = currentPlayerIndex;
-        while(tracker < numPlayers) {
-            if(Counters.get(playerOrder[position]).hasCardName(counterName)) {
+        while (tracker < numPlayers) {
+            if (Counters.get(playerOrder[position]).hasCardName(counterName)) {
                 System.out.println(playerOrder[position] + " has " + counterName);
             }
-            if(Counters.get(playerOrder[position]).hasCardName(weaponName)) {
+            if (Counters.get(playerOrder[position]).hasCardName(weaponName)) {
                 System.out.println(playerOrder[position] + " has " + weaponName);
             }
-            if(Counters.get(playerOrder[position]).hasCardName(roomName)) {
+            if (Counters.get(playerOrder[position]).hasCardName(roomName)) {
                 System.out.println(playerOrder[position] + " has " + roomName);
             }
             tracker++;
-            position = (position+1) % numPlayers;
+            position = (position + 1) % numPlayers;
         }
     }
 
-    public void accusation(String command) {
+    public boolean accusation(String command) {
         if (command.equals("done")) {
-            if (!accusing){
+            if (!accusing) {
                 currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
                 frame.resetInfoField();
             } else {
@@ -104,27 +105,38 @@ public class Question {
                 switch (selection) {
                     case 1:
                         if (currentPlayer.hasCardName(counter.getCharacterName())) {
-                            frame.appendText(counter.getCharacterName() + " is selected");
+                            shownCard = counter.getCharacterName();
+                            frame.appendText(shownCard + " is selected");
+                            accuser.addNotes(shownCard);
+                            return showPlayer();
+
                         } else {
-                            frame.appendText("You don't have " + counter.getCharacterName());
+                            frame.appendText("You don't have " + shownCard);
                         }
                         break;
                     case 2:
                         if (currentPlayer.hasCardName(weapon.getName())) {
-                            frame.appendText(weapon.getName() + " is selected");
+                            shownCard = weapon.getName();
+                            frame.appendText(shownCard + " is selected");
+                            accuser.addNotes(shownCard);
+                            return showPlayer();
                         } else {
-                            frame.appendText("You don't have " + weapon.getName());
+                            frame.appendText("You don't have " + shownCard);
                         }
                         break;
                     case 3:
                         if (currentPlayer.hasCardName(room.getRoomName())) {
-                            frame.appendText(room.getRoomName() + " is selected");
+                            shownCard = room.getRoomName();
+                            frame.appendText(shownCard + " is selected");
+                            accuser.addNotes(shownCard);
+                            return showPlayer();
                         } else {
-                            frame.appendText("You don't have " + room.getRoomName());
+                            frame.appendText("You don't have " + shownCard);
                         }
                         break;
                 }
             }
+
         }
 
         boolean haveCounter = false, haveWeapon = false, haveRoom = false;
@@ -140,15 +152,29 @@ public class Question {
         }
 
         if (haveCounter || haveWeapon || haveRoom) {
-        	accusing= true;
-            frame.appendText(playerOrder[currentPlayerIndex]+" has some of the cards:");
+            accusing = true;
+            frame.appendText(playerOrder[currentPlayerIndex] + " has some of the cards:");
             if (haveCounter) frame.appendText("Enter '1' to show " + counter.getCharacterName());
-            if (haveWeapon) frame.appendText("Enter '2' to show "  + weapon.getName());
-            if (haveRoom) frame.appendText("Enter '3' to show "  + room.getRoomName());
+            if (haveWeapon) frame.appendText("Enter '2' to show " + weapon.getName());
+            if (haveRoom) frame.appendText("Enter '3' to show " + room.getRoomName());
         } else {
-        	accusing=false;
+            accusing = false;
             frame.appendText("You have no cards - type 'done' to finish your turn");
         }
+        return false;
+    }
+
+    private boolean showPlayer() {
+        frame.resetInfoField();
+        frame.appendText(accuser.getCharacterName() + ": Here are the results from the questioning!");
+        int loopIndex = orderStart;
+        while (!playerOrder[currentPlayerIndex].equals(playerOrder[loopIndex])) {
+            frame.appendText(playerOrder[loopIndex] + " had no cards");
+            loopIndex++;
+        }
+        frame.appendText(playerOrder[currentPlayerIndex] + " showed you the " + shownCard + " card");
+
+        return true;
     }
 
     private void confirmReset() {

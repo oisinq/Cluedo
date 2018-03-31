@@ -476,7 +476,7 @@ public class Gameplay {
         //    question.checkCards("Scarlet", "Candlestick", "Dining Room");
         } else if (accusationMode) {
          //   question.createAccusation(command);
-            question.accusation(command);
+            if (question.accusation(command)) accusationMode = false;
         } else if (command.equals("done")&&!questionTriggered) {
             dieResult = 0;
             dieRoll = 0;
