@@ -278,11 +278,6 @@ public class Gameplay {
             }
         }
     }
-
-    
-    
-    
-    
     
     /**
      * Moves the counter to the next available spot in the centre of the room
@@ -475,15 +470,19 @@ public class Gameplay {
 
         if (command.equals("help")) {
             helpCommand();
-        //    question.checkCards("Scarlet", "Candlestick", "Dining Room");
-        } else if (accusationMode) {
+        }  else if (command.equals("notes")) {
+            Counter c = Counters.get(currentPlayerName);
+            frame.appendText(c.getNotesString());
+        } else if (command.equals("cheat")) {
+            frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
+        }else if (accusationMode) {
          //   question.createAccusation(command);
             if (question.accusation(command)) {
                 accusationMode = false;
                 dieResult = 0;
                 questionAsked = true;
             }
-        } else if (command.equals("done")&&!questionTriggered) {
+        } else if (command.equals("done") && !questionTriggered) {
             dieResult = 0;
             dieRoll = 0;
             frame.appendText(currentPlayerName + "'s turn has ended!\n");
@@ -498,7 +497,7 @@ public class Gameplay {
                     moveToRoomCentre(question.getCounter());
                     //TODO We also need to move the weapons to the room
                     moveWeaponToRoom(question.getWeapon(),question.getRoom());
-                    question.accusation("");
+                    question.confirmHandoff();
                 }
                 frame.repaint();
             }
@@ -533,11 +532,6 @@ public class Gameplay {
             } else {
                 frame.appendText("You have already rolled this turn!");
             }
-        } else if (command.equals("notes")) {
-            Counter c = Counters.get(currentPlayerName);
-            frame.appendText(c.getNotesString());
-        } else if (command.equals("cheat")) {
-            frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
         }  else if(checkInteger(command)) {
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");

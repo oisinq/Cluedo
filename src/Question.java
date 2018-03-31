@@ -16,6 +16,7 @@ public class Question {
     private int numPlayers;
     private boolean accusing = false;
     private String shownCard;
+    private boolean waitingForConfirmation = false;
 
     Question(Counter accuser, GUI frame, String[] playerOrder) {
         this.accuser = accuser;
@@ -33,7 +34,7 @@ public class Question {
                 numPlayers--;
             }
         }
-        currentPlayerIndex = (orderStart + 1) % numPlayers;
+        currentPlayerIndex = orderStart;
         frame.appendText("Enter the person to question:");
     }
 
@@ -52,7 +53,6 @@ public class Question {
                 counter.setCurrentRoom(room);
                 frame.appendText("You have accused " + counter.getCharacterName() + " of committing a murder with the "
                         + weapon.getName() + " in the " + room.getRoomName() + "\n");
-                // checkCards(counter.getCharacterName(), weapon.getName(), room.getRoomName());
                 return false;
             } else {
                 frame.appendText("Invalid input. Please try again!");
@@ -87,14 +87,34 @@ public class Question {
         }
     }
 
+    private void done() {
+        if (!accusing) {
+            currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
+            frame.resetInfoField();
+            waitingForConfirmation = false;
+        } else {
+            frame.appendText("You must show one of the cards!");
+        }
+    }
+
+    public void confirmHandoff() {
+        frame.appendText("Pass the screen to " + playerOrder[(currentPlayerIndex + 1) % numPlayers]);
+        frame.appendText("To confirm that " + playerOrder[currentPlayerIndex + 1 % numPlayers] + " now has the screen, type 'swapped'");
+        waitingForConfirmation = true;
+    }
+
     public boolean accusation(String command) {
-        if (command.equals("done")) {
-            if (!accusing) {
-                currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
-                frame.resetInfoField();
+        if (waitingForConfirmation) {
+            if (command.equals("swapped")) {
+                done();
             } else {
-                frame.appendText("You must show one of the cards!");
+                frame.appendText("Incorrect command - type 'swapped' to confirm that " + playerOrder[currentPlayerIndex + 1] + " now has the screen");
+                return false;
             }
+        }
+        if (command.equals("done")) {
+            confirmHandoff();
+            return false;
         }
         if (counter == null || weapon == null || room == null) {
             createAccusation(command);
@@ -136,8 +156,9 @@ public class Question {
                         break;
                 }
             }
-
         }
+
+        frame.appendText("It's " + playerOrder[currentPlayerIndex] + "'s turn to show cards.");
 
         boolean haveCounter = false, haveWeapon = false, haveRoom = false;
         currentPlayer = Counters.get(playerOrder[currentPlayerIndex]);
@@ -153,13 +174,13 @@ public class Question {
 
         if (haveCounter || haveWeapon || haveRoom) {
             accusing = true;
-            frame.appendText(playerOrder[currentPlayerIndex] + " has some of the cards:");
+            frame.appendText("You have some of the cards:");
             if (haveCounter) frame.appendText("Enter '1' to show " + counter.getCharacterName());
             if (haveWeapon) frame.appendText("Enter '2' to show " + weapon.getName());
             if (haveRoom) frame.appendText("Enter '3' to show " + room.getRoomName());
         } else {
             accusing = false;
-            frame.appendText(playerOrder[currentPlayerIndex] + " - you have no cards. Type 'done' to finish your turn");
+            frame.appendText("You have no cards. Type 'done' to finish your turn");
         }
         return false;
     }
@@ -173,6 +194,7 @@ public class Question {
             loopIndex++;
         }
         frame.appendText(playerOrder[currentPlayerIndex] + " showed you the " + shownCard + " card");
+        frame.appendText("You can now type 'done' to end your turn");
 
         return true;
     }
