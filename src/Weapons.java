@@ -20,7 +20,7 @@ public class Weapons implements Iterable<Weapon>, Iterator<Weapon> {
      */
     Weapons() {
         weaponLocationRandomiser();
-        weapons.add(new Weapon("eope", wepLocation[0][0], wepLocation[0][1], "/rope.PNG", findRoom(wepLocation[0][0], wepLocation[0][1]) ));
+        weapons.add(new Weapon("Rope", wepLocation[0][0], wepLocation[0][1], "/rope.PNG", findRoom(wepLocation[0][0], wepLocation[0][1]) ));
         weapons.add(new Weapon("Dagger", wepLocation[1][0], wepLocation[1][1], "/dagger.PNG", findRoom(wepLocation[1][0], wepLocation[1][1]) ));
         weapons.add(new Weapon("Wrench", wepLocation[2][0], wepLocation[2][1], "/wrench.PNG",findRoom(wepLocation[2][0], wepLocation[2][1]) ));
         weapons.add(new Weapon("Pistol", wepLocation[3][0], wepLocation[3][1], "/revolver.PNG",findRoom(wepLocation[3][0], wepLocation[3][1])));

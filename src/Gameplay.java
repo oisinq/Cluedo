@@ -478,7 +478,6 @@ public class Gameplay {
          //   question.createAccusation(command);
             question.accusation(command);
         } else if (command.equals("done")&&!questionTriggered) {
-        	System.out.println("Its in gameplay");
             dieResult = 0;
             dieRoll = 0;
             frame.appendText(currentPlayerName + "'s turn has ended!\n");
@@ -487,13 +486,13 @@ public class Gameplay {
             turn();
         }else if(questionTriggered) {
             questionTriggered = question.createAccusation(command);
-            accusationMode = true;
             if (!questionTriggered) {
                 if (question.getCounter() != Counters.get(currentPlayerName)) {
                     accusationMode = true;
                     moveToRoomCentre(question.getCounter());
                     //TODO We also need to move the weapons to the room
                     moveWeaponToRoom(question.getWeapon(),question.getRoom());
+                    question.accusation("");
                 }
                 frame.repaint();
             }

@@ -87,9 +87,13 @@ public class Question {
     }
 
     public void accusation(String command) {
-        if (command.equals("done")&&!accusing) {
-            currentPlayerIndex = (currentPlayerIndex +1) % numPlayers;
-            frame.resetInfoField();
+        if (command.equals("done")) {
+            if (!accusing){
+                currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
+                frame.resetInfoField();
+            } else {
+                frame.appendText("You must show one of the cards!");
+            }
         }
         if (counter == null || weapon == null || room == null) {
             createAccusation(command);
@@ -137,7 +141,7 @@ public class Question {
 
         if (haveCounter || haveWeapon || haveRoom) {
         	accusing= true;
-            frame.appendText(playerOrder[currentPlayerIndex]+" have some of the cards:");
+            frame.appendText(playerOrder[currentPlayerIndex]+" has some of the cards:");
             if (haveCounter) frame.appendText("Enter '1' to show " + counter.getCharacterName());
             if (haveWeapon) frame.appendText("Enter '2' to show "  + weapon.getName());
             if (haveRoom) frame.appendText("Enter '3' to show "  + room.getRoomName());
