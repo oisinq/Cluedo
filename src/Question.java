@@ -204,7 +204,7 @@ public class Question {
             }
             frame.appendText(playerOrder[currentPlayerIndex] + " showed you the " + shownCard + " card");
         }
-        frame.appendText("You can now type 'done' to end your turn");
+        frame.appendText("You can now type 'done' to end your turn, or 'notes' to view your updated notes");
 
         return true;
     }

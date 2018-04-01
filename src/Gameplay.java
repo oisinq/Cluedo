@@ -18,6 +18,8 @@ public class Gameplay {
     private boolean questionTriggered = false;
     private boolean accusationMode = false;
     private Question question;
+    private boolean accusationTriggered = false;
+    private Accusation accusation;
     private int dieResult = 0;
     private int PlayTurn = 0;
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
@@ -481,7 +483,6 @@ public class Gameplay {
         } else if (command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
         }else if (accusationMode) {
-         //   question.createAccusation(command);
             if (question.accusation(command)) {
                 accusationMode = false;
                 dieResult = 0;
@@ -506,7 +507,13 @@ public class Gameplay {
                 question.confirmHandoff();
                 frame.repaint();
             }
-        } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null && !questionAsked) {
+        } else if (accusationTriggered) {
+            accusationTriggered = accusation.createAccusation(command);
+        }
+        else if (command.equals("accuse") && counters.get(name).getCurrentRoom().getRoomName().equals("Cellar")) {
+            accusationTriggered = true;
+            accusation = new Accusation(counters.get(name), frame);
+        } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null && !counters.get(name).getCurrentRoom().getRoomName().equals("Cellar") && !questionAsked) {
             questionTriggered = true;
             question = new Question(counters.get(name), frame, play);
         }
