@@ -469,7 +469,8 @@ public class Gameplay {
 
 
         frame.appendText(">" + inputtedText);//puts it into the panel
-        String splitStr = inputtedText.replaceAll("\\s+", ""); //Splits the inputted string into an array based spaces
+        String splitStr = inputtedText.trim().replaceAll(" +", " ");
+        //String splitStr = inputtedText.replaceAll("\\s+", ""); //Splits the inputted string into an array based spaces
         String command = splitStr.toLowerCase();
 
         if (command.equals("help")) {
