@@ -27,6 +27,7 @@ public class Gameplay {
     private String currentPlayerName;
     private boolean questionAsked = false;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
+//    private String Log;
 
     /* This array "squareType" stores what kind of square each square on the board is, which determines if it can be accessed by counters
     Squares that are marked 0 are inaccessible by the player (they are out of bounds)
@@ -466,7 +467,9 @@ public class Gameplay {
     public void interpretInput(String name) {
         String inputtedText = frame.getUserInput().getText();//takes info from the field
         frame.getUserInput().setText("");//wipes the field after
-
+        
+        //TODO
+        //Log += name;//this adds to the Log 
 
         frame.appendText(">" + inputtedText);//puts it into the panel
         String splitStr = inputtedText.trim().replaceAll(" +", " ");
@@ -478,6 +481,9 @@ public class Gameplay {
         }  else if (command.equals("notes")) {
             Counter c = Counters.get(currentPlayerName);
             frame.appendText(c.getNotesString());
+        } else if (command.equals("log")){
+        	String log=frame.getLog();
+        	frame.appendText(log);
         } else if (command.equals("quit")) {
             frame.appendText("Thank you for playing! Goodbye");
             System.exit(0);

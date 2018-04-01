@@ -27,6 +27,7 @@ public class GUI extends JFrame {
     private JTextField userInput;
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
+    private String Log="-----Log Of all Inputs and Outputs------\n";
 
 
     /**
@@ -172,6 +173,7 @@ public class GUI extends JFrame {
      * We use this method to add text to the infoField from outside this class
      */
     public void appendText(String input) {
+    	Log += input+"\n";
         infoField.append(input + "\n");
     }
 
@@ -179,10 +181,14 @@ public class GUI extends JFrame {
      * Returns the userInput component - we use this so we can access the entered text outside of this class
      */
     public JTextField getUserInput() {
+    	//Log += (userInput.getText()+"\n");//TODO find out if this works
         return userInput;
     }
 
     public void resetInfoField() {
         infoField.setText("");
     }
+    public String getLog(){
+    return Log+"\n-------End Of Log------\n";
+	}
 }
