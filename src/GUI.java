@@ -13,6 +13,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * This class creates the graphical interface of the program and initialises all of the pieces
@@ -33,7 +34,7 @@ public class GUI extends JFrame {
     /**
      * This method creates the graphical interface for the program
      */
-    GUI(Counters counters, Weapons weapons, Rooms rooms) {
+    GUI(Counters counters, Weapons weapons, Rooms rooms,ArrayList<Counter> players) {
         this.counters = counters;
         this.weapons = weapons;
 
@@ -86,7 +87,7 @@ public class GUI extends JFrame {
         // Displays the frame to the user
         setVisible(true);
         
-        Gameplay gp = new Gameplay(this, counters, rooms,weapons);
+        Gameplay gp = new Gameplay(this, counters, rooms,weapons,players);
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {

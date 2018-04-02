@@ -26,6 +26,7 @@ public class Gameplay {
     private int turnTrack = 0;
     private String currentPlayerName;
     private boolean questionAsked = false;
+    private ArrayList<Counter> players;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
 //    private String Log;
 
@@ -65,16 +66,17 @@ public class Gameplay {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
-    Gameplay(GUI frame, Counters counters, Rooms rooms,Weapons weapons) {
+    Gameplay(GUI frame, Counters counters, Rooms rooms,Weapons weapons,ArrayList<Counter> players) {
         this.frame = frame;
         this.counters = counters;
         this.rooms = rooms;
         this.weapons=weapons;
+        this.players=players;
         int counter = 0;
 
         // This enters each player into an array that tracks who's turn it is, and the order of turns
         ArrayList<Counter> init = new ArrayList<>();
-        for (Counter currentCounter : this.counters) {
+        for (Counter currentCounter : this.players) {
             //play[turnTrack] = currentCounter.getCharacterName();
             init.add(currentCounter);
             counter++;

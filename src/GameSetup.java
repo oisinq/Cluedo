@@ -22,13 +22,12 @@ class GameSetup {
     int a = 0;
 
     private Counters Playable;
-    private Counters NPC;
+    private Counters NPC=null;
     private BufferedImage Logo;
 
 
-    GameSetup(Counters counters, Counters NPC) {
+    GameSetup(Counters counters) {
         this.Playable = counters;
-        this.NPC = NPC;
         playerCountSelect();
     }
 
@@ -76,6 +75,7 @@ class GameSetup {
      * Lets the player select which character to play as and enter their own name
      */
     private void CharacterSelect(int PlayerCount) {
+    	int playerCount=0;
         Logo = null;
         try {
             Logo = ImageIO.read(this.getClass().getResource("cluedo.png"));
@@ -91,6 +91,7 @@ class GameSetup {
             if (userName == null) {//if the user cancels , exit the code
                 System.out.println("You have exited the game,Thanks For Playing!");
                 System.exit(0);
+                
             }
             String userChoice = (String) JOptionPane.showInputDialog(null, "Player " + (i + 1) + " Please Select A Character", "Cluedo", JOptionPane.QUESTION_MESSAGE, new ImageIcon(Logo), Characters, Characters[0]);
             if (userChoice == null) {//if the user cancels exit the code
@@ -101,18 +102,22 @@ class GameSetup {
             Characters = CharacterList.toArray(new String[0]);//characters gets updated with the new list
 
             Playable.createCounter(userName, userChoice, 0);//send the username and their character choice to be created and placed on the board
-           
+           playerCount=i;
         }
        
-        int playCount=0;
-        while(playCount<Characters.length)
+        int NPCCount=0;
+        while(NPCCount<Characters.length)
         {
-        	NPC.createCounter(null, Characters[playCount], 0);
-        	playCount++;
+        	Playable.createNPC(
+        			null, 
+        			Characters[NPCCount], 
+        			0);
+        	NPCCount++;
         }
-        for (Counter c : NPC) {
-            System.out.println(c.getCharacterName());
-        }
+       // for (Counter c : NPC) {
+        //    System.out.println(c.getCharacterName());
+        //}
     }
+
 
 }

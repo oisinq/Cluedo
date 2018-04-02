@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /*  Cluedo - Sprint 3
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
@@ -11,12 +13,13 @@ public class Main {
     private final Counters counters = new Counters();
     private final Rooms rooms = new Rooms();
     private final Weapons weapons = new Weapons();
-    private final Counters NPC = new Counters();
+    private Counters Players =null;
     private GUI frame;
 
     private Main() {
-        new GameSetup(counters, NPC);
-        frame = new GUI(counters, weapons, rooms);
+        new GameSetup(counters);
+        ArrayList<Counter> players= counters.players;
+        frame = new GUI(counters, weapons, rooms,players);
     }
 
     public static void main(String args[]) {
