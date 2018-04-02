@@ -20,12 +20,15 @@ import java.util.List;
 class GameSetup {
 
     int a = 0;
-    private Counters counters;
+
+    private Counters Playable;
+    private Counters NPC;
     private BufferedImage Logo;
 
 
-    GameSetup(Counters counters) {
-        this.counters = counters;
+    GameSetup(Counters counters, Counters NPC) {
+        this.Playable = counters;
+        this.NPC = NPC;
         playerCountSelect();
     }
 
@@ -97,7 +100,18 @@ class GameSetup {
             CharacterList.remove(userChoice);//remove the player the user chose from the list
             Characters = CharacterList.toArray(new String[0]);//characters gets updated with the new list
 
-            counters.createCounter(userName, userChoice, 0);//send the username and their character choice to be created and placed on the board
+            Playable.createCounter(userName, userChoice, 0);//send the username and their character choice to be created and placed on the board
+           
+        }
+       
+        int playCount=0;
+        while(playCount<Characters.length)
+        {
+        	NPC.createCounter(null, Characters[playCount], 0);
+        	playCount++;
+        }
+        for (Counter c : NPC) {
+            System.out.println(c.getCharacterName());
         }
     }
 

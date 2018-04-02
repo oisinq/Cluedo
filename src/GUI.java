@@ -73,7 +73,7 @@ public class GUI extends JFrame {
         userInput.setText("Enter text here (type 'help' for help)");
 
         // This method creates the Counter objects
-        initialiseCounters(counters);
+       // initialiseCounters(counters);
         // This method creates the Weapon objects
         initialiseWeapons(weapons);
 
@@ -84,7 +84,7 @@ public class GUI extends JFrame {
 
         // Displays the frame to the user
         setVisible(true);
-
+        
         Gameplay gp = new Gameplay(this, counters, rooms,weapons);
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {

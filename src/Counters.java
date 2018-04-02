@@ -12,7 +12,7 @@ public class Counters implements Iterable<Counter>, Iterator<Counter> {
 
 
     // This arraylist stores all of the different counters - this makes it easier to access individual counters
-    private static final ArrayList<Counter> counters = new ArrayList<>();
+    private final static ArrayList<Counter> counters = new ArrayList<>();
     private Iterator<Counter> iterator;
 
     Counters() {

@@ -108,7 +108,7 @@ public class Gameplay {
         cards.Envelope();
         cards.CardHolder(play, 18 / turnTrack, turnTrack);
         // This is the current player
-
+        
         currentPlayerName = play[0];
         // We display the help command in the infoField and start the first turn
         turn();
@@ -117,6 +117,7 @@ public class Gameplay {
     /**
      * Checks if a string is an integer
      */
+    
     private static boolean checkInteger(String str) {
         if (str == null) {
             return false;

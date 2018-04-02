@@ -11,10 +11,11 @@ public class Main {
     private final Counters counters = new Counters();
     private final Rooms rooms = new Rooms();
     private final Weapons weapons = new Weapons();
+    private final Counters NPC = new Counters();
     private GUI frame;
 
     private Main() {
-        new GameSetup(counters);
+        new GameSetup(counters, NPC);
         frame = new GUI(counters, weapons, rooms);
     }
 
