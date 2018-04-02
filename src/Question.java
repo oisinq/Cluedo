@@ -192,7 +192,7 @@ public class Question {
         frame.resetInfoField();
         frame.appendText(accuser.getCharacterName() + ": Here are the results from the questioning!");
         int loopIndex = orderStart+1;
-        if (accuser.getCharacterName().equals(playerOrder[(currentPlayerIndex+1)%numPlayers])) {
+        if (shownCard == null) {
             frame.appendText("Nobody had the cards you asked.");
         } else {
             while (!playerOrder[currentPlayerIndex].equals(playerOrder[loopIndex])) {

@@ -25,6 +25,7 @@ public class Counter extends JComponent implements BoardPiece {
 
     private Room currentRoom;
     private Notes notes;
+    public boolean lostGame = false;
 
 
     Counter(String userName, String characterName, Color c, int x, int y, int rollForOrder) {
@@ -216,5 +217,4 @@ public class Counter extends JComponent implements BoardPiece {
     private void refreshNotes() {
         notes.refresh(this, sharedCards);
     }
-
 }

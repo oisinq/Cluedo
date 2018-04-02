@@ -61,6 +61,8 @@ public class Accusation {
             return true;
         } else {
             frame.appendText("you lose noob");
+            JOptionPane.showMessageDialog(null, "Sorry, that's incorrect. You're out of the game.");
+
             return false;
         }
     }

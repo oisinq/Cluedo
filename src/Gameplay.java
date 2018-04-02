@@ -3,6 +3,7 @@
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -21,9 +22,10 @@ public class Gameplay {
     private boolean accusationTriggered = false;
     private Accusation accusation;
     private int dieResult = 0;
-    private int PlayTurn = 0;
+    private int playTurn = 0;
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
-    private int turnTrack = 0;
+    private int numPlayers = 0;
+    private int numContendersRemaining = 0;
     private String currentPlayerName;
     private boolean questionAsked = false;
     private ArrayList<Counter> players;
@@ -78,10 +80,10 @@ public class Gameplay {
         // This enters each player into an array that tracks who's turn it is, and the order of turns
         ArrayList<Counter> init = new ArrayList<>();
         for (Counter currentCounter : this.players) {
-            //play[turnTrack] = currentCounter.getCharacterName();
+            //play[numPlayers] = currentCounter.getCharacterName();
             init.add(currentCounter);
             counter++;
-            turnTrack++;
+            numPlayers++;
             //We set the starting position of each counter to -1 so we know it's occupied
             squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
         }
@@ -112,10 +114,11 @@ public class Gameplay {
         }
         Cards cards = new Cards();
         cards.Envelope();
-        cards.CardHolder(play, 18 / turnTrack, turnTrack);
+        cards.CardHolder(play, 18 / numPlayers, numPlayers);
         // This is the current player
         
         currentPlayerName = play[0];
+        numContendersRemaining = numPlayers;
         // We display the help command in the infoField and start the first turn
         turn();
     }
@@ -190,7 +193,7 @@ public class Gameplay {
      */
     private void turn() {
         // This checks who's turn it currently is, and sets up the required variables for the turn
-        switch (play[PlayTurn]) {
+        switch (play[playTurn]) {
             case "Scarlet":
                 currentPlayerName = "Scarlet";
                 break;
@@ -212,6 +215,32 @@ public class Gameplay {
         }
 
         Counter c = Counters.get(currentPlayerName);
+
+        if(c.lostGame) {
+            playTurn = (playTurn + 1) % numPlayers;
+            switch (play[playTurn]) {
+                case "Scarlet":
+                    currentPlayerName = "Scarlet";
+                    break;
+                case "Mustard":
+                    currentPlayerName = "Mustard";
+                    break;
+                case "Peacock":
+                    currentPlayerName = "Peacock";
+                    break;
+                case "Plum":
+                    currentPlayerName = "Plum";
+                    break;
+                case "White":
+                    currentPlayerName = "White";
+                    break;
+                case "Green":
+                    currentPlayerName = "Green";
+                    break;
+            }
+
+            c = Counters.get(currentPlayerName);
+        }
 
         // We reset this boolean every turn
         enteredRoom = false;
@@ -508,7 +537,7 @@ public class Gameplay {
             dieResult = 0;
             dieRoll = 0;
             frame.appendText(currentPlayerName + "'s turn has ended!\n");
-            PlayTurn = (PlayTurn + 1) % turnTrack;
+            playTurn = (playTurn + 1) % numPlayers;
             // Goes to the next players move
             turn();
         }else if(questionTriggered) {
@@ -528,7 +557,38 @@ public class Gameplay {
                 if(accusation.checkAccusation()) {
                     gameOver = true;
                 } else {
-                    //TODO remove the accuser!
+//                    //TODO remove the accuser!
+//                    play[playTurn];
+//                    String temp = play[position];
+//
+//                    for (int i = numPlayers; i >= playTurn; i--) {
+//                        play[i+1] = play[i];
+//                    }
+//
+//                    play[0] = temp;
+
+//                    for (int i = playTurn; i < numPlayers-1; i++) {
+//                        play[i] = play[i+1];
+//                    }
+//                    play[numPlayers-1] = null;
+//                    numPlayers--;
+                    Counters.get(currentPlayerName).lostGame = true;
+                    numContendersRemaining--;
+                    turn();
+
+                    if (numContendersRemaining == 1) {
+                        turn();
+                        frame.appendText("you win! good job!");
+                        JOptionPane.showMessageDialog(null, "Congratulations, " + currentPlayerName + " (" + counters.get(currentPlayerName).getUserName() + ") wins!");
+                        gameOver = true;
+                    } else {
+                        dieResult = 0;
+                        dieRoll = 0;
+                        frame.appendText(currentPlayerName + "'s turn has ended!\n");
+                        playTurn = (playTurn + 1) % numPlayers;
+                        // Goes to the next players move
+                        turn();
+                    }
                 }
             }
         }
