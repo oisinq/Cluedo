@@ -28,6 +28,7 @@ public class Gameplay {
     private boolean questionAsked = false;
     private ArrayList<Counter> players;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
+    private boolean gameOver = false;
 //    private String Log;
 
     /* This array "squareType" stores what kind of square each square on the board is, which determines if it can be accessed by counters
@@ -470,7 +471,7 @@ public class Gameplay {
     public void interpretInput(String name) {
         String inputtedText = frame.getUserInput().getText();//takes info from the field
         frame.getUserInput().setText("");//wipes the field after
-        
+
         //TODO
         //Log += name;//this adds to the Log 
 
@@ -478,6 +479,11 @@ public class Gameplay {
         String splitStr = inputtedText.trim().replaceAll(" +", " ");
         //String splitStr = inputtedText.replaceAll("\\s+", ""); //Splits the inputted string into an array based spaces
         String command = splitStr.toLowerCase();
+
+        if (gameOver) {
+            frame.appendText("The game is over!");
+            return;
+        }
 
         if (command.equals("help")) {
             helpCommand();
@@ -512,13 +518,19 @@ public class Gameplay {
                 if (question.getCounter() != Counters.get(currentPlayerName)) {
                     moveToRoomCentre(question.getCounter());
                 }
-                //TODO We also need to move the weapons to the room
                 moveWeaponToRoom(question.getWeapon(),question.getRoom());
                 question.confirmHandoff();
                 frame.repaint();
             }
         } else if (accusationTriggered) {
             accusationTriggered = accusation.createAccusation(command);
+            if (accusation.accusationCreated) {
+                if(accusation.checkAccusation()) {
+                    gameOver = true;
+                } else {
+                    //TODO remove the accuser!
+                }
+            }
         }
         else if (command.equals("accuse") && counters.get(name).getCurrentRoom().getRoomName().equals("Cellar")) {
             accusationTriggered = true;

@@ -3,12 +3,15 @@
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
 
+import javax.swing.*;
+
 public class Accusation {
     private GUI frame;
     private Room room;
     private Counter counter;
     private Weapon weapon;
     private Counter accuser;
+    public boolean accusationCreated = false;
 
 
     Accusation(Counter accuser, GUI frame) {
@@ -40,7 +43,7 @@ public class Accusation {
             if (room != null) {
                 frame.appendText("You have accused " + counter.getCharacterName() + " of committing a murder with the "
                         + weapon.getName() + " in the " + room.getRoomName() + "\n");
-                checkAccusation();
+                accusationCreated = true;
                 return false;
             } else {
                 frame.appendText("Please enter a valid room.");
@@ -51,11 +54,14 @@ public class Accusation {
         return true;
     }
 
-    private void checkAccusation() {
+    public boolean checkAccusation() {
         if (counter.getCharacterName().equals(Envelope.getPerson().getName()) && room.getRoomName().equals(Envelope.getRoom().getName()) && weapon.getName().equals(Envelope.getWeapon().getName())) {
             frame.appendText("you win! good job!");
+            JOptionPane.showMessageDialog(null, "Congratulations, " + accuser.getCharacterName() + " (" + accuser.getUserName() + ") wins!");
+            return true;
         } else {
             frame.appendText("you lose noob");
+            return false;
         }
     }
 
