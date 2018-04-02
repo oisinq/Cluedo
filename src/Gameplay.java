@@ -18,6 +18,8 @@ public class Gameplay {
     private boolean questionTriggered = false;
     private boolean accusationMode = false;
     private Question question;
+    private boolean accusationTriggered = false;
+    private Accusation accusation;
     private int dieResult = 0;
     private int PlayTurn = 0;
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
@@ -25,6 +27,7 @@ public class Gameplay {
     private String currentPlayerName;
     private boolean questionAsked = false;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
+//    private String Log;
 
     /* This array "squareType" stores what kind of square each square on the board is, which determines if it can be accessed by counters
     Squares that are marked 0 are inaccessible by the player (they are out of bounds)
@@ -207,16 +210,18 @@ public class Gameplay {
 
         Counter c = Counters.get(currentPlayerName);
 
-        // If the counter is in a room, it should list the room exits
-        if (c != null && isRoom(c)) {
-            listExits(c);
-        }
         // We reset this boolean every turn
         enteredRoom = false;
         frame.resetInfoField();
         helpCommand();
+
         questionAsked = false;
-        frame.appendText(currentPlayerName + " has started their turn");
+        frame.appendText(currentPlayerName + " has started their turn\n");
+
+        // If the counter is in a room, it should list the room exits
+        if (c != null && isRoom(c)) {
+            listExits(c);
+        }
     }
 
     /**
@@ -279,11 +284,6 @@ public class Gameplay {
             }
         }
     }
-
-    
-    
-    
-    
     
     /**
      * Moves the counter to the next available spot in the centre of the room
@@ -468,23 +468,35 @@ public class Gameplay {
     public void interpretInput(String name) {
         String inputtedText = frame.getUserInput().getText();//takes info from the field
         frame.getUserInput().setText("");//wipes the field after
-
+        
+        //TODO
+        //Log += name;//this adds to the Log 
 
         frame.appendText(">" + inputtedText);//puts it into the panel
-        String splitStr = inputtedText.replaceAll("\\s+", ""); //Splits the inputted string into an array based spaces
+        String splitStr = inputtedText.trim().replaceAll(" +", " ");
+        //String splitStr = inputtedText.replaceAll("\\s+", ""); //Splits the inputted string into an array based spaces
         String command = splitStr.toLowerCase();
 
         if (command.equals("help")) {
             helpCommand();
-        //    question.checkCards("Scarlet", "Candlestick", "Dining Room");
-        } else if (accusationMode) {
-         //   question.createAccusation(command);
+        }  else if (command.equals("notes")) {
+            Counter c = Counters.get(currentPlayerName);
+            frame.appendText(c.getNotesString());
+        } else if (command.equals("log")){
+        	String log=frame.getLog();
+        	frame.appendText(log);
+        } else if (command.equals("quit")) {
+            frame.appendText("Thank you for playing! Goodbye");
+            System.exit(0);
+        } else if (command.equals("cheat")) {
+            frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
+        }else if (accusationMode) {
             if (question.accusation(command)) {
                 accusationMode = false;
                 dieResult = 0;
                 questionAsked = true;
             }
-        } else if (command.equals("done")&&!questionTriggered) {
+        } else if (command.equals("done") && !questionTriggered) {
             dieResult = 0;
             dieRoll = 0;
             frame.appendText(currentPlayerName + "'s turn has ended!\n");
@@ -494,16 +506,22 @@ public class Gameplay {
         }else if(questionTriggered) {
             questionTriggered = question.createAccusation(command);
             if (!questionTriggered) {
+                accusationMode = true;
                 if (question.getCounter() != Counters.get(currentPlayerName)) {
-                    accusationMode = true;
                     moveToRoomCentre(question.getCounter());
-                    //TODO We also need to move the weapons to the room
-                    moveWeaponToRoom(question.getWeapon(),question.getRoom());
-                    question.accusation("");
                 }
+                //TODO We also need to move the weapons to the room
+                moveWeaponToRoom(question.getWeapon(),question.getRoom());
+                question.confirmHandoff();
                 frame.repaint();
             }
-        } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null && !questionAsked) {
+        } else if (accusationTriggered) {
+            accusationTriggered = accusation.createAccusation(command);
+        }
+        else if (command.equals("accuse") && counters.get(name).getCurrentRoom().getRoomName().equals("Cellar")) {
+            accusationTriggered = true;
+            accusation = new Accusation(counters.get(name), frame);
+        } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null && !counters.get(name).getCurrentRoom().getRoomName().equals("Cellar") && !questionAsked) {
             questionTriggered = true;
             question = new Question(counters.get(name), frame, play);
         }
@@ -519,9 +537,6 @@ public class Gameplay {
             } else {
                 frame.appendText("You have used all your movement.");
             }
-        } else if (command.equals("quit")) {
-            frame.appendText("Thank you for playing! Goodbye");
-            System.exit(0);
         }
         // This rolls the dice
         else if (command.equals("roll")) {
@@ -534,11 +549,6 @@ public class Gameplay {
             } else {
                 frame.appendText("You have already rolled this turn!");
             }
-        } else if (command.equals("notes")) {
-            Counter c = Counters.get(currentPlayerName);
-            frame.appendText(c.getNotesString());
-        } else if (command.equals("cheat")) {
-            frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
         }  else if(checkInteger(command)) {
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");
