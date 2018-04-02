@@ -88,13 +88,9 @@ public class Question {
     }
 
     private void done() {
-        if (!accusing) {
-            currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
-            frame.resetInfoField();
-            waitingForConfirmation = false;
-        } else {
-            frame.appendText("You must show one of the cards!");
-        }
+        currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
+        frame.resetInfoField();
+        waitingForConfirmation = false;
     }
 
     public void confirmHandoff() {
@@ -116,8 +112,12 @@ public class Question {
             }
         }
         if (command.equals("done")) {
-            confirmHandoff();
-            return false;
+            if (accusing) {
+                frame.appendText("You must show one of the cards!");
+            } else {
+                confirmHandoff();
+                return false;
+            }
         }
         if (counter == null || weapon == null || room == null) {
             createAccusation(command);
