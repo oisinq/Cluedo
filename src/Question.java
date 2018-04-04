@@ -94,6 +94,7 @@ public class Question {
     }
 
     public void confirmHandoff() {
+        frame.resetInfoField();
         frame.appendText("Pass the screen to " + playerOrder[(currentPlayerIndex + 1) % numPlayers]);
         frame.appendText("To confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " now has the screen, type 'swapped'");
         waitingForConfirmation = true;
@@ -118,6 +119,9 @@ public class Question {
                 confirmHandoff();
                 return false;
             }
+        } else if (command.equals("notes")) {
+            Counter c = Counters.get(playerOrder[currentPlayerIndex]);
+            frame.appendText(c.getNotesString());
         }
         if (counter == null || weapon == null || room == null) {
             createAccusation(command);

@@ -193,6 +193,8 @@ public class Counter extends JComponent implements BoardPiece {
         refreshNotes();
         StringBuilder s = new StringBuilder();
         int i = 0;
+
+        s.append(characterName + "'s Notes");
         for (Map.Entry<String, String> entry : notes.values.entrySet()) {
             if (i == 0) {
                 s.append("\nPlayers:\n");

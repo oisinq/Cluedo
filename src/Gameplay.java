@@ -516,9 +516,6 @@ public class Gameplay {
 
         if (command.equals("help")) {
             helpCommand();
-        }  else if (command.equals("notes")) {
-            Counter c = Counters.get(currentPlayerName);
-            frame.appendText(c.getNotesString());
         } else if (command.equals("log")){
         	String log=frame.getLog();
         	frame.appendText(log);
@@ -598,6 +595,9 @@ public class Gameplay {
         } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null && !counters.get(name).getCurrentRoom().getRoomName().equals("Cellar") && !questionAsked) {
             questionTriggered = true;
             question = new Question(counters.get(name), frame, play);
+        }  else if (command.equals("notes")) {
+            Counter c = Counters.get(currentPlayerName);
+            frame.appendText(c.getNotesString());
         }
         // Checks if the command is a movement direction
         else if ((command.equals("u") || command.equals("up") || command.equals("d") || command.equals("down") || command.equals("l") || command.equals("left") || command.equals("r") || command.equals("right"))) {
