@@ -562,6 +562,7 @@ public class Gameplay {
                 questioningMode = true;
                 //
                 if (question.getCounter() != Counters.get(currentPlayerName)) {
+                    squareType[question.getCounter().getRow()][question.getCounter().getColumn()] *= -1;
                     moveToRoomCentre(question.getCounter());
                 }
                 moveWeaponToRoom(question.getWeapon(),question.getRoom());
