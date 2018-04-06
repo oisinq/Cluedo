@@ -17,7 +17,7 @@ public class Gameplay {
     private Weapons weapons;
     private String[] play = new String[6];
     private boolean questionTriggered = false;
-    private boolean accusationMode = false;
+    private boolean questioningMode = false;
     private Question question;
     private boolean accusationTriggered = false;
     private Accusation accusation;
@@ -326,6 +326,15 @@ public class Gameplay {
         boolean found = false;
 
         ArrayList<Coordinates> tokenSquares = room.getTokenSquares();
+
+        for (int i = 0; i < tokenSquares.size(); i++) {
+            // Since occupied squares are negative, we check if the corresponding value in squareType is positive
+            if (tokenSquares.get(i).getColumn() == c.getColumn() && tokenSquares.get(i).getRow() == c.getRow()) {
+                System.out.println("Already on a token square!");
+                return;
+            }
+        }
+
         // This searches through the tokenSquares arraylist to find one that isn't occupied
         for (int i = 0; i < tokenSquares.size() && !found; i++) {
             // Since occupied squares are negative, we check if the corresponding value in squareType is positive
@@ -502,7 +511,16 @@ public class Gameplay {
         frame.getUserInput().setText("");//wipes the field after
 
         //TODO
-        //Log += name;//this adds to the Log 
+        //Log += name;//this adds to the Log
+
+        for (int i = 0; i < squareType.length; i++) {
+            for (int j = 0; j < squareType[i].length; j++) {
+                System.out.print(squareType[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+        System.out.println();
 
         frame.appendText(">" + inputtedText);//puts it into the panel
         String splitStr = inputtedText.trim().replaceAll(" +", " ");
@@ -524,9 +542,9 @@ public class Gameplay {
             System.exit(0);
         } else if (command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
-        }else if (accusationMode) {
-            if (question.accusation(command)) {
-                accusationMode = false;
+        } else if (questioningMode) { // This if loop is triggered when a question has been defined and you're checking which players have cards
+            if (question.questioning(command)) { //questioning() returns true when the questioning is completed
+                questioningMode = false;
                 dieResult = 0;
                 questionAsked = true;
             }
@@ -537,10 +555,12 @@ public class Gameplay {
             playTurn = (playTurn + 1) % numPlayers;
             // Goes to the next players move
             turn();
-        }else if(questionTriggered) {
-            questionTriggered = question.createAccusation(command);
-            if (!questionTriggered) {
-                accusationMode = true;
+        }else if(questionTriggered) { // This if statement is used to build the question
+            // defineQuestion returns false when the question is completely defined
+            questionTriggered = question.defineQuestion(command);
+            if (!questionTriggered) { // This is triggered if the question is completely defined, which starts the next step
+                questioningMode = true;
+                //
                 if (question.getCounter() != Counters.get(currentPlayerName)) {
                     moveToRoomCentre(question.getCounter());
                 }
@@ -554,21 +574,6 @@ public class Gameplay {
                 if(accusation.checkAccusation()) {
                     gameOver = true;
                 } else {
-//                    //TODO remove the accuser!
-//                    play[playTurn];
-//                    String temp = play[position];
-//
-//                    for (int i = numPlayers; i >= playTurn; i--) {
-//                        play[i+1] = play[i];
-//                    }
-//
-//                    play[0] = temp;
-
-//                    for (int i = playTurn; i < numPlayers-1; i++) {
-//                        play[i] = play[i+1];
-//                    }
-//                    play[numPlayers-1] = null;
-//                    numPlayers--;
                     Counters.get(currentPlayerName).lostGame = true;
                     numContendersRemaining--;
                     turn();

@@ -14,8 +14,7 @@ public class Question {
     private int orderStart;
     private int currentPlayerIndex;
     private int numPlayers;
-    private boolean accusing = false;
-    private boolean cardSelected = false;
+    private boolean hasCard = false;
     private String shownCard = null;
     private boolean waitingForConfirmation = false;
 
@@ -26,6 +25,7 @@ public class Question {
         this.playerOrder = playerOrder;
 
         numPlayers = 0;
+        // This counts the number of players in the game and finds the starting position in playerOrder
         for (String s : playerOrder) {
             if (accuser.getCharacterName().equals(s)) {
                 orderStart = numPlayers;
@@ -39,20 +39,27 @@ public class Question {
         frame.appendText("Enter the person to question:");
     }
 
-    public boolean createAccusation(String command) {
+    /**
+     * This is used to let the accuser enter in details about the question he/she wants to ask
+     */
+    public boolean defineQuestion(String command) {
         command = command.toLowerCase();
 
+        // We let the user access their notes here and not in Gameplay, because we want to show the notes for the player in currentPlayerIndex
         if (command.equals("notes")) {
             Counter c = Counters.get(playerOrder[currentPlayerIndex]);
             frame.appendText(c.getNotesString());
-        }else if (counter == null) {
+        } else if (counter == null) {
+            // If a counter hasn't been entered yet, we let the user pick a counter
             selectCounter(command.toLowerCase());
+            // If a valid counter has been selected, we ask for the weapon
             if (counter != null) {
                 frame.appendText("Enter the weapon to question:");
             } else {
-                frame.appendText("Invalid input. Please try again!");
+                frame.appendText("Invalid player. Please try again!");
             }
         } else if (weapon == null) {
+            // If a weapon hasn't been entered yet, we let the user pick a weapon
             selectWeapon(command.toLowerCase());
             if (weapon != null) {
                 counter.setCurrentRoom(room);
@@ -66,41 +73,38 @@ public class Question {
         return true;
     }
 
+    /**
+     * This checks if the entered counter is valid
+     */
     private void selectCounter(String person) {
         counter = Counters.get(person.substring(0, 1).toUpperCase() + person.substring(1));
     }
 
+    /**
+     * This checks if the entered weapon is valid
+     */
     private void selectWeapon(String weaponName) {
         weapon = Weapons.get(weaponName.toLowerCase());
     }
 
-    private void checkCards(String counterName, String weaponName, String roomName) {
-        int tracker = 0;
-        int position = currentPlayerIndex;
-        while (tracker < numPlayers) {
-            if (Counters.get(playerOrder[position]).hasCardName(counterName)) {
-                System.out.println(playerOrder[position] + " has " + counterName);
-            }
-            if (Counters.get(playerOrder[position]).hasCardName(weaponName)) {
-                System.out.println(playerOrder[position] + " has " + weaponName);
-            }
-            if (Counters.get(playerOrder[position]).hasCardName(roomName)) {
-                System.out.println(playerOrder[position] + " has " + roomName);
-            }
-            tracker++;
-            position = (position + 1) % numPlayers;
-        }
-    }
-
+    /**
+     * This moves to the next player in playerOrder
+     */
     private void done() {
         currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
         frame.resetInfoField();
         waitingForConfirmation = false;
     }
 
+    /**
+     * This is the confirmation screen to ensure that nobody sees info they shouldn't
+     */
     public void confirmHandoff() {
         frame.resetInfoField();
         String name;
+
+        // If a card hasn't been shown, then name is the next player in the list
+        // Otherwise, it's the accuser (as the accuser will now be shown the results of the questioning)
         if (shownCard == null) {
             name = playerOrder[(currentPlayerIndex + 1) % numPlayers];
         } else {
@@ -108,21 +112,30 @@ public class Question {
         }
         frame.appendText("Pass the screen to " + name);
         frame.appendText("To confirm that " + name + " now has the screen, type 'swapped'");
+        // This tells us that we're waiting on the user to type "swapped"
         waitingForConfirmation = true;
     }
 
-    public boolean accusation(String command) {
+    /**
+     * Method for checking if a player has cards and letting them select one to show the accuser if they do
+     */
+    public boolean questioning(String command) {
+        // If we're waiting for a confirmation, this if statement is ran
         if (waitingForConfirmation) {
             if (command.equals("swapped")) {
                 if (shownCard == null) {
+                    // If we're back at the accuser, we return the result of showPlayer (a boolean)
                     if (playerOrder[(currentPlayerIndex + 1) % numPlayers].equals(accuser.getCharacterName())) {
-                        return showPlayer();
+                        return showResults();
                     }
                 } else {
-                    return showPlayer();
+                    // If a card has been selected, we return the result of showPlayer (a boolean)
+                    return showResults();
                 }
+                // Otherwise, we move to the next player
                 done();
             } else {
+                // Otherwise, we show an error asking the user to swap the computer to the next player
                 if (shownCard != null) {
                     frame.appendText("Incorrect command - type 'swapped' to confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " now has the screen");
                     return false;
@@ -132,24 +145,33 @@ public class Question {
                 }
             }
         }
+        // If you're done, we move to the next turn
         if (command.equals("done")) {
-            if (accusing) {
+            // If you have a card, you can't skip your turn and must show a card
+            if (hasCard) {
                 frame.appendText("You must show one of the cards!");
             } else {
+                // Otherwise, we confirm the screen is handed off to the next player
                 confirmHandoff();
                 return false;
             }
+            // This prints the notes for the current player
+            // We have to put this here so it prints the correct player (printing them from Gameplay would be incorrect)
         } else if (command.equals("notes")) {
             Counter c = Counters.get(playerOrder[currentPlayerIndex]);
             frame.appendText(c.getNotesString());
         }
 
+        // If the question isn't complete yet, we pass the input to defineQuestion
         if (counter == null || weapon == null || room == null) {
-            createAccusation(command);
+            defineQuestion(command);
         }
+        // If the input is a number, we check if it's a valid selection
         if (checkInteger(command)) {
             int selection = Integer.parseInt(command);
             if (selection >= 1 && selection <= 3) {
+                // This switch statement checks if the currentPlayer has the selected card
+                // if they do, it lets them selected it, and goes back to the accuser
                 switch (selection) {
                     case 1:
                         if (currentPlayer.hasCardName(counter.getCharacterName())) {
@@ -188,6 +210,15 @@ public class Question {
             }
         }
 
+        checkCards();
+
+        return false;
+    }
+
+    /**
+     * This checks if the user has one of the cards and tells them if they do
+     */
+    private void checkCards() {
         frame.appendText("It's " + playerOrder[currentPlayerIndex] + "'s turn to show cards.");
 
         boolean haveCounter = false, haveWeapon = false, haveRoom = false;
@@ -202,20 +233,23 @@ public class Question {
             haveRoom = true;
         }
 
+        // If the player has one of the cards, we let them know
         if (haveCounter || haveWeapon || haveRoom) {
-            accusing = true;
+            hasCard = true;
             frame.appendText("You have some of the cards:");
             if (haveCounter) frame.appendText("Enter '1' to show " + counter.getCharacterName());
             if (haveWeapon) frame.appendText("Enter '2' to show " + weapon.getName());
             if (haveRoom) frame.appendText("Enter '3' to show " + room.getRoomName());
         } else {
-            accusing = false;
+            hasCard = false;
             frame.appendText("You have no cards. Type 'done' to finish your turn");
         }
-        return false;
     }
 
-    private boolean showPlayer() {
+    /**
+     * This prints the results from the questioning
+     */
+    private boolean showResults() {
         frame.resetInfoField();
         frame.appendText(accuser.getCharacterName() + ": Here are the results from the questioning!");
         int loopIndex = (orderStart+1)%numPlayers;
@@ -234,11 +268,6 @@ public class Question {
         frame.appendText("You can now type 'done' to end your turn, or 'notes' to view your updated notes");
 
         return true;
-    }
-
-    private void confirmReset() {
-        frame.resetInfoField();
-
     }
 
     public Room getRoom() {
