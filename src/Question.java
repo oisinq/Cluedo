@@ -16,7 +16,7 @@ public class Question {
     private int numPlayers;
     private boolean accusing = false;
     private boolean cardSelected = false;
-    private String shownCard;
+    private String shownCard = null;
     private boolean waitingForConfirmation = false;
 
     Question(Counter accuser, GUI frame, String[] playerOrder) {
@@ -100,21 +100,36 @@ public class Question {
 
     public void confirmHandoff() {
         frame.resetInfoField();
-        frame.appendText("Pass the screen to " + playerOrder[(currentPlayerIndex + 1) % numPlayers]);
-        frame.appendText("To confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " now has the screen, type 'swapped'");
+        String name;
+        if (shownCard == null) {
+            name = playerOrder[(currentPlayerIndex + 1) % numPlayers];
+        } else {
+           name = accuser.getCharacterName();
+        }
+        frame.appendText("Pass the screen to " + name);
+        frame.appendText("To confirm that " + name + " now has the screen, type 'swapped'");
         waitingForConfirmation = true;
     }
 
     public boolean accusation(String command) {
         if (waitingForConfirmation) {
             if (command.equals("swapped")) {
-                if (playerOrder[(currentPlayerIndex + 1) % numPlayers].equals(accuser.getCharacterName())) {
+                if (shownCard == null) {
+                    if (playerOrder[(currentPlayerIndex + 1) % numPlayers].equals(accuser.getCharacterName())) {
+                        return showPlayer();
+                    }
+                } else {
                     return showPlayer();
                 }
                 done();
             } else {
-                frame.appendText("Incorrect command - type 'swapped' to confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " now has the screen");
-                return false;
+                if (shownCard != null) {
+                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " now has the screen");
+                    return false;
+                } else {
+                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + accuser.getCharacterName() + " now has the screen");
+                    return false;
+                }
             }
         }
         if (command.equals("done")) {
@@ -141,8 +156,8 @@ public class Question {
                             shownCard = counter.getCharacterName();
                             frame.appendText(shownCard + " is selected");
                             accuser.addNotes(shownCard);
-                            cardSelected = true;
-                            return showPlayer();
+                            confirmHandoff();
+                            return false;
                         } else {
                             frame.appendText("You don't have " + counter.getCharacterName());
                         }
@@ -152,8 +167,8 @@ public class Question {
                             shownCard = weapon.getName();
                             frame.appendText(shownCard + " is selected");
                             accuser.addNotes(shownCard);
-                            cardSelected = true;
-                            return showPlayer();
+                            confirmHandoff();
+                            return false;
                         } else {
                             frame.appendText("You don't have " + weapon.getName());
                         }
@@ -163,8 +178,8 @@ public class Question {
                             shownCard = room.getRoomName();
                             frame.appendText(shownCard + " is selected");
                             accuser.addNotes(shownCard);
-                            cardSelected = true;
-                            return showPlayer();
+                            confirmHandoff();
+                            return false;
                         } else {
                             frame.appendText("You don't have " + room.getRoomName());
                         }
