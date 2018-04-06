@@ -100,7 +100,7 @@ public class GUI extends JFrame {
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
-                gp.interpretInput(gp.getCurrentPlayerName());
+                gp.interpretInput();
             }
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener

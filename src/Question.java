@@ -40,6 +40,35 @@ public class Question {
     }
 
     /**
+     * Checks if a string is an integer
+     */
+    private static boolean checkInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        char c;
+        while (i < length) {
+            c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+
+    /**
      * This is used to let the accuser enter in details about the question he/she wants to ask
      */
     public boolean defineQuestion(String command) {
@@ -64,7 +93,7 @@ public class Question {
             if (weapon != null) {
                 counter.setCurrentRoom(room);
                 frame.appendText("You have accused " + counter.getCharacterName() + " of committing a murder with the "
-                        + weapon.getName() + " in the " + room.getRoomName() + "\n");
+                    + weapon.getName() + " in the " + room.getRoomName() + "\n");
                 return false;
             } else {
                 frame.appendText("Invalid input. Please try again!");
@@ -108,7 +137,7 @@ public class Question {
         if (shownCard == null) {
             name = playerOrder[(currentPlayerIndex + 1) % numPlayers];
         } else {
-           name = accuser.getCharacterName();
+            name = accuser.getCharacterName();
         }
         frame.appendText("Pass the screen to " + name);
         frame.appendText("To confirm that " + name + " now has the screen, type 'swapped'");
@@ -252,7 +281,7 @@ public class Question {
     private boolean showResults() {
         frame.resetInfoField();
         frame.appendText(accuser.getCharacterName() + ": Here are the results from the questioning!");
-        int loopIndex = (orderStart+1)%numPlayers;
+        int loopIndex = (orderStart + 1) % numPlayers;
         if (shownCard == null) {
             frame.appendText("Nobody had the cards you asked.");
         } else {
@@ -280,34 +309,5 @@ public class Question {
 
     public Weapon getWeapon() {
         return weapon;
-    }
-
-    /**
-     * Checks if a string is an integer
-     */
-    private static boolean checkInteger(String str) {
-        if (str == null) {
-            return false;
-        }
-        int length = str.length();
-        if (length == 0) {
-            return false;
-        }
-        int i = 0;
-        if (str.charAt(0) == '-') {
-            if (length == 1) {
-                return false;
-            }
-            i = 1;
-        }
-        char c;
-        while (i < length) {
-            c = str.charAt(i);
-            if (c < '0' || c > '9') {
-                return false;
-            }
-            i++;
-        }
-        return true;
     }
 }
