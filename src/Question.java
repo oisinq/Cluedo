@@ -15,6 +15,7 @@ public class Question {
     private int currentPlayerIndex;
     private int numPlayers;
     private boolean accusing = false;
+    private boolean cardSelected = false;
     private String shownCard;
     private boolean waitingForConfirmation = false;
 
@@ -40,7 +41,11 @@ public class Question {
 
     public boolean createAccusation(String command) {
         command = command.toLowerCase();
-        if (counter == null) {
+
+        if (command.equals("notes")) {
+            Counter c = Counters.get(playerOrder[currentPlayerIndex]);
+            frame.appendText(c.getNotesString());
+        }else if (counter == null) {
             selectCounter(command.toLowerCase());
             if (counter != null) {
                 frame.appendText("Enter the weapon to question:");
@@ -123,6 +128,7 @@ public class Question {
             Counter c = Counters.get(playerOrder[currentPlayerIndex]);
             frame.appendText(c.getNotesString());
         }
+
         if (counter == null || weapon == null || room == null) {
             createAccusation(command);
         }
@@ -135,8 +141,8 @@ public class Question {
                             shownCard = counter.getCharacterName();
                             frame.appendText(shownCard + " is selected");
                             accuser.addNotes(shownCard);
+                            cardSelected = true;
                             return showPlayer();
-
                         } else {
                             frame.appendText("You don't have " + counter.getCharacterName());
                         }
@@ -146,6 +152,7 @@ public class Question {
                             shownCard = weapon.getName();
                             frame.appendText(shownCard + " is selected");
                             accuser.addNotes(shownCard);
+                            cardSelected = true;
                             return showPlayer();
                         } else {
                             frame.appendText("You don't have " + weapon.getName());
@@ -156,6 +163,7 @@ public class Question {
                             shownCard = room.getRoomName();
                             frame.appendText(shownCard + " is selected");
                             accuser.addNotes(shownCard);
+                            cardSelected = true;
                             return showPlayer();
                         } else {
                             frame.appendText("You don't have " + room.getRoomName());
@@ -195,7 +203,7 @@ public class Question {
     private boolean showPlayer() {
         frame.resetInfoField();
         frame.appendText(accuser.getCharacterName() + ": Here are the results from the questioning!");
-        int loopIndex = orderStart+1;
+        int loopIndex = (orderStart+1)%numPlayers;
         if (shownCard == null) {
             frame.appendText("Nobody had the cards you asked.");
         } else {
