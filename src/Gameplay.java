@@ -84,8 +84,12 @@ public class Gameplay {
             init.add(currentCounter);
             counter++;
             numPlayers++;
+        }
+
+        // We go through the counters separately, because we want to set all counter squares to occupied - not just the players
+        for (Counter c : counters) {
             //We set the starting position of each counter to -1 so we know it's occupied
-            squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
+            squareType[c.getRow()][c.getColumn()] *= -1;
         }
 
 
@@ -512,15 +516,6 @@ public class Gameplay {
 
         //TODO
         //Log += name;//this adds to the Log
-
-        for (int i = 0; i < squareType.length; i++) {
-            for (int j = 0; j < squareType[i].length; j++) {
-                System.out.print(squareType[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
 
         frame.appendText(">" + inputtedText);//puts it into the panel
         String splitStr = inputtedText.trim().replaceAll(" +", " ");
