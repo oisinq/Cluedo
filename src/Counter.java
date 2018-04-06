@@ -25,6 +25,7 @@ public class Counter extends JComponent implements BoardPiece {
 
     private Room currentRoom;
     private Notes notes;
+    public boolean lostGame = false;
 
 
     Counter(String userName, String characterName, Color c, int x, int y, int rollForOrder) {
@@ -192,6 +193,8 @@ public class Counter extends JComponent implements BoardPiece {
         refreshNotes();
         StringBuilder s = new StringBuilder();
         int i = 0;
+
+        s.append(characterName + "'s Notes");
         for (Map.Entry<String, String> entry : notes.values.entrySet()) {
             if (i == 0) {
                 s.append("\nPlayers:\n");
@@ -216,5 +219,4 @@ public class Counter extends JComponent implements BoardPiece {
     private void refreshNotes() {
         notes.refresh(this, sharedCards);
     }
-
 }

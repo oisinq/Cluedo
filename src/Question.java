@@ -88,16 +88,13 @@ public class Question {
     }
 
     private void done() {
-        if (!accusing) {
-            currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
-            frame.resetInfoField();
-            waitingForConfirmation = false;
-        } else {
-            frame.appendText("You must show one of the cards!");
-        }
+        currentPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
+        frame.resetInfoField();
+        waitingForConfirmation = false;
     }
 
     public void confirmHandoff() {
+        frame.resetInfoField();
         frame.appendText("Pass the screen to " + playerOrder[(currentPlayerIndex + 1) % numPlayers]);
         frame.appendText("To confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " now has the screen, type 'swapped'");
         waitingForConfirmation = true;
@@ -116,8 +113,15 @@ public class Question {
             }
         }
         if (command.equals("done")) {
-            confirmHandoff();
-            return false;
+            if (accusing) {
+                frame.appendText("You must show one of the cards!");
+            } else {
+                confirmHandoff();
+                return false;
+            }
+        } else if (command.equals("notes")) {
+            Counter c = Counters.get(playerOrder[currentPlayerIndex]);
+            frame.appendText(c.getNotesString());
         }
         if (counter == null || weapon == null || room == null) {
             createAccusation(command);
@@ -192,7 +196,7 @@ public class Question {
         frame.resetInfoField();
         frame.appendText(accuser.getCharacterName() + ": Here are the results from the questioning!");
         int loopIndex = orderStart+1;
-        if (accuser.getCharacterName().equals(playerOrder[(currentPlayerIndex+1)%numPlayers])) {
+        if (shownCard == null) {
             frame.appendText("Nobody had the cards you asked.");
         } else {
             while (!playerOrder[currentPlayerIndex].equals(playerOrder[loopIndex])) {
