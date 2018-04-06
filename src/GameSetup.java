@@ -102,6 +102,7 @@ class GameSetup {
 
             Playable.createCounter(userName, userChoice, 0);//send the username and their character choice to be created and placed on the board
            
+            
         }
        
         int playCount=0;
