@@ -657,6 +657,7 @@ public class Gameplay {
         squareType[c.getRow()][c.getColumn()] *= -1;
         boolean entranceSelected;
         boolean moved = false;
+        boolean secretEntrance = false;
 
         // Checks which entrance is selected
         // If the selected entrance doesn't exist, we display an error
@@ -706,6 +707,7 @@ public class Gameplay {
         // If the co-ordinates are negative, then I know it's a secret passageway - I can then swap the room
         if (c.getRow() == -1) {
             String room = c.getCurrentRoom().getRoomName();
+            secretEntrance = true;
             switch (room) {
                 case "Conservatory":
                     c.setCurrentRoom(Rooms.get("Lounge"));
@@ -751,7 +753,9 @@ public class Gameplay {
 
         // If you've selected an entrance and successfully moved, we can repaint and set the new square to "occupied"
         if (entranceSelected && moved) {
-            squareType[c.getRow()][c.getColumn()] *= -1;
+            if (!secretEntrance) {
+                squareType[c.getRow()][c.getColumn()] *= -1;
+            }
             frame.repaint();
             dieResult--;
         } else {
