@@ -542,7 +542,9 @@ public class Gameplay {
             questionTriggered = question.createAccusation(command);
             if (!questionTriggered) {
                 accusationMode = true;
-                if (question.getCounter() != Counters.get(currentPlayerName)) {
+                if ((question.getCounter() != Counters.get(currentPlayerName)))
+                		
+                		{
                     moveToRoomCentre(question.getCounter());
                 }
                 moveWeaponToRoom(question.getWeapon(),question.getRoom());
@@ -720,7 +722,10 @@ public class Gameplay {
                     break;
             }
             // After swapping the room, the counter needs to be moved to the centre-point
+            if(c.getCurrentRoom().getRoomName() != room)
+            {
             moveToRoomCentre(c);
+            }
         } else if (entranceSelected) {
             // Otherwise if an entrance is selected, we need to find the proper square on the pathway to move to
             // This will have squareType = 2, since this number is reserved for pathway squares beside an entrance
@@ -828,11 +833,13 @@ public class Gameplay {
         if (isRoom(counter) && moved) {
             int tmp;
             // We keep the dieResult because you may still be allowed to make a move and moveToRoomCentre resets dieResult to 0
+            
             tmp = dieResult;
             findCurrentRoom(counter);
             moveToRoomCentre(counter);
             dieResult = tmp;
             enteredRoom = true;
+            frame.appendText("You have entered the "+counter.getCurrentRoom().getRoomName()+" on your next go you can leave the room. Please enter `question` to ask a question.");
         }
 
         frame.repaint(); // Repaints the board with the new location of the pieces
