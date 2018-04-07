@@ -1,4 +1,3 @@
-
 /*  Cluedo - Sprint 3
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
@@ -556,15 +555,6 @@ public class Gameplay {
             playTurn = (playTurn + 1) % numPlayers;
             // Goes to the next players move
             turn();
-<<<<<<< HEAD
-        }else if(questionTriggered) {
-            questionTriggered = question.createAccusation(command);
-            if (!questionTriggered) {
-                accusationMode = true;
-                if ((question.getCounter() != Counters.get(currentPlayerName)))
-                		
-                		{
-=======
         } else if (questionTriggered) { // This if statement is used to build the question
             // defineQuestion returns false when the question is completely defined
             questionTriggered = question.defineQuestion(command);
@@ -573,7 +563,6 @@ public class Gameplay {
                 //
                 if (question.getCounter() != Counters.get(currentPlayerName)) {
                     squareType[question.getCounter().getRow()][question.getCounter().getColumn()] *= -1;
->>>>>>> c7eaafa6719df572ed6d7d940a86b86fc892e62d
                     moveToRoomCentre(question.getCounter());
                 }
                 moveWeaponToRoom(question.getWeapon(), question.getRoom());
@@ -737,10 +726,7 @@ public class Gameplay {
                     break;
             }
             // After swapping the room, the counter needs to be moved to the centre-point
-            if(c.getCurrentRoom().getRoomName() != room)
-            {
             moveToRoomCentre(c);
-            }
         } else if (entranceSelected) {
             // Otherwise if an entrance is selected, we need to find the proper square on the pathway to move to
             // This will have squareType = 2, since this number is reserved for pathway squares beside an entrance
@@ -850,7 +836,6 @@ public class Gameplay {
         if (isRoom(counter) && moved) {
             int tmp;
             // We keep the dieResult because you may still be allowed to make a move and moveToRoomCentre resets dieResult to 0
-            
             tmp = dieResult;
             findCurrentRoom(counter);
             moveToRoomCentre(counter);
