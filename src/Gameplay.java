@@ -258,7 +258,7 @@ public class Gameplay {
         }
         frame.appendText("");
         questionAsked = false;
-        frame.appendText(currentPlayerName + " has started their turn\n");
+        frame.appendText(currentPlayerName + " ("  + Counters.get(currentPlayerName).getUserName() + ") has started their turn\n");
 
         // If the counter is in a room, it should list the room exits
         if (c != null && isRoom(c)) {
@@ -551,7 +551,7 @@ public class Gameplay {
         } else if (command.equals("done") && !questionTriggered) {
             dieResult = 0;
             dieRoll = 0;
-            frame.appendText(currentPlayerName + "'s turn has ended!\n");
+            frame.appendText(currentPlayerName + "'s (" + Counters.get(currentPlayerName).getUserName() + ") turn has ended!\n");
             playTurn = (playTurn + 1) % numPlayers;
             // Goes to the next players move
             turn();
@@ -581,13 +581,13 @@ public class Gameplay {
 
                     if (numContendersRemaining == 1) {
                         turn();
-                        frame.appendText("you win! good job!");
+                        frame.appendText("Congratulations, " + currentPlayerName + " (" + counters.get(currentPlayerName).getUserName() + ") wins!");
                         JOptionPane.showMessageDialog(null, "Congratulations, " + currentPlayerName + " (" + counters.get(currentPlayerName).getUserName() + ") wins!");
                         gameOver = true;
                     } else {
                         dieResult = 0;
                         dieRoll = 0;
-                        frame.appendText(currentPlayerName + "'s turn has ended!\n");
+                        frame.appendText(currentPlayerName + "'s ("  + Counters.get(currentPlayerName).getUserName() + ") turn has ended!\n");
                         playTurn = (playTurn + 1) % numPlayers;
                         // Goes to the next players move
                         turn();
@@ -841,7 +841,11 @@ public class Gameplay {
             moveToRoomCentre(counter);
             dieResult = tmp;
             enteredRoom = true;
-            frame.appendText("You have entered the "+counter.getCurrentRoom().getRoomName()+" on your next go you can leave the room. Please enter `question` to ask a question.");
+            if (counter.getCurrentRoom() == Rooms.get("Cellar")) {
+                frame.appendText("You have entered the "+counter.getCurrentRoom().getRoomName()+".  You can move again in your next turn. You can now enter `accuse` to make an accusation.");
+            } else {
+                frame.appendText("You have entered the "+counter.getCurrentRoom().getRoomName()+".  You can move again in your next turn. You can now enter `question` to ask a question.");
+            }
         }
 
         frame.repaint(); // Repaints the board with the new location of the pieces

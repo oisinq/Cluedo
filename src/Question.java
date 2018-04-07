@@ -139,8 +139,8 @@ public class Question {
         } else {
             name = accuser.getCharacterName();
         }
-        frame.appendText("Pass the screen to " + name);
-        frame.appendText("To confirm that " + name + " now has the screen, type 'swapped'");
+        frame.appendText("Pass the screen to " + name + " (" + Counters.get(name).getUserName() + ")");
+        frame.appendText("To confirm that " + name + " (" + Counters.get(name).getUserName() + ") now has the screen, type 'swapped'");
         // This tells us that we're waiting on the user to type "swapped"
         waitingForConfirmation = true;
     }
@@ -166,10 +166,10 @@ public class Question {
             } else {
                 // Otherwise, we show an error asking the user to swap the computer to the next player
                 if (shownCard != null) {
-                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " now has the screen");
+                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + "( " + Counters.get(playerOrder[(currentPlayerIndex + 1) % numPlayers]).getUserName()  + ") now has the screen");
                     return false;
                 } else {
-                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + accuser.getCharacterName() + " now has the screen");
+                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + accuser.getCharacterName() + "(" + accuser.getUserName() + " now has the screen");
                     return false;
                 }
             }
@@ -248,7 +248,7 @@ public class Question {
      * This checks if the user has one of the cards and tells them if they do
      */
     private void checkCards() {
-        frame.appendText("It's " + playerOrder[currentPlayerIndex] + "'s turn to show cards.");
+        frame.appendText("It's " + playerOrder[currentPlayerIndex] + "'s (" + Counters.get(playerOrder[currentPlayerIndex]).getUserName() + ") turn to show cards.");
 
         boolean haveCounter = false, haveWeapon = false, haveRoom = false;
         currentPlayer = Counters.get(playerOrder[currentPlayerIndex]);
@@ -280,19 +280,19 @@ public class Question {
      */
     private boolean showResults() {
         frame.resetInfoField();
-        frame.appendText(accuser.getCharacterName() + ": Here are the results from the questioning!");
+        frame.appendText(accuser.getCharacterName() + " ("+ accuser.getUserName() +"): Here are the results from the questioning!");
         int loopIndex = (orderStart + 1) % numPlayers;
         if (shownCard == null) {
             frame.appendText("Nobody had the cards you asked.");
         } else {
             while (!playerOrder[currentPlayerIndex].equals(playerOrder[loopIndex])) {
-                frame.appendText(playerOrder[loopIndex] + " had no cards");
+                frame.appendText(playerOrder[loopIndex]+ " (" + Counters.get(playerOrder[currentPlayerIndex]).getUserName() + ") had no cards");
                 loopIndex++;
                 if (loopIndex == numPlayers) {
                     loopIndex = loopIndex % numPlayers;
                 }
             }
-            frame.appendText(playerOrder[currentPlayerIndex] + " showed you the " + shownCard + " card");
+            frame.appendText(playerOrder[currentPlayerIndex] + " (" + Counters.get(playerOrder[currentPlayerIndex]).getUserName() + ") showed you the " + shownCard + " card");
         }
         frame.appendText("You can now type 'done' to end your turn, or 'notes' to view your updated notes");
 
