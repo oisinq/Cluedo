@@ -41,6 +41,12 @@ public class GUI extends JFrame {
         board = new JPanel();
         // We use BorderLayout to easily have multiple components in the same panel
         setLayout(new BorderLayout());
+        try {
+			setIconImage(ImageIO.read(getClass().getResourceAsStream("cluedo.png")));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         setSize(982, 680);
         setTitle("Cluedo");
         setBackground(new Color(76, 133, 99));
@@ -56,7 +62,9 @@ public class GUI extends JFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: cannot load board image.");
         }
-
+        
+        
+        
         infoField = new JTextArea(12, 42);
         // I setEditable to false so that the user can't edit the text on the right-hand size
         infoField.setEditable(false);
@@ -92,7 +100,7 @@ public class GUI extends JFrame {
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 // Understands what the user enters and acts accordingly
-                gp.interpretInput(gp.getCurrentPlayerName());
+                gp.interpretInput();
             }
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener

@@ -18,7 +18,7 @@ public class Gameplay {
     private Weapons weapons;
     private String[] play = new String[6];
     private boolean questionTriggered = false;
-    private boolean accusationMode = false;
+    private boolean questioningMode = false;
     private Question question;
     private boolean accusationTriggered = false;
     private Accusation accusation;
@@ -26,10 +26,9 @@ public class Gameplay {
     private int playTurn = 0;
     private int dieRoll = 0; //tracker used to stop more than one roll call per turn
     private int numPlayers = 0;
-    private int numContendersRemaining = 0;
+    private int numContendersRemaining;
     private String currentPlayerName;
     private boolean questionAsked = false;
-    private ArrayList<Counter> players;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
     private boolean gameOver = false;
 //    private String Log;
@@ -42,51 +41,55 @@ public class Gameplay {
     Sqaures that are marked 4 are room squares that are adjacent to room entrances
     All negative squares are occupied by another user (e.g. -1 is an occupied pathway square */
     private int[][] squareType = {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {3, 3, 3, 3, 3, 3, 0, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 0, 3, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 4, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 3, 1, 2, 4, 3, 3, 3, 3, 3, 3, 4, 2, 1, 2, 3, 3, 3, 3, 0, 0},
-            {3, 3, 3, 3, 4, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-            {1, 1, 1, 1, 2, 1, 1, 1, 3, 4, 3, 3, 3, 3, 4, 3, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 3, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 4, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 3, 3, 4, 2, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 3, 3, 4, 3, 0},
-            {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 2, 1, 2, 0, 0},
-            {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 4, 3, 3, 0, 0},
-            {3, 3, 3, 3, 3, 3, 4, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
-            {0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 3, 3, 4, 3, 3, 1, 2, 4, 3, 3, 3, 3, 3, 3, 0},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
-            {0, 1, 1, 1, 1, 1, 2, 1, 1, 3, 3, 4, 4, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3, 0, 0},
-            {3, 3, 3, 3, 3, 3, 4, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-            {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 4, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0},
-            {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 4, 3, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
-            {3, 3, 3, 3, 3, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 3, 3, 3, 3, 3, 3, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {3, 3, 3, 3, 3, 3, 0, 1, 1, 1, 3, 3, 3, 3, 1, 1, 1, 0, 3, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 4, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 3, 1, 2, 4, 3, 3, 3, 3, 3, 3, 4, 2, 1, 2, 3, 3, 3, 3, 0, 0},
+        {3, 3, 3, 3, 4, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        {1, 1, 1, 1, 2, 1, 1, 1, 3, 4, 3, 3, 3, 3, 4, 3, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+        {0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 3, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 4, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 3, 3, 4, 2, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 3, 3, 4, 3, 0},
+        {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 2, 1, 2, 0, 0},
+        {3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 3, 3, 4, 3, 3, 0, 0},
+        {3, 3, 3, 3, 3, 3, 4, 3, 1, 1, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
+        {0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 3, 3, 4, 3, 3, 1, 2, 4, 3, 3, 3, 3, 3, 3, 0},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
+        {0, 1, 1, 1, 1, 1, 2, 1, 1, 3, 3, 4, 4, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3, 0, 0},
+        {3, 3, 3, 3, 3, 3, 4, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+        {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 4, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0},
+        {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 4, 3, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 1, 1, 3, 3, 3, 3, 3, 3, 3, 0},
+        {3, 3, 3, 3, 3, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 3, 3, 3, 3, 3, 3, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
-    Gameplay(GUI frame, Counters counters, Rooms rooms,Weapons weapons,ArrayList<Counter> players) {
+    Gameplay(GUI frame, Counters counters, Rooms rooms, Weapons weapons, ArrayList<Counter> players) {
         this.frame = frame;
         this.counters = counters;
         this.rooms = rooms;
-        this.weapons=weapons;
-        this.players=players;
+        this.weapons = weapons;
+        ArrayList<Counter> players1 = players;
         int counter = 0;
 
         // This enters each player into an array that tracks who's turn it is, and the order of turns
         ArrayList<Counter> init = new ArrayList<>();
-        for (Counter currentCounter : this.players) {
+        for (Counter currentCounter : players1) {
             //play[numPlayers] = currentCounter.getCharacterName();
             init.add(currentCounter);
             counter++;
             numPlayers++;
+        }
+
+        // We go through the counters separately, because we want to set all counter squares to occupied - not just the players
+        for (Counter c : counters) {
             //We set the starting position of each counter to -1 so we know it's occupied
-            squareType[currentCounter.getRow()][currentCounter.getColumn()] *= -1;
+            squareType[c.getRow()][c.getColumn()] *= -1;
         }
 
 
@@ -117,7 +120,7 @@ public class Gameplay {
         cards.Envelope();
         cards.CardHolder(play, 18 / numPlayers, numPlayers);
         // This is the current player
-        
+
         currentPlayerName = play[0];
         numContendersRemaining = numPlayers;
         // We display the help command in the infoField and start the first turn
@@ -127,7 +130,7 @@ public class Gameplay {
     /**
      * Checks if a string is an integer
      */
-    
+
     private static boolean checkInteger(String str) {
         if (str == null) {
             return false;
@@ -217,7 +220,7 @@ public class Gameplay {
 
         Counter c = Counters.get(currentPlayerName);
 
-        if(c.lostGame) {
+        if (c.lostGame) {
             playTurn = (playTurn + 1) % numPlayers;
             switch (play[playTurn]) {
                 case "Scarlet":
@@ -247,7 +250,14 @@ public class Gameplay {
         enteredRoom = false;
         frame.resetInfoField();
         helpCommand();
-
+      //TODO
+        frame.appendText("Players will be playing in the order of :");
+        for(String s : play) {
+        	if (s != null){
+        	frame.appendText(s + " ");
+        	}
+        }
+        frame.appendText("");
         questionAsked = false;
         frame.appendText(currentPlayerName + " has started their turn\n");
 
@@ -317,7 +327,7 @@ public class Gameplay {
             }
         }
     }
-    
+
     /**
      * Moves the counter to the next available spot in the centre of the room
      */
@@ -327,6 +337,15 @@ public class Gameplay {
         boolean found = false;
 
         ArrayList<Coordinates> tokenSquares = room.getTokenSquares();
+
+        for (Coordinates tokenSquare : tokenSquares) {
+            // Since occupied squares are negative, we check if the corresponding value in squareType is positive
+            if (tokenSquare.getColumn() == c.getColumn() && tokenSquare.getRow() == c.getRow()) {
+                System.out.println("Already on a token square!");
+                return;
+            }
+        }
+
         // This searches through the tokenSquares arraylist to find one that isn't occupied
         for (int i = 0; i < tokenSquares.size() && !found; i++) {
             // Since occupied squares are negative, we check if the corresponding value in squareType is positive
@@ -341,39 +360,37 @@ public class Gameplay {
         // If you've moved to the centre of a room, you can't move again, so we set the dieResult to 0
         dieResult = 0;
     }
-    
+
     /**
      * Moves the weapon into the room
      */
-    private void moveWeaponToRoom(Weapon w, Room r){
-    	Room Room = w.getCurrRoom();//the room where the weapon is to begin with
-    	//Coordinates location = null;
-    	//Boolean found= false;
-    	Boolean found=false;
-    	Weapon tmp = w;
-    	if(Room==r){
-		//leave this place we're flying	
-		}
-    	for(Weapon hld : weapons){
-    		//Room test= hld.getCurrRoom();
-    		if(hld.getCurrRoom().getRoomName().equals(r.getRoomName())) {
+    private void moveWeaponToRoom(Weapon w, Room r) {
+        Room Room = w.getCurrRoom();//the room where the weapon is to begin with
+        //Coordinates location = null;
+        //Boolean found= false;
+        Boolean found = false;
+        if (Room == r) {
+            //Already in the correct room
+            return;
+        }
+        for (Weapon hld : weapons) {
+            //Room test= hld.getCurrRoom();
+            if (hld.getCurrRoom().getRoomName().equals(r.getRoomName())) {
                 Room tmpRoom = w.getCurrRoom();
                 w.setCurrentRoom(r);
                 hld.setCurrentRoom(tmpRoom);
-    			//room is already occupied 
-    			found=true;
-    			break;
-    		}
-    	}
-    	if(found==false){
-    		//means nothing is in that room
-    		w.setCurrentRoom(r);
-    	}
-    	
-    	
+                //room is already occupied
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            //means nothing is in that room
+            w.setCurrentRoom(r);
+        }
     }
-    
-    
+
+
     /**
      * Checks if you can enter a certain room or not by looking at both the current square and the next square
      */
@@ -498,17 +515,18 @@ public class Gameplay {
     /**
      * Reads text from userInput and interprets text accordingly
      */
-    public void interpretInput(String name) {
+    public void interpretInput() {
         String inputtedText = frame.getUserInput().getText();//takes info from the field
         frame.getUserInput().setText("");//wipes the field after
 
         //TODO
-        //Log += name;//this adds to the Log 
+        //Log += name;//this adds to the Log
 
         frame.appendText(">" + inputtedText);//puts it into the panel
         String splitStr = inputtedText.trim().replaceAll(" +", " ");
         //String splitStr = inputtedText.replaceAll("\\s+", ""); //Splits the inputted string into an array based spaces
         String command = splitStr.toLowerCase();
+        Counter player = counters.get(currentPlayerName);
 
         if (gameOver) {
             frame.appendText("The game is over!");
@@ -517,17 +535,17 @@ public class Gameplay {
 
         if (command.equals("help")) {
             helpCommand();
-        } else if (command.equals("log")){
-        	String log=frame.getLog();
-        	frame.appendText(log);
+        } else if (command.equals("log")) {
+            String log = frame.getLog();
+            frame.appendText(log);
         } else if (command.equals("quit")) {
             frame.appendText("Thank you for playing! Goodbye");
             System.exit(0);
         } else if (command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
-        }else if (accusationMode) {
-            if (question.accusation(command)) {
-                accusationMode = false;
+        } else if (questioningMode) { // This if loop is triggered when a question has been defined and you're checking which players have cards
+            if (question.questioning(command)) { //questioning() returns true when the questioning is completed
+                questioningMode = false;
                 dieResult = 0;
                 questionAsked = true;
             }
@@ -538,6 +556,7 @@ public class Gameplay {
             playTurn = (playTurn + 1) % numPlayers;
             // Goes to the next players move
             turn();
+<<<<<<< HEAD
         }else if(questionTriggered) {
             questionTriggered = question.createAccusation(command);
             if (!questionTriggered) {
@@ -545,33 +564,28 @@ public class Gameplay {
                 if ((question.getCounter() != Counters.get(currentPlayerName)))
                 		
                 		{
+=======
+        } else if (questionTriggered) { // This if statement is used to build the question
+            // defineQuestion returns false when the question is completely defined
+            questionTriggered = question.defineQuestion(command);
+            if (!questionTriggered) { // This is triggered if the question is completely defined, which starts the next step
+                questioningMode = true;
+                //
+                if (question.getCounter() != Counters.get(currentPlayerName)) {
+                    squareType[question.getCounter().getRow()][question.getCounter().getColumn()] *= -1;
+>>>>>>> c7eaafa6719df572ed6d7d940a86b86fc892e62d
                     moveToRoomCentre(question.getCounter());
                 }
-                moveWeaponToRoom(question.getWeapon(),question.getRoom());
+                moveWeaponToRoom(question.getWeapon(), question.getRoom());
                 question.confirmHandoff();
                 frame.repaint();
             }
         } else if (accusationTriggered) {
             accusationTriggered = accusation.createAccusation(command);
             if (accusation.accusationCreated) {
-                if(accusation.checkAccusation()) {
+                if (accusation.checkAccusation()) {
                     gameOver = true;
                 } else {
-//                    //TODO remove the accuser!
-//                    play[playTurn];
-//                    String temp = play[position];
-//
-//                    for (int i = numPlayers; i >= playTurn; i--) {
-//                        play[i+1] = play[i];
-//                    }
-//
-//                    play[0] = temp;
-
-//                    for (int i = playTurn; i < numPlayers-1; i++) {
-//                        play[i] = play[i+1];
-//                    }
-//                    play[numPlayers-1] = null;
-//                    numPlayers--;
                     Counters.get(currentPlayerName).lostGame = true;
                     numContendersRemaining--;
                     turn();
@@ -591,21 +605,20 @@ public class Gameplay {
                     }
                 }
             }
-        }
-        else if (command.equals("accuse") && counters.get(name).getCurrentRoom().getRoomName().equals("Cellar")) {
+        } else if (command.equals("accuse") && player.getCurrentRoom().getRoomName().equals("Cellar")) {
             accusationTriggered = true;
-            accusation = new Accusation(counters.get(name), frame);
-        } else if(command.equals("question")&& counters.get(name).getCurrentRoom() != null && !counters.get(name).getCurrentRoom().getRoomName().equals("Cellar") && !questionAsked) {
+            accusation = new Accusation(player, frame);
+        } else if (command.equals("question") && player.getCurrentRoom() != null && !player.getCurrentRoom().getRoomName().equals("Cellar") && !questionAsked) {
             questionTriggered = true;
-            question = new Question(counters.get(name), frame, play);
-        }  else if (command.equals("notes")) {
+            question = new Question(player, frame, play);
+        } else if (command.equals("notes")) {
             Counter c = Counters.get(currentPlayerName);
             frame.appendText(c.getNotesString());
         }
         // Checks if the command is a movement direction
         else if ((command.equals("u") || command.equals("up") || command.equals("d") || command.equals("down") || command.equals("l") || command.equals("left") || command.equals("r") || command.equals("right"))) {
             if (dieResult > 0) {
-                if (moveCommand(splitStr, name)) {
+                if (moveCommand(splitStr, currentPlayerName)) {
                     dieResult = dieResult - 1;
                 }
             } else if (dieRoll == 0) {
@@ -626,7 +639,7 @@ public class Gameplay {
             } else {
                 frame.appendText("You have already rolled this turn!");
             }
-        }  else if(checkInteger(command)) {
+        } else if (checkInteger(command)) {
             if (dieRoll == 0) {
                 frame.appendText("You must roll before you move.");
             } else if (dieResult > 0 && !enteredRoom && isRoom(Counters.get(currentPlayerName))) {
@@ -654,6 +667,7 @@ public class Gameplay {
         squareType[c.getRow()][c.getColumn()] *= -1;
         boolean entranceSelected;
         boolean moved = false;
+        boolean secretEntrance = false;
 
         // Checks which entrance is selected
         // If the selected entrance doesn't exist, we display an error
@@ -703,6 +717,7 @@ public class Gameplay {
         // If the co-ordinates are negative, then I know it's a secret passageway - I can then swap the room
         if (c.getRow() == -1) {
             String room = c.getCurrentRoom().getRoomName();
+            secretEntrance = true;
             switch (room) {
                 case "Conservatory":
                     c.setCurrentRoom(Rooms.get("Lounge"));
@@ -751,7 +766,9 @@ public class Gameplay {
 
         // If you've selected an entrance and successfully moved, we can repaint and set the new square to "occupied"
         if (entranceSelected && moved) {
-            squareType[c.getRow()][c.getColumn()] *= -1;
+            if (!secretEntrance) {
+                squareType[c.getRow()][c.getColumn()] *= -1;
+            }
             frame.repaint();
             dieResult--;
         } else {
@@ -851,7 +868,7 @@ public class Gameplay {
      */
     private void helpCommand() {
         frame.appendText("Commands:\nMove Player Piece:\n - letter corresponding to direction of movement e.g u/d/l/r \n" +
-                "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n");
+            "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n");
     }
 
     /**

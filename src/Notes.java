@@ -53,6 +53,9 @@ public class Notes {
         }
     }
 
+    /**
+     * If we find a card in questioning, it's added here
+     */
     public void addSeenCard(String cardName) {
         values.put(cardName, "V");
     }
