@@ -249,7 +249,14 @@ public class Gameplay {
         enteredRoom = false;
         frame.resetInfoField();
         helpCommand();
-
+      //TODO
+        frame.appendText("Players will be playing in the order of :");
+        for(String s : play) {
+        	if (s != null){
+        	frame.appendText(s + " ");
+        	}
+        }
+        frame.appendText("");
         questionAsked = false;
         frame.appendText(currentPlayerName + " has started their turn\n");
 
