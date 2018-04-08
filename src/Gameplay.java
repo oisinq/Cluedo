@@ -3,7 +3,10 @@
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -574,7 +577,14 @@ public class Gameplay {
                     if (numContendersRemaining == 1) { // If there's only one player remaining, the last remaining player wins
                         turn();
                         frame.appendText("Congratulations, " + currentPlayerName + " (" + Counters.get(currentPlayerName).getUserName() + ") wins!");
-                        JOptionPane.showMessageDialog(null, "Congratulations, " + currentPlayerName + " (" + Counters.get(currentPlayerName).getUserName() + ") wins!");
+                        BufferedImage youWin = null;
+                        try {
+                            youWin = ImageIO.read(this.getClass().getResource("youWin.png"));
+                        } catch (IOException e) {
+                            JOptionPane.showMessageDialog(null, "Error: cannot load win image.");
+                        }
+
+                        JOptionPane.showMessageDialog(null, "Congratulations, " + currentPlayerName + " (" + Counters.get(currentPlayerName).getUserName() + ") wins!","Cludeo", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(youWin));
                         gameOver = true;
                     } else { // Otherwise, we just remove the losing player from the game, and go on to the next player
                         dieResult = 0;
