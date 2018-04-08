@@ -80,7 +80,7 @@ public class Accusation {
     }
 
     private void selectRoom(String roomName) {
-        if (roomName == null || roomName.le ngth() < 3) {
+        if (roomName == null || roomName.length() < 3) {
             room = Rooms.get(roomName);
             return;
         }
