@@ -166,10 +166,10 @@ public class Question {
             } else {
                 // Otherwise, we show an error asking the user to swap the computer to the next player
                 if (shownCard != null) {
-                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + "( " + Counters.get(playerOrder[(currentPlayerIndex + 1) % numPlayers]).getUserName()  + ") now has the screen");
+                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + accuser.getCharacterName() + " (" + accuser.getUserName()  + ") now has the screen");
                     return false;
                 } else {
-                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + accuser.getCharacterName() + "(" + accuser.getUserName() + " now has the screen");
+                    frame.appendText("Incorrect command - type 'swapped' to confirm that "  + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " (" + Counters.get(playerOrder[(currentPlayerIndex + 1) % numPlayers]).getUserName()  + ") now has the screen");
                     return false;
                 }
             }
