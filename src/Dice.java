@@ -20,7 +20,6 @@ public class Dice {
      * Returns a number between 1 and 6
      */
     int roll() {
-        // This returns a random number between 1 and 6
         return rand.nextInt(6) + 1;
     }
 }

@@ -13,19 +13,16 @@ import java.util.Map;
  * Each counter represents a player on the board
  */
 public class Counter extends JComponent implements BoardPiece {
+    public boolean lostGame = false;
     private String characterName;
     private String userName;
     private ArrayList<Card> cards = new ArrayList<>();
     private ArrayList<Card> sharedCards;
-
     private int xLocation, yLocation;
-    // 43, 50 is top of grid
     private int column, row, rollForOrder;
     private Color c;
-
     private Room currentRoom;
     private Notes notes;
-    public boolean lostGame = false;
 
 
     Counter(String userName, String characterName, Color c, int x, int y, int rollForOrder) {
@@ -34,8 +31,10 @@ public class Counter extends JComponent implements BoardPiece {
         this.c = c;
         column = x;
         row = y;
-        xLocation = 43 + (column * 23);//43
-        yLocation = 50 + (row * 23);//50
+
+        // 43, 50 is top of grid
+        xLocation = 43 + (column * 23);
+        yLocation = 50 + (row * 23);
         currentRoom = null;
         notes = new Notes();
         this.rollForOrder = rollForOrder;
@@ -173,12 +172,12 @@ public class Counter extends JComponent implements BoardPiece {
     }
 
     public Boolean hasCardName(String CardName) {
-    	for (Card c : cards) {
+        for (Card c : cards) {
             if (c.getName().equals(CardName)) {
                 return true;
             }
         }
-    	return false;
+        return false;
     }
 
     public ArrayList<Card> getCards() {
@@ -194,7 +193,8 @@ public class Counter extends JComponent implements BoardPiece {
         StringBuilder s = new StringBuilder();
         int i = 0;
 
-        s.append(characterName + "'s Notes");
+        String title = characterName + "'s Notes";
+        s.append(title);
         for (Map.Entry<String, String> entry : notes.values.entrySet()) {
             if (i == 0) {
                 s.append("\nPlayers:\n");

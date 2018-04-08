@@ -8,25 +8,13 @@
  */
 public class Card {
     private String cardName;
-    private String type;
-    private Boolean owned;
 
-    Card(String cardName, String type, Boolean owned) {
+    Card(String cardName) {
         this.cardName = cardName;
-        this.type = type;
-        this.owned = owned;
     }
 
     public String getName() {
         return cardName;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public Boolean isOwned() {
-        return owned;
     }
 
     /**

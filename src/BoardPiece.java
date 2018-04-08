@@ -9,16 +9,6 @@
 public interface BoardPiece {
 
     /**
-     * Returns the X co-ordinate of the counter
-     */
-    int getX();
-
-    /**
-     * Returns the Y co-ordinate of the counter
-     */
-    int getY();
-
-    /**
      * Moves the counter up the entered number of steps
      */
     void moveUp(int steps);

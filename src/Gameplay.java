@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class Gameplay {
 
     private GUI frame;
-    private Counters counters;
     private Rooms rooms;
     private Weapons weapons;
     private String[] play = new String[6];
@@ -20,7 +19,7 @@ public class Gameplay {
     private boolean questioningMode = false;
     private Question question;
     private boolean accusationTriggered = false;
-    private int passStart =0;
+    private int passStart = 0;
     private Accusation accusation;
     private int dieResult = 0;
     private int playTurn = 0;
@@ -31,7 +30,6 @@ public class Gameplay {
     private boolean questionAsked = false;
     private boolean enteredRoom;     // This boolean checks that a counter only enters a room once per turn
     private boolean gameOver = false;
-//    private String Log;
 
     /* This array "squareType" stores what kind of square each square on the board is, which determines if it can be accessed by counters
     Squares that are marked 0 are inaccessible by the player (they are out of bounds)
@@ -71,16 +69,13 @@ public class Gameplay {
 
     Gameplay(GUI frame, Counters counters, Rooms rooms, Weapons weapons, ArrayList<Counter> players) {
         this.frame = frame;
-        this.counters = counters;
         this.rooms = rooms;
         this.weapons = weapons;
-        ArrayList<Counter> players1 = players;
         int counter = 0;
 
         // This enters each player into an array that tracks who's turn it is, and the order of turns
         ArrayList<Counter> init = new ArrayList<>();
-        for (Counter currentCounter : players1) {
-            //play[numPlayers] = currentCounter.getCharacterName();
+        for (Counter currentCounter : players) {
             init.add(currentCounter);
             counter++;
             numPlayers++;
@@ -250,20 +245,19 @@ public class Gameplay {
         enteredRoom = false;
         frame.resetInfoField();
         helpCommand();
-      //TODO
-        if(passStart==0)
-        {
-        frame.appendText("Players will be playing in the order of :");
-        for(String s : play) {
-        	if (s != null){
-        	frame.appendText(s + " ");
-        	}
+
+        if (passStart == 0) {
+            frame.appendText("Players will be playing in the order of:");
+            for (String s : play) {
+                if (s != null) {
+                    frame.appendText(s + " ");
+                }
+            }
+            frame.appendText("");
         }
-        frame.appendText("");
-        }
-        passStart=1;
+        passStart = 1;
         questionAsked = false;
-        frame.appendText(currentPlayerName + " ("  + Counters.get(currentPlayerName).getUserName() + ") has started their turn\n");
+        frame.appendText(currentPlayerName + " (" + Counters.get(currentPlayerName).getUserName() + ") has started their turn\n");
 
         // If the counter is in a room, it should list the room exits
         if (c != null && isRoom(c)) {
@@ -370,15 +364,12 @@ public class Gameplay {
      */
     private void moveWeaponToRoom(Weapon w, Room r) {
         Room Room = w.getCurrRoom();//the room where the weapon is to begin with
-        //Coordinates location = null;
-        //Boolean found= false;
         Boolean found = false;
         if (Room == r) {
             //Already in the correct room
             return;
         }
         for (Weapon hld : weapons) {
-            //Room test= hld.getCurrRoom();
             if (hld.getCurrRoom().getRoomName().equals(r.getRoomName())) {
                 Room tmpRoom = w.getCurrRoom();
                 w.setCurrentRoom(r);
@@ -523,14 +514,10 @@ public class Gameplay {
         String inputtedText = frame.getUserInput().getText();//takes info from the field
         frame.getUserInput().setText("");//wipes the field after
 
-        //TODO
-        //Log += name;//this adds to the Log
-
         frame.appendText(">" + inputtedText);//puts it into the panel
         String splitStr = inputtedText.trim().replaceAll(" +", " ");
-        //String splitStr = inputtedText.replaceAll("\\s+", ""); //Splits the inputted string into an array based spaces
         String command = splitStr.toLowerCase();
-        Counter player = counters.get(currentPlayerName);
+        Counter player = Counters.get(currentPlayerName);
 
         if (gameOver) {
             frame.appendText("The game is over!");
@@ -548,7 +535,7 @@ public class Gameplay {
         } else if (command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
         } else if (questioningMode) { // This if loop is triggered when a question has been defined and you're checking which players have cards
-            if (question.questioning(command)) { //questioning() returns true when the questioning is completed
+            if (question.questioning(command)) { // questioning() returns true when the questioning is completed
                 questioningMode = false;
                 dieResult = 0;
                 questionAsked = true;
@@ -565,7 +552,7 @@ public class Gameplay {
             questionTriggered = question.defineQuestion(command);
             if (!questionTriggered) { // This is triggered if the question is completely defined, which starts the next step
                 questioningMode = true;
-                //
+                // If you're questioning a counter that isn't yourself, move it to the current room (as well as the weapon)
                 if (question.getCounter() != Counters.get(currentPlayerName)) {
                     squareType[question.getCounter().getRow()][question.getCounter().getColumn()] *= -1;
                     moveToRoomCentre(question.getCounter());
@@ -574,7 +561,7 @@ public class Gameplay {
                 question.confirmHandoff();
                 frame.repaint();
             }
-        } else if (accusationTriggered) {
+        } else if (accusationTriggered) { // This if statement is used to build the accusation
             accusationTriggered = accusation.createAccusation(command);
             if (accusation.accusationCreated) {
                 if (accusation.checkAccusation()) {
@@ -584,25 +571,25 @@ public class Gameplay {
                     numContendersRemaining--;
                     turn();
 
-                    if (numContendersRemaining == 1) {
+                    if (numContendersRemaining == 1) { // If there's only one player remaining, the last remaining player wins
                         turn();
-                        frame.appendText("Congratulations, " + currentPlayerName + " (" + counters.get(currentPlayerName).getUserName() + ") wins!");
-                        JOptionPane.showMessageDialog(null, "Congratulations, " + currentPlayerName + " (" + counters.get(currentPlayerName).getUserName() + ") wins!");
+                        frame.appendText("Congratulations, " + currentPlayerName + " (" + Counters.get(currentPlayerName).getUserName() + ") wins!");
+                        JOptionPane.showMessageDialog(null, "Congratulations, " + currentPlayerName + " (" + Counters.get(currentPlayerName).getUserName() + ") wins!");
                         gameOver = true;
-                    } else {
+                    } else { // Otherwise, we just remove the losing player from the game, and go on to the next player
                         dieResult = 0;
                         dieRoll = 0;
-                        frame.appendText(currentPlayerName + "'s ("  + Counters.get(currentPlayerName).getUserName() + ") turn has ended!\n");
+                        frame.appendText(currentPlayerName + "'s (" + Counters.get(currentPlayerName).getUserName() + ") turn has ended!\n");
                         playTurn = (playTurn + 1) % numPlayers;
                         // Goes to the next players move
                         turn();
                     }
                 }
             }
-        } else if (command.equals("accuse") && player.getCurrentRoom().getRoomName().equals("Cellar")) {
+        } else if (command.equals("accuse") && player.getCurrentRoom().getRoomName().equals("Cellar")) { // You can only make accusations in the cellar
             accusationTriggered = true;
             accusation = new Accusation(player, frame);
-        } else if (command.equals("question") && player.getCurrentRoom() != null && !player.getCurrentRoom().getRoomName().equals("Cellar") && !questionAsked) {
+        } else if (command.equals("question") && player.getCurrentRoom() != null && !player.getCurrentRoom().getRoomName().equals("Cellar") && !questionAsked) { // Questions can't be made in the cellar!
             questionTriggered = true;
             question = new Question(player, frame, play);
         } else if (command.equals("notes")) {
@@ -780,7 +767,7 @@ public class Gameplay {
     }
 
     /**
-     * This method lets the user make standard moves (e.g. up/down/left/right
+     * This method lets the user make standard moves e.g. up/down/left/right
      */
     private boolean moveCommand(String splitStr, String colour) {
         // We can only move if the next square is either a pathway or is a room square adjacent to an entrance
@@ -847,9 +834,9 @@ public class Gameplay {
             dieResult = tmp;
             enteredRoom = true;
             if (counter.getCurrentRoom() == Rooms.get("Cellar")) {
-                frame.appendText("You have entered the "+counter.getCurrentRoom().getRoomName()+".  You can move again in your next turn. You can now enter `accuse` to make an accusation.");
+                frame.appendText("You have entered the " + counter.getCurrentRoom().getRoomName() + ".  You can move again in your next turn. You can now enter `accuse` to make an accusation.");
             } else {
-                frame.appendText("You have entered the "+counter.getCurrentRoom().getRoomName()+".  You can move again in your next turn. You can now enter `question` to ask a question.");
+                frame.appendText("You have entered the " + counter.getCurrentRoom().getRoomName() + ".  You can move again in your next turn. You can now enter `question` to ask a question.");
             }
         }
 
@@ -863,12 +850,5 @@ public class Gameplay {
     private void helpCommand() {
         frame.appendText("Commands:\nMove Player Piece:\n - letter corresponding to direction of movement e.g u/d/l/r \n" +
             "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - \"roll\"\n\nLook at Notes\n - \"notes\"\n");
-    }
-
-    /**
-     * Returns the current player's name
-     */
-    public String getCurrentPlayerName() {
-        return currentPlayerName;
     }
 }

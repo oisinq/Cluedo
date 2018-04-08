@@ -155,21 +155,23 @@ public class Question {
                 if (shownCard == null) {
                     // If we're back at the accuser, we return the result of showPlayer (a boolean)
                     if (playerOrder[(currentPlayerIndex + 1) % numPlayers].equals(accuser.getCharacterName())) {
-                        return showResults();
+                        showResults();
+                        return true;
                     }
                 } else {
                     // If a card has been selected, we return the result of showPlayer (a boolean)
-                    return showResults();
+                    showResults();
+                    return true;
                 }
                 // Otherwise, we move to the next player
                 done();
             } else {
                 // Otherwise, we show an error asking the user to swap the computer to the next player
                 if (shownCard != null) {
-                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + accuser.getCharacterName() + " (" + accuser.getUserName()  + ") now has the screen");
+                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + accuser.getCharacterName() + " (" + accuser.getUserName() + ") now has the screen");
                     return false;
                 } else {
-                    frame.appendText("Incorrect command - type 'swapped' to confirm that "  + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " (" + Counters.get(playerOrder[(currentPlayerIndex + 1) % numPlayers]).getUserName()  + ") now has the screen");
+                    frame.appendText("Incorrect command - type 'swapped' to confirm that " + playerOrder[(currentPlayerIndex + 1) % numPlayers] + " (" + Counters.get(playerOrder[(currentPlayerIndex + 1) % numPlayers]).getUserName() + ") now has the screen");
                     return false;
                 }
             }
@@ -278,15 +280,15 @@ public class Question {
     /**
      * This prints the results from the questioning
      */
-    private boolean showResults() {
+    private void showResults() {
         frame.resetInfoField();
-        frame.appendText(accuser.getCharacterName() + " ("+ accuser.getUserName() +"): Here are the results from the questioning!");
+        frame.appendText(accuser.getCharacterName() + " (" + accuser.getUserName() + "): Here are the results from the questioning!");
         int loopIndex = (orderStart + 1) % numPlayers;
         if (shownCard == null) {
             frame.appendText("Nobody had the cards you asked.");
         } else {
             while (!playerOrder[currentPlayerIndex].equals(playerOrder[loopIndex])) {
-                frame.appendText(playerOrder[loopIndex]+ " (" + Counters.get(playerOrder[currentPlayerIndex]).getUserName() + ") had no cards");
+                frame.appendText(playerOrder[loopIndex] + " (" + Counters.get(playerOrder[currentPlayerIndex]).getUserName() + ") had no cards");
                 loopIndex++;
                 if (loopIndex == numPlayers) {
                     loopIndex = loopIndex % numPlayers;
@@ -295,8 +297,6 @@ public class Question {
             frame.appendText(playerOrder[currentPlayerIndex] + " (" + Counters.get(playerOrder[currentPlayerIndex]).getUserName() + ") showed you the " + shownCard + " card");
         }
         frame.appendText("You can now type 'done' to end your turn, or 'notes' to view your updated notes");
-
-        return true;
     }
 
     public Room getRoom() {

@@ -6,12 +6,12 @@
 import javax.swing.*;
 
 public class Accusation {
+    public boolean accusationCreated = false;
     private GUI frame;
     private Room room;
     private Counter counter;
     private Weapon weapon;
     private Counter accuser;
-    public boolean accusationCreated = false;
 
 
     Accusation(Counter accuser, GUI frame) {
@@ -42,7 +42,7 @@ public class Accusation {
             selectRoom(command.toLowerCase());
             if (room != null) {
                 frame.appendText("You have accused " + counter.getCharacterName() + " of committing a murder with the "
-                        + weapon.getName() + " in the " + room.getRoomName() + "\n");
+                    + weapon.getName() + " in the " + room.getRoomName() + "\n");
                 accusationCreated = true;
                 return false;
             } else {
@@ -91,22 +91,5 @@ public class Accusation {
         } else {
             room = r;
         }
-    }
-
-    private void confirmReset() {
-        frame.resetInfoField();
-
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public Counter getCounter() {
-        return counter;
-    }
-
-    public Weapon getWeapon() {
-        return weapon;
     }
 }

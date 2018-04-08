@@ -5,7 +5,6 @@
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,11 +17,7 @@ import java.util.List;
  * it also decides which player goes first
  */
 class GameSetup {
-
-    int a = 0;
-
     private Counters Playable;
-    private Counters NPC=null;
     private BufferedImage Logo;
 
 
@@ -74,8 +69,7 @@ class GameSetup {
     /**
      * Lets the player select which character to play as and enter their own name
      */
-    private void CharacterSelect(int PlayerCount) {
-    	int playerCount=0;
+    private void CharacterSelect(int playerCount) {
         Logo = null;
         try {
             Logo = ImageIO.read(this.getClass().getResource("cluedo.png"));
@@ -86,12 +80,12 @@ class GameSetup {
         String[] Characters = (new String[]{"Plum", "White", "Scarlet", "Green", "Mustard", "Peacock"});
         //this list will store the above string in list format , both are needed for the below loop
         List<String> CharacterList = new ArrayList<>(Arrays.asList(Characters));
-        for (int i = 0; i < PlayerCount; i++) {
+        for (int i = 0; i < playerCount; i++) {
             String userName = (String) JOptionPane.showInputDialog(null, "Enter Your Username", "Cluedo", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Logo), null, "");
             if (userName == null) {//if the user cancels , exit the code
                 System.out.println("You have exited the game,Thanks For Playing!");
                 System.exit(0);
-                
+
             }
             String userChoice = (String) JOptionPane.showInputDialog(null, "Player " + (i + 1) + " Please Select A Character", "Cluedo", JOptionPane.QUESTION_MESSAGE, new ImageIcon(Logo), Characters, Characters[0]);
             if (userChoice == null) {//if the user cancels exit the code
@@ -102,22 +96,16 @@ class GameSetup {
             Characters = CharacterList.toArray(new String[0]);//characters gets updated with the new list
 
             Playable.createCounter(userName, userChoice, 0);//send the username and their character choice to be created and placed on the board
-           playerCount=i;
+            playerCount = i;
         }
-       
-        int NPCCount=0;
-        while(NPCCount<Characters.length)
-        {
-        	Playable.createNPC(
-        			null, 
-        			Characters[NPCCount], 
-        			0);
-        	NPCCount++;
+
+        int npcCount = 0;
+        while (npcCount < Characters.length) {
+            Playable.createNPC(
+                null,
+                Characters[npcCount],
+                0);
+            npcCount++;
         }
-       // for (Counter c : NPC) {
-        //    System.out.println(c.getCharacterName());
-        //}
     }
-
-
 }

@@ -6,7 +6,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -28,13 +27,13 @@ public class GUI extends JFrame {
     private JTextField userInput;
     private JScrollPane scrollPane;
     private BufferedImage boardImage;
-    private String Log="-----Log Of all Inputs and Outputs------\n";
+    private String Log = "-----Log Of all Inputs and Outputs------\n";
 
 
     /**
      * This method creates the graphical interface for the program
      */
-    GUI(Counters counters, Weapons weapons, Rooms rooms,ArrayList<Counter> players) {
+    GUI(Counters counters, Weapons weapons, Rooms rooms, ArrayList<Counter> players) {
         this.counters = counters;
         this.weapons = weapons;
 
@@ -42,11 +41,11 @@ public class GUI extends JFrame {
         // We use BorderLayout to easily have multiple components in the same panel
         setLayout(new BorderLayout());
         try {
-			setIconImage(ImageIO.read(getClass().getResourceAsStream("cluedo.png")));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+            setIconImage(ImageIO.read(getClass().getResourceAsStream("cluedo.png")));
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         setSize(982, 680);
         setTitle("Cluedo");
         setBackground(new Color(76, 133, 99));
@@ -62,9 +61,8 @@ public class GUI extends JFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error: cannot load board image.");
         }
-        
-        
-        
+
+
         infoField = new JTextArea(12, 42);
         // I setEditable to false so that the user can't edit the text on the right-hand size
         infoField.setEditable(false);
@@ -82,8 +80,6 @@ public class GUI extends JFrame {
         userInput = new JTextField();
         userInput.setText("Enter text here (type 'help' for help)");
 
-        // This method creates the Counter objects
-       // initialiseCounters(counters);
         // This method creates the Weapon objects
         initialiseWeapons(weapons);
 
@@ -94,8 +90,8 @@ public class GUI extends JFrame {
 
         // Displays the frame to the user
         setVisible(true);
-        
-        Gameplay gp = new Gameplay(this, counters, rooms,weapons,players);
+
+        Gameplay gp = new Gameplay(this, counters, rooms, weapons, players);
         // This action occurs when the user types "enter" in the userInput field
         Action action = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -104,10 +100,10 @@ public class GUI extends JFrame {
             }
         };
         userInput.addActionListener(action); //Sets a button(enter) to activate the above listener
-        
-        
+
+
         userInput.addFocusListener(new FocusListener() {
-        	@Override
+            @Override
             public void focusGained(FocusEvent e) {
                 userInput.setText(null); // Empty the text field when it receives focus
             }
@@ -115,7 +111,7 @@ public class GUI extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 // You could do something here when the field loses focus, if you like
-            	userInput.setText("Enter text here (type 'help' for help)");
+                userInput.setText("Enter text here (type 'help' for help)");
             }
 
         });
@@ -161,15 +157,6 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Creates each counter and adds it to the board
-     */
-    private void initialiseCounters(Counters counters) {
-        for (Counter c : counters) {
-            board.add(c);
-        }
-    }
-
-    /**
      * Adds each section of the GUI to the board
      */
     private void addComponents() {
@@ -182,7 +169,7 @@ public class GUI extends JFrame {
      * We use this method to add text to the infoField from outside this class
      */
     public void appendText(String input) {
-    	Log += input+"\n";
+        Log += input + "\n";
         infoField.append(input + "\n");
     }
 
@@ -190,14 +177,14 @@ public class GUI extends JFrame {
      * Returns the userInput component - we use this so we can access the entered text outside of this class
      */
     public JTextField getUserInput() {
-    	//Log += (userInput.getText()+"\n");//TODO find out if this works
         return userInput;
     }
 
     public void resetInfoField() {
         infoField.setText("");
     }
-    public String getLog(){
-    return Log+"\n-------End Of Log------\n";
-	}
+
+    public String getLog() {
+        return Log + "\n-------End Of Log------\n";
+    }
 }

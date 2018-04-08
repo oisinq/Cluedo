@@ -20,12 +20,12 @@ public class Weapons implements Iterable<Weapon>, Iterator<Weapon> {
      */
     Weapons() {
         weaponLocationRandomiser();
-        weapons.add(new Weapon("Rope", wepLocation[0][0], wepLocation[0][1], "/rope.PNG", findRoom(wepLocation[0][0], wepLocation[0][1]) ));
-        weapons.add(new Weapon("Dagger", wepLocation[1][0], wepLocation[1][1], "/dagger.PNG", findRoom(wepLocation[1][0], wepLocation[1][1]) ));
-        weapons.add(new Weapon("Wrench", wepLocation[2][0], wepLocation[2][1], "/wrench.PNG",findRoom(wepLocation[2][0], wepLocation[2][1]) ));
-        weapons.add(new Weapon("Pistol", wepLocation[3][0], wepLocation[3][1], "/revolver.PNG",findRoom(wepLocation[3][0], wepLocation[3][1])));
-        weapons.add(new Weapon("Candlestick", wepLocation[4][0], wepLocation[4][1], "/candlestick.PNG",findRoom(wepLocation[4][0], wepLocation[4][1])));
-        weapons.add(new Weapon("Lead Pipe", wepLocation[5][0], wepLocation[5][1], "/lead_pipe.PNG",findRoom(wepLocation[5][0], wepLocation[5][1])));
+        weapons.add(new Weapon("Rope", wepLocation[0][0], wepLocation[0][1], "/rope.PNG", findRoom(wepLocation[0][0], wepLocation[0][1])));
+        weapons.add(new Weapon("Dagger", wepLocation[1][0], wepLocation[1][1], "/dagger.PNG", findRoom(wepLocation[1][0], wepLocation[1][1])));
+        weapons.add(new Weapon("Wrench", wepLocation[2][0], wepLocation[2][1], "/wrench.PNG", findRoom(wepLocation[2][0], wepLocation[2][1])));
+        weapons.add(new Weapon("Pistol", wepLocation[3][0], wepLocation[3][1], "/revolver.PNG", findRoom(wepLocation[3][0], wepLocation[3][1])));
+        weapons.add(new Weapon("Candlestick", wepLocation[4][0], wepLocation[4][1], "/candlestick.PNG", findRoom(wepLocation[4][0], wepLocation[4][1])));
+        weapons.add(new Weapon("Lead Pipe", wepLocation[5][0], wepLocation[5][1], "/lead_pipe.PNG", findRoom(wepLocation[5][0], wepLocation[5][1])));
     }
 
     public static Weapon get(String name) {
@@ -66,38 +66,30 @@ public class Weapons implements Iterable<Weapon>, Iterator<Weapon> {
             wepLocation[i][1] = b;
         }
     }
-    
-    public Room findRoom(int X, int Y){//this should only be run once per weapon
 
-    	if(X==40&&Y==70){
-    		return Rooms.get("Kitchen");
-    	}
-    	else if(X==554&&Y==70){
-    		return Rooms.get("Conservatory");
-    	}
-    	else if(X==40&&Y==371){
-    		return Rooms.get("Dining Room");
-    	}
-    	else if(X==554&&Y==235){
-    		return Rooms.get("Billiard Room");
-    	}
-    	else if(X==40&&Y==585){
-    		return Rooms.get("lounge");
-    	}
-    	else if(X==554&&Y==585){
-    		return Rooms.get("Study");
-    	}
-    	else if(X==554&&Y==393){
-    		return Rooms.get("Library");
-    	}
-    	else if(X==365&&Y==99){
-    		return Rooms.get("Ball Room");
-    	}
-    	else if(X==254&&Y==574){
-    		return Rooms.get("Hall");
-    	}
-		return null;
-		
-    	
+    private Room findRoom(int X, int Y) {//this should only be run once per weapon
+
+        if (X == 40 && Y == 70) {
+            return Rooms.get("Kitchen");
+        } else if (X == 554 && Y == 70) {
+            return Rooms.get("Conservatory");
+        } else if (X == 40 && Y == 371) {
+            return Rooms.get("Dining Room");
+        } else if (X == 554 && Y == 235) {
+            return Rooms.get("Billiard Room");
+        } else if (X == 40 && Y == 585) {
+            return Rooms.get("lounge");
+        } else if (X == 554 && Y == 585) {
+            return Rooms.get("Study");
+        } else if (X == 554 && Y == 393) {
+            return Rooms.get("Library");
+        } else if (X == 365 && Y == 99) {
+            return Rooms.get("Ball Room");
+        } else if (X == 254 && Y == 574) {
+            return Rooms.get("Hall");
+        }
+        return null;
+
+
     }
 }

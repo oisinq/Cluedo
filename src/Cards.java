@@ -2,13 +2,14 @@
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Cards {
     private String[] cardList = (new String[]{"Mustard", "Scarlet", "Green", "Peacock", "White", "Plum",
-            "Pistol", "Dagger", "Lead Pipe", "Candlestick", "Rope", "Wrench",
-            "Ball Room", "Library", "Hall", "Conservatory", "Billiard Room", "Study", "Lounge", "Dining Room", "Kitchen"});
+        "Pistol", "Dagger", "Lead Pipe", "Candlestick", "Rope", "Wrench",
+        "Ball Room", "Library", "Hall", "Conservatory", "Billiard Room", "Study", "Lounge", "Dining Room", "Kitchen"});
     // This array tracks if a card has been assigned to a player/envelope/SpareCards yet
     private int[] given = (new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
     private ArrayList<Card> cards = new ArrayList<>();
@@ -28,7 +29,7 @@ public class Cards {
         }
         return null;
     }
-    
+
 
     /**
      * Used to generate random numbers
@@ -80,7 +81,7 @@ public class Cards {
                         temp = Random().nextInt(21);// Generates a new number
                     }
                     break;
-                    // We repeat these steps for the other counters
+                // We repeat these steps for the other counters
                 case "White":
                     while (track < amount) {
                         if (given[temp] == 0) {
@@ -150,28 +151,28 @@ public class Cards {
      * Creates all of the cards
      */
     private void createCard() {
-        cards.add(new Card("Mustard", "Person", false));
-        cards.add(new Card("Scarlet", "Person", false));
-        cards.add(new Card("Green", "Person", false));
-        cards.add(new Card("Peacock", "Person", false));
-        cards.add(new Card("White", "Person", false));
-        cards.add(new Card("Plum", "Person", false));
-        cards.add(new Card("Pistol", "Weapon", false));
-        cards.add(new Card("Dagger", "Weapon", false));
-        cards.add(new Card("Lead Pipe", "Weapon", false));
-        cards.add(new Card("Candlestick", "Weapon", false));
-        cards.add(new Card("Rope", "Weapon", false));
-        cards.add(new Card("Ball Room", "Room", false));
-        cards.add(new Card("Billiard Room", "Room", false));
-        cards.add(new Card("Wrench", "Weapon", false));
-        cards.add(new Card("Ball Room", "Room", false));
-        cards.add(new Card("Library", "Room", false));
-        cards.add(new Card("Hall", "Room", false));
-        cards.add(new Card("Conservatory", "Room", false));
-        cards.add(new Card("Billiard Room", "Room", false));
-        cards.add(new Card("Study", "Room", false));
-        cards.add(new Card("Lounge", "Room", false));
-        cards.add(new Card("Dining Room", "Room", false));
-        cards.add(new Card("Kitchen", "Room", false));
+        cards.add(new Card("Mustard"));
+        cards.add(new Card("Scarlet"));
+        cards.add(new Card("Green"));
+        cards.add(new Card("Peacock"));
+        cards.add(new Card("White"));
+        cards.add(new Card("Plum"));
+        cards.add(new Card("Pistol"));
+        cards.add(new Card("Dagger"));
+        cards.add(new Card("Lead Pipe"));
+        cards.add(new Card("Candlestick"));
+        cards.add(new Card("Rope"));
+        cards.add(new Card("Ball Room"));
+        cards.add(new Card("Billiard Room"));
+        cards.add(new Card("Wrench"));
+        cards.add(new Card("Ball Room"));
+        cards.add(new Card("Library"));
+        cards.add(new Card("Hall"));
+        cards.add(new Card("Conservatory"));
+        cards.add(new Card("Billiard Room"));
+        cards.add(new Card("Study"));
+        cards.add(new Card("Lounge"));
+        cards.add(new Card("Dining Room"));
+        cards.add(new Card("Kitchen"));
     }
 }
