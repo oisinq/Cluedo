@@ -56,11 +56,11 @@ public class Accusation {
 
     public boolean checkAccusation() {
         if (counter.getCharacterName().equals(Envelope.getPerson().getName()) && room.getRoomName().equals(Envelope.getRoom().getName()) && weapon.getName().equals(Envelope.getWeapon().getName())) {
-            frame.appendText("you win! good job!");
+            frame.appendText("Congratulations, " + accuser.getCharacterName() + " (" + accuser.getUserName() + ") wins!");
             JOptionPane.showMessageDialog(null, "Congratulations, " + accuser.getCharacterName() + " (" + accuser.getUserName() + ") wins!");
             return true;
         } else {
-            frame.appendText("you lose noob");
+            frame.appendText("Sorry, that's incorrect. You're out of the game.");
             JOptionPane.showMessageDialog(null, "Sorry, that's incorrect. You're out of the game.");
 
             return false;
@@ -68,6 +68,10 @@ public class Accusation {
     }
 
     private void selectCounter(String person) {
+        if (person == null || person.length() < 3) {
+            counter = Counters.get(person);
+            return;
+        }
         counter = Counters.get(person.substring(0, 1).toUpperCase() + person.substring(1));
     }
 
@@ -76,7 +80,17 @@ public class Accusation {
     }
 
     private void selectRoom(String roomName) {
-        room = Rooms.get(roomName.substring(0, 1).toUpperCase() + roomName.substring(1));
+        if (roomName == null || roomName.le ngth() < 3) {
+            room = Rooms.get(roomName);
+            return;
+        }
+        Room r = Rooms.get(roomName.substring(0, 1).toUpperCase() + roomName.substring(1));
+        // The murder can't happen in the cellar because Cellar isn't a card!
+        if (r == Rooms.get("Cellar")) {
+            frame.appendText("The murder couldn't happen in the cellar, because 'Cellar' isn't a card! Please pick a different room.");
+        } else {
+            room = r;
+        }
     }
 
     private void confirmReset() {
