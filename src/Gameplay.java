@@ -1,4 +1,4 @@
-/*  Cluedo - Sprint 4
+/*  Cluedo - Sprint 3
     Team: auroraBorealis
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
@@ -345,6 +345,7 @@ public class Gameplay {
         for (Coordinates tokenSquare : tokenSquares) {
             // Since occupied squares are negative, we check if the corresponding value in squareType is positive
             if (tokenSquare.getColumn() == c.getColumn() && tokenSquare.getRow() == c.getRow()) {
+                System.out.println("Already on a token square!");
                 return;
             }
         }
@@ -861,7 +862,7 @@ public class Gameplay {
      */
     private void helpCommand() {
         frame.appendText("Commands:\nMove Player Piece:\n - letter corresponding to direction of movement e.g u/d/l/r \n" +
-            "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - roll\n");
+            "\nEnd Turn\n - \"done\"\n\nQuit Game\n - \"quit\"\n\n Roll Dice\n - \"roll\"\n\nLook at Notes\n - \"notes\"\n");
     }
 
     /**
