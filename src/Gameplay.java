@@ -20,6 +20,7 @@ public class Gameplay {
     private boolean questioningMode = false;
     private Question question;
     private boolean accusationTriggered = false;
+    private int passStart =0;
     private Accusation accusation;
     private int dieResult = 0;
     private int playTurn = 0;
@@ -250,6 +251,8 @@ public class Gameplay {
         frame.resetInfoField();
         helpCommand();
       //TODO
+        if(passStart==0)
+        {
         frame.appendText("Players will be playing in the order of :");
         for(String s : play) {
         	if (s != null){
@@ -257,6 +260,8 @@ public class Gameplay {
         	}
         }
         frame.appendText("");
+        }
+        passStart=1;
         questionAsked = false;
         frame.appendText(currentPlayerName + " ("  + Counters.get(currentPlayerName).getUserName() + ") has started their turn\n");
 
