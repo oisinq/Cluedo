@@ -599,9 +599,13 @@ public class Gameplay {
         } else if (command.equals("accuse") && player.getCurrentRoom().getRoomName().equals("Cellar")) { // You can only make accusations in the cellar
             accusationTriggered = true;
             accusation = new Accusation(player, frame);
-        } else if (command.equals("question") && player.getCurrentRoom() != null && !player.getCurrentRoom().getRoomName().equals("Cellar") && !questionAsked) { // Questions can't be made in the cellar!
-            questionTriggered = true;
-            question = new Question(player, frame, play);
+        } else if (command.equals("question") && player.getCurrentRoom() != null && !player.getCurrentRoom().getRoomName().equals("Cellar")) { // Questions can't be made in the cellar!
+            if (questionAsked) {
+                frame.appendText("You can only ask one question per turn!");
+            } else {
+                questionTriggered = true;
+                question = new Question(player, frame, play);
+            }
         } else if (command.equals("notes")) {
             Counter c = Counters.get(currentPlayerName);
             frame.appendText(c.getNotesString());

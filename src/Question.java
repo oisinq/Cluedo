@@ -96,7 +96,7 @@ public class Question {
                     + weapon.getName() + " in the " + room.getRoomName() + "\n");
                 return false;
             } else {
-                frame.appendText("Invalid input. Please try again!");
+                frame.appendText("Invalid weapon. Please try again!");
             }
         }
         return true;
@@ -238,7 +238,11 @@ public class Question {
                         }
                         break;
                 }
+            } else {
+                frame.appendText(selection + " is not a valid card selection!");
             }
+        } else {
+            frame.appendText("Please select a valid card!");
         }
 
         checkCards();
