@@ -3,6 +3,10 @@
     Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
     "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Accusation {
@@ -12,6 +16,7 @@ public class Accusation {
     private Weapon weapon;
     private Counter accuser;
     public boolean accusationCreated = false;
+    private BufferedImage youWin,youLose;
 
 
     Accusation(Counter accuser, GUI frame) {
@@ -57,12 +62,26 @@ public class Accusation {
     public boolean checkAccusation() {
         if (counter.getCharacterName().equals(Envelope.getPerson().getName()) && room.getRoomName().equals(Envelope.getRoom().getName()) && weapon.getName().equals(Envelope.getWeapon().getName())) {
             frame.appendText("Congratulations, " + accuser.getCharacterName() + " (" + accuser.getUserName() + ") wins!");
-            JOptionPane.showMessageDialog(null, "Congratulations, " + accuser.getCharacterName() + " (" + accuser.getUserName() + ") wins!");
+            //JOptionPane.showMessageDialog(null, "Congratulations, " + accuser.getCharacterName() + " (" + accuser.getUserName() + ") wins!");
+            youWin = null;
+            try {
+                youWin = ImageIO.read(this.getClass().getResource("youWin.png"));
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error: cannot load win image.");
+            }
+            
+            JOptionPane.showMessageDialog(null, "Congratulations, " + accuser.getCharacterName() + " (" + accuser.getUserName() + ") wins!","Cludeo", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(youWin));
             return true;
         } else {
             frame.appendText("Sorry, that's incorrect. You're out of the game.");
-            JOptionPane.showMessageDialog(null, "Sorry, that's incorrect. You're out of the game.");
-
+            youLose = null;
+            try {
+                youLose = ImageIO.read(this.getClass().getResource("youLose.png"));
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error: cannot load Lose image.");
+            }
+            JOptionPane.showMessageDialog(null, "Sorry, that's incorrect. You're out of the game.","Cludeo", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(youLose));
+            //JOptionPane.showInputDialog(null, "Enter Your Username", "Cluedo", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(Logo), null, "");
             return false;
         }
     }
