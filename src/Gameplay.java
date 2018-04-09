@@ -522,6 +522,11 @@ public class Gameplay {
         String command = splitStr.toLowerCase();
         Counter player = Counters.get(currentPlayerName);
 
+        if (command.equals("quit")) {
+            frame.appendText("Thank you for playing! Goodbye");
+            System.exit(0);
+        }
+
         if (gameOver) {
             frame.appendText("The game is over!");
             return;
@@ -532,9 +537,6 @@ public class Gameplay {
         } else if (command.equals("log")) {
             String log = frame.getLog();
             frame.appendText(log);
-        } else if (command.equals("quit")) {
-            frame.appendText("Thank you for playing! Goodbye");
-            System.exit(0);
         } else if (command.equals("cheat")) {
             frame.appendText("The murder was committed by " + Envelope.getPerson().getName() + " in the " + Envelope.getRoom().getName() + " with the " + Envelope.getWeapon().getName());
         } else if (questioningMode) { // This if loop is triggered when a question has been defined and you're checking which players have cards
