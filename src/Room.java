@@ -1,42 +1,82 @@
-/*  Cluedo - Sprint 4
-    Team: auroraBorealis
-    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
-    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
-
-import java.util.ArrayList;
-
-/**
- * These are the individual rooms on the board and stores information about their entrances and token squares
- */
 public class Room {
 
-    // We store these variables here to make it easier to move around the players on the board
-    // "entrances" is a list of all of the locations of the entrances on the board
-    // "tokenSquares" is the locations where a token can be placed inside a board
-    private String roomName;
-    private ArrayList<Coordinates> entrances;
-    private ArrayList<Coordinates> tokenSquares;
+    private final static int ITEM_AREA_WIDTH = 4;      // an item is a token or a weapon
+    private final static int NUMBER_OF_ITEMS = 12;
 
-    Room(String roomName, ArrayList<Coordinates> entrances, ArrayList<Coordinates> tokenSquares) {
-        this.roomName = roomName;
-        this.entrances = entrances;
-        this.tokenSquares = tokenSquares;
+    private final String name;
+    private final Coordinates tokenArea;
+    private final Coordinates[] doors;
+    private boolean hasPassage = false, accusationAllowed = false;
+    private Room passageDestination;
+    private final boolean[] squaresOccupied = new boolean[NUMBER_OF_ITEMS];
+
+    Room(String name, Coordinates tokenArea, Coordinates[] doors) {
+        this.name = name;
+        this.tokenArea = tokenArea;
+        this.doors = doors;
+        for (boolean squareOccupied : squaresOccupied) {
+            squareOccupied = false;
+        }
     }
 
-    public boolean hasRoomName(String counterName) {
-        return this.roomName.toLowerCase().equals(counterName.toLowerCase().trim());
+    Room(String name, Coordinates tokenArea, Coordinates[] doors, boolean accusationAllowed) {
+        this(name,tokenArea,doors);
+        this.accusationAllowed = accusationAllowed;
     }
 
-    public ArrayList<Coordinates> getEntrances() {
-        return entrances;
+    public boolean hasName(String name) {
+        return this.name.toLowerCase().trim().equals(name.toLowerCase().trim());
     }
 
-    public ArrayList<Coordinates> getTokenSquares() {
-        return tokenSquares;
+    public Coordinates getDoorCoordinates(int index) {
+        return doors[index];
     }
 
-    public String getRoomName() {
-        return roomName;
+    public int getNumberOfDoors() {
+        return doors.length;
     }
 
+    public Coordinates addItem() {
+        int squareNumber = 0;
+        while (squaresOccupied[squareNumber]) {
+                squareNumber++;
+        }
+        Coordinates position = new Coordinates(tokenArea);
+        if (squareNumber < ITEM_AREA_WIDTH) {
+            position.add(new Coordinates(squareNumber , 0));
+        } else if (squareNumber < 2*ITEM_AREA_WIDTH) {
+            position.add(new Coordinates(squareNumber - ITEM_AREA_WIDTH, +1));
+        } else {
+            position.add(new Coordinates(squareNumber - 2*ITEM_AREA_WIDTH, +2));
+        }
+        squaresOccupied[squareNumber] = true;
+        return position;
+    }
+
+    public void removeItem(Coordinates position) {
+        int squareNumber = (position.getRow()-tokenArea.getRow())*ITEM_AREA_WIDTH+position.getCol()-tokenArea.getCol();
+        squaresOccupied[squareNumber] = false;
+    }
+
+    public void addPassage(Room room) {
+        hasPassage = true;
+        passageDestination = room;
+    }
+
+    public boolean hasPassage () {
+        return hasPassage;
+    }
+
+    public Room getPassageDestination() {
+        return passageDestination;
+    }
+
+    public boolean accusationAllowed() {
+        return accusationAllowed;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

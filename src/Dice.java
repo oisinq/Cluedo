@@ -1,25 +1,21 @@
-/*  Cluedo - Sprint 4
-    Team: auroraBorealis
-    Members: Oisin Quinn (16314071), Darragh Clarke (16387431), Charlie Kelly (16464276)
-    "Aurora Borealis! At this time of year? At this time of day? In this part of the country? Localized entirely within your kitchen?" */
+public class Dice implements DiceAPI {
 
-import java.util.Random;
+    private static final int NUM_DICE = 2;
 
-/**
- * Dice used for user turns
- */
-public class Dice {
+    private final int[] dice  = new int[NUM_DICE];
 
-    private Random rand;
-
-    Dice() {
-        rand = new Random();
+    public void roll() {
+        for (int i=0; i<NUM_DICE; i++) {
+            dice[i] = 1 + (int)(Math.random() * 6);
+        }
     }
 
-    /**
-     * Returns a number between 1 and 6
-     */
-    int roll() {
-        return rand.nextInt(6) + 1;
+    public int getTotal() {
+        return (dice[0] + dice[1]);
     }
+
+    public String toString() {
+        return dice[0] + " " + dice[1];
+    }
+
 }
