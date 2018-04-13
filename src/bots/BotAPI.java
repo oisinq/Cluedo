@@ -1,4 +1,10 @@
+package bots;
+
+import gameengine.Cards;
+import gameengine.Log;
+
 public interface BotAPI {
+
     String getName();
     String getCommand();
     String getMove();
@@ -7,4 +13,6 @@ public interface BotAPI {
     String getRoom();
     String getDoor();
     String getCard(Cards matchingCards);
+    void notifyResponse(Log response);
+
 }
