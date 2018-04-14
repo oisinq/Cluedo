@@ -1,7 +1,6 @@
 package gameengine;
 
 import bots.BotAPI;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class Cluedo {
 
     private static final String[] ALL_BOT_NAMES = {"Bot"};
     private static final int NUM_PLAYERS = 3;
-    private static final int DELAY = 10000;  // in milliseconds
+    private static final int DELAY = 3000;  // in milliseconds
 
     private final Tokens tokens  = new Tokens();
     private final Players players = new Players();
@@ -39,8 +38,8 @@ public class Cluedo {
         Collections.shuffle(suspectNames);
         if (args.length<NUM_PLAYERS) {
             botNames[0] = "Bot1";
-            botNames[1] = "Bot2";
-            botNames[2] = "Bot3";
+            botNames[1] = "Bot1";
+            botNames[2] = "Bot1";
         } else {
             for (int i=0; i<NUM_PLAYERS; i++) {
                 boolean found = false;
@@ -203,7 +202,7 @@ public class Cluedo {
                         tokens.get(query.getSuspect()).leaveRoom();
                     }
                     tokens.get(query.getSuspect()).enterRoom(currentToken.getRoom());
-                    weapons.get(query.getWeapon()).setRoom(currentToken.getRoom());
+                    weapons.get(query.getWeapon()).changeRoom(currentToken.getRoom());
                     ui.display();
                     Player playerQueried = players.getPlayerOnTheLeft(currentPlayer);
                     int numberOfQueriesDone = 0;
@@ -277,6 +276,9 @@ public class Cluedo {
             moveOver = false;
             questionOver = false;
             enteredRoom = false;
+            if (!firstTurn) {
+                ui.clearScreen();
+            }
             firstTurn = false;
             do {
                 currentPlayer = players.getCurrentPlayer();

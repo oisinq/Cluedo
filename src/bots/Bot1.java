@@ -2,7 +2,7 @@ package bots;
 
 import gameengine.*;
 
-import static java.lang.Thread.sleep;
+import java.util.HashMap;
 
 public class Bot1 implements BotAPI {
 
@@ -19,9 +19,13 @@ public class Bot1 implements BotAPI {
     private Log log;
     private Deck deck;
     private int movesLeft;
+    private boolean usedPassage = false;
+    private boolean rolled = false;
     private int i = 0;
+    private int l = 0;
     private boolean firstTurn = true;
     private String path;
+    private HashMap<String, HashMap <String, String>> pathways = new HashMap<>();
 
     public Bot1 (Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
         this.player = player;
@@ -30,6 +34,71 @@ public class Bot1 implements BotAPI {
         this.dice = dice;
         this.log = log;
         this.deck = deck;
+
+        HashMap<String, String> kitchen = new HashMap<>();
+        kitchen.put("Dining Room", "1ddrdrrrdddl");
+        kitchen.put("Ballroom", "1drrruur");
+        kitchen.put("Study", "p");
+        kitchen.put("Cellar", "puuullulllu");
+
+        HashMap<String, String> ballRoom = new HashMap<>();
+        ballRoom.put("Kitchen", "1lddlllu");
+        ballRoom.put("Conservatory", "4rrru");
+        ballRoom.put("Cellar", "2ddddddddddrrru");
+
+        HashMap<String, String> conservatory = new HashMap<>();
+        conservatory.put("Ballroom", "1dlll");
+        conservatory.put("Billiard Room", "1dddlddr");
+        conservatory.put("Lounge", "p");
+        conservatory.put("Cellar", "puurrrrrru");
+
+        HashMap<String, String> billiardRoom = new HashMap<>();
+        billiardRoom.put("Ballroom", "1luuuull");
+        billiardRoom.put("Conservatory", "1luuuuru");
+        billiardRoom.put("Library", "2dlld");
+        billiardRoom.put("Cellar", "1ldddddlldddlllu");
+
+        HashMap<String, String> library = new HashMap<>();
+        library.put("Billiard Room", "2urru");
+        library.put("Hall", "1lldllld");
+        library.put("Study", "1lddddrd");
+        library.put("Cellar", "1lldlllu");
+
+        HashMap<String, String> study = new HashMap<>();
+        study.put("Kitchen", "p");
+        study.put("Library", "1uuuluur");
+        study.put("Hall", "1ulll");
+        study.put("Cellar", "1uuulullllu");
+
+        HashMap<String, String> hall = new HashMap<>();
+        hall.put("Lounge", "1ullldlld");
+        hall.put("Dining Room", "1ullllluu");
+        hall.put("Study", "3rrrd");
+        hall.put("Library", "3ruuurur");
+        hall.put("Cellar", "2uu");
+
+        HashMap<String, String> lounge = new HashMap<>();
+        lounge.put("Conservatory", "p");
+        lounge.put("Dining Room", "1uuuu");
+        lounge.put("Hall", "1uurrrrrd");
+        lounge.put("Cellar", "1uurrrrrru");
+
+        HashMap<String, String> diningRoom = new HashMap<>();
+        diningRoom.put("Lounge", "1dddd");
+        diningRoom.put("Ballroom", "2rruuuuu");
+        diningRoom.put("Hall", "1ddrrrrrd");
+        diningRoom.put("Kitchen", "2ruuullluluu");
+        diningRoom.put("Cellar", "1ddrrrrrru");
+
+        pathways.put("Kitchen", kitchen);
+        pathways.put("Ballroom", ballRoom);
+        pathways.put("Conservatory", conservatory);
+        pathways.put("Billiard Room", billiardRoom);
+        pathways.put("Library", library);
+        pathways.put("Study", study);
+        pathways.put("Hall", hall);
+        pathways.put("Lounge", lounge);
+        pathways.put("Dining Room", diningRoom);
     }
 
     public String getName() {
@@ -37,26 +106,45 @@ public class Bot1 implements BotAPI {
     }
 
     public String getCommand() {
-    //    System.out.println(findNearestDoor(player.getToken().getPosition(), 0));
-
-        //green, mustard, white, scarlett
-        //white, plum,mustard, green
-
-        // Add your code here
-        if (i % 2 == 0) {
+        if (rolled) {
+            rolled = false;
+            return "done";
+        }
+        if (usedPassage) {
+            usedPassage = false;
+            if (l % 2 == 0) {
+                l++;
+                return "done";
+            }
+            return "roll";
+        }
+        if (player.getToken().isInRoom()) {
+            if (player.getToken().getRoom().toString().equals("Cellar")) return "done";
+            String room = player.getToken().getRoom().toString();
+            HashMap<String, String> roomMap = pathways.get(room);
+            path = roomMap.get("Cellar");
             i++;
+            if(player.getToken().isInRoom() && path.length() != 0 && path.charAt(0) == 'p') {
+                path = path.substring(1, path.length());
+                usedPassage = true;
+                return "passage";
+            }
+            return "roll";
+        }
+        // Add your code here
+        if (!rolled) {
+            rolled = true;
             return "roll";
         } else {
-            i++;
             return "done";
         }
     }
 
     public String getMove() {
         try {
-            sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.sleep(50);
+        } catch(Exception e) {
+            throw new RuntimeException("jsjd");
         }
 
         if (firstTurn) {
@@ -88,8 +176,12 @@ public class Bot1 implements BotAPI {
     }
 
     public String getDoor() {
+        String move = path.substring(0, 1);
+        path = path.substring(1, path.length());
+
+        movesLeft--;
         // Add your code here
-        return "1";
+        return move;
     }
 
     public String getCard(Cards matchingCards) {
