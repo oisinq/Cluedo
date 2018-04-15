@@ -3,6 +3,7 @@ package bots;
 import gameengine.*;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 public class AuroraBorealis implements BotAPI {
@@ -28,6 +29,8 @@ public class AuroraBorealis implements BotAPI {
     private String path;
     private HashMap<String, HashMap <String, String>> pathways = new HashMap<>();
     private Notes notes;
+    private boolean startOfTurn = true;
+    private boolean askedQuestion = false;
 
 
     public AuroraBorealis (Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
@@ -49,11 +52,24 @@ public class AuroraBorealis implements BotAPI {
     }
 
     public String getCommand() {
-        
+        if (startOfTurn) {
+            startOfTurn = false;
+            checkLog();
+        }
 
         // If you've rolled already, then the move must be completed, so type done
         if (rolled) {
+            if (player.getToken().isInRoom()) {
+                checkLog();
+                if (!askedQuestion) {
+                    askedQuestion = true;
+                    return "question";
+                } else {
+                    return "log";
+                }
+            }
             rolled = false;
+            startOfTurn = true;
             return "done";
         }
         // If you used a passageway, then we need to leave the new room
@@ -63,6 +79,7 @@ public class AuroraBorealis implements BotAPI {
             // then return "roll" next time around
             if (l % 2 == 0) {
                 l++;
+                startOfTurn = true;
                 return "done";
             }
             return "roll";
@@ -72,6 +89,7 @@ public class AuroraBorealis implements BotAPI {
         if (player.getToken().isInRoom()) {
             // If you're in the cellar, we'll return done for now
             if (player.getToken().getRoom().toString().equals("Cellar")) {
+                startOfTurn = true;
                 return "done";
             }
             String room = player.getToken().getRoom().toString();
@@ -93,6 +111,7 @@ public class AuroraBorealis implements BotAPI {
             rolled = true;
             return "roll";
         } else {
+            startOfTurn = true;
             return "done";
         }
     }
@@ -107,6 +126,9 @@ public class AuroraBorealis implements BotAPI {
         // If it's your first turn, we find the path to the closest room
         if (firstTurn) {
             findFirstPath();
+            // I'm doing this here because I know the deck is sorted at this stage
+            notes.addOwnedCards();
+            notes.addSharedCards();
             firstTurn = false;
         }
 
@@ -146,9 +168,22 @@ public class AuroraBorealis implements BotAPI {
         return matchingCards.get().toString();
     }
 
+    /**
+     * Tells you the response to a question you've asked
+     */
     public void notifyResponse(Log response) {
         // Add your code here
-
+       for (String s : response) {
+           if (s.contains("showed one card:")) {
+               System.out.println("aaah!");
+               String[] split = s.split(" ");
+               String card = split[split.length -1];
+               card = card.substring(0, card.length()-1);
+               System.out.println(card);
+               notes.addSeenCard(card);
+           }
+       }
+        System.out.println(notes.getNotesString());
     }
 
     /**
@@ -309,6 +344,40 @@ public class AuroraBorealis implements BotAPI {
 
         public Notes getNotes() {
             return notes;
+        }
+
+        public String getNotesString() {
+            StringBuilder s = new StringBuilder();
+            int i = 0;
+
+            String title ="Notes";
+            s.append(title);
+            for (HashMap.Entry<String, String> entry : notes.values.entrySet()) {
+                if (i == 0) {
+                    s.append("\nPlayers:\n");
+                } else if (i == 6) {
+                    s.append("\nWeapons:\n");
+                } else if (i == 12) {
+                    s.append("\nRooms:\n");
+                }
+                String key = entry.getKey();
+                String value = entry.getValue();
+                s.append(String.format("%-14s -> %3s\n", key.trim(), value.trim()));
+                i++;
+            }
+
+            return s.toString();
+        }
+    }
+
+    private void checkLog() {
+        for (String s : log) {
+            if (s.contains("showed one card:")) {
+                System.out.println("aaah!");
+                String[] split = s.split(" ");
+                String card = split[split.length -2];
+                System.out.println(card);
+            }
         }
     }
 }
