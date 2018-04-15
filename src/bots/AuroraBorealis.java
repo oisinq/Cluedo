@@ -1,10 +1,9 @@
 package bots;
 
 import gameengine.*;
+import gameengine.Map;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class AuroraBorealis implements BotAPI {
 
@@ -141,17 +140,20 @@ public class AuroraBorealis implements BotAPI {
 
     public String getSuspect() {
         // Add your code here
-        return Names.SUSPECT_NAMES[0];
+        if (notes.ownsCard(player.getToken().getRoom().toString())) {
+            return notes.getUnseenPlayer();
+        }
+        return notes.getOwnedPlayer();
     }
 
     public String getWeapon() {
         // Add your code here
-        return Names.WEAPON_NAMES[0];
+        return notes.getOwnedWeapon();
     }
 
     public String getRoom() {
         // Add your code here
-        return Names.ROOM_NAMES[0];
+        return notes.getOwnedRoom();
     }
 
     public String getDoor() {
@@ -342,8 +344,8 @@ public class AuroraBorealis implements BotAPI {
             values.put(cardName, "V");
         }
 
-        public Notes getNotes() {
-            return notes;
+        public LinkedHashMap<String, String> getValues() {
+            return values;
         }
 
         public String getNotesString() {
@@ -367,6 +369,88 @@ public class AuroraBorealis implements BotAPI {
             }
 
             return s.toString();
+        }
+
+        private boolean ownsCard(String cardName) {
+            return values.get(cardName).equals("X");
+        }
+
+        private String getUnseenPlayer() {
+            Random rand = new Random();
+            boolean found = false;
+            String player = "";
+            while (!found) {
+                player = Names.SUSPECT_NAMES[rand.nextInt(6)];
+                if (values.get(player).equals(" ")) {
+                    found = true;
+                }
+            }
+            return player;
+        }
+
+        private String getOwnedPlayer() {
+            Random rand = new Random();
+            boolean found = false;
+            String player = "";
+            while (!found) {
+                player = Names.SUSPECT_NAMES[rand.nextInt(6)];
+                if (values.get(player).equals("X")) {
+                    found = true;
+                }
+            }
+            return player;
+        }
+
+        private String getUnseenWeapon() {
+            Random rand = new Random();
+            boolean found = false;
+            String weapon = "";
+            while (!found) {
+                weapon = Names.WEAPON_NAMES[rand.nextInt(6)];
+                if (values.get(player).equals(" ")) {
+                    found = true;
+                }
+            }
+            return weapon;
+        }
+
+        private String getOwnedWeapon() {
+            Random rand = new Random();
+            boolean found = false;
+            String weapon = "";
+            while (!found) {
+                weapon = Names.WEAPON_NAMES[rand.nextInt(6)];
+                if (values.get(weapon).equals("X")) {
+                    found = true;
+                }
+            }
+            return weapon;
+        }
+
+        private String getUnseenRoom() {
+            Random rand = new Random();
+            boolean found = false;
+            String room = "";
+            while (!found) {
+                room = Names.ROOM_NAMES[rand.nextInt(9)];
+                if (values.get(room).equals(" ")) {
+                    found = true;
+                }
+            }
+            return room;
+        }
+
+        private String getOwnedRoom() {
+            Random rand = new Random();
+            boolean found = false;
+            String room = "";
+            while (!found) {
+                room = Names.ROOM_NAMES[rand.nextInt(9)];
+                if (values.get(room).equals("X")) {
+                    found = true;
+                }
+            }
+            return room;
         }
     }
 
