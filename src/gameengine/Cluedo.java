@@ -37,9 +37,9 @@ public class Cluedo {
         ArrayList<String> suspectNames = new ArrayList<>(Arrays.asList(Names.SUSPECT_NAMES));
         Collections.shuffle(suspectNames);
         if (args.length<NUM_PLAYERS) {
-            botNames[0] = "Bot1";
-            botNames[1] = "Bot1";
-            botNames[2] = "Bot1";
+            botNames[0] = "AuroraBorealis";
+            botNames[1] = "AuroraBorealis";
+            botNames[2] = "AuroraBorealis";
         } else {
             for (int i=0; i<NUM_PLAYERS; i++) {
                 boolean found = false;
