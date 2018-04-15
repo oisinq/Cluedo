@@ -3,6 +3,7 @@ package bots;
 import gameengine.*;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class AuroraBorealis implements BotAPI {
 
@@ -18,6 +19,7 @@ public class AuroraBorealis implements BotAPI {
     private Dice dice;
     private Log log;
     private Deck deck;
+
     private boolean usedPassage = false;
     private boolean rolled = false;
     private int i = 0;
@@ -25,6 +27,8 @@ public class AuroraBorealis implements BotAPI {
     private boolean firstTurn = true;
     private String path;
     private HashMap<String, HashMap <String, String>> pathways = new HashMap<>();
+    private Notes notes;
+
 
     public AuroraBorealis (Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
         this.player = player;
@@ -36,14 +40,16 @@ public class AuroraBorealis implements BotAPI {
 
         // This is used to store the pathway to get from one room to another
         initialisePathways();
+        notes = new Notes();
     }
 
     public String getName() {
+
         return "AuroraBorealis"; // must match the class name
     }
 
     public String getCommand() {
-        // I know this is really messy right now - things are pretty hacked together. Sorry.
+        
 
         // If you've rolled already, then the move must be completed, so type done
         if (rolled) {
@@ -142,6 +148,7 @@ public class AuroraBorealis implements BotAPI {
 
     public void notifyResponse(Log response) {
         // Add your code here
+
     }
 
     /**
@@ -242,5 +249,66 @@ public class AuroraBorealis implements BotAPI {
         pathways.put("Hall", hall);
         pathways.put("Lounge", lounge);
         pathways.put("Dining Room", diningRoom);
+    }
+
+    /**
+     * This is the notes class from our own version of Cluedo - we think it'll make tracking cards easier
+     */
+    private class Notes {
+
+        private LinkedHashMap<String, String> values;
+
+        Notes() {
+            // I'm using a LinkedHashMap instead of a Map because I want to print off the values in the order they were added later
+            // This makes it much easier to read when printing
+            // I'm using a map because I think it's the best data structure to store each card and its corresponding status
+            values = new LinkedHashMap<>();
+
+            // I don't need to separate these strings, but I think it's easier to understand what's happening.
+            // I may also need these separated later on
+            String players[] = {"Green", "Mustard", "Peacock", "Plum", "Scarlett", "White"};
+            String weapons[] = {"Wrench", "Candlestick", "Dagger", "Pistol", "Lead Pipe", "Rope"};
+            String rooms[] = {"Kitchen", "Ballroom", "Conservatory", "Dining Room", "Billiard Room", "Library", "Lounge", "Hall", "Study"};
+
+            // We place " " as the value for each card in the map
+            for (String p : players) {
+                values.put(p, " ");
+            }
+
+            for (String w : weapons) {
+                values.put(w, " ");
+            }
+
+            for (String r : rooms) {
+
+                values.put(r, " ");
+            }
+        }
+
+        /**
+         * This is called before the notes are printed - it makes sure the LinkedHashMap is up-to-date
+         */
+        public void addSharedCards() {
+            for (Card c : deck.getSharedCards()) {
+                values.put(c.toString(), "A");
+            }
+        }
+
+        public void addOwnedCards() {
+            for (Card c : player.getCards()) {
+                values.put(c.toString(), "X");
+            }
+        }
+
+        /**
+         * If we find a card in questioning, it's added here
+         */
+        public void addSeenCard(String cardName) {
+            values.put(cardName, "V");
+        }
+
+        public Notes getNotes() {
+            return notes;
+        }
     }
 }
