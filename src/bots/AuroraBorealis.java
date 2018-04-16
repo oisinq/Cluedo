@@ -53,18 +53,24 @@ public class AuroraBorealis implements BotAPI {
     public String getCommand() {
         if (startOfTurn) {
             startOfTurn = false;
-            checkLog();
+        }
+
+        if(player.getToken().isInRoom()) {
+            if (notes.hasCardsRemaining(3)) {
+                System.out.println("We know what's in the envelope!");
+            } else {
+                pickNextRoom();
+            }
         }
 
         // If you've rolled already, then the move must be completed, so type done
         if (rolled) {
             if (player.getToken().isInRoom()) {
-                checkLog();
                 if (!askedQuestion) {
                     askedQuestion = true;
                     return "question";
                 } else {
-                    return "log";
+                    askedQuestion = false;
                 }
             }
             rolled = false;
@@ -79,8 +85,10 @@ public class AuroraBorealis implements BotAPI {
             if (l % 2 == 0) {
                 l++;
                 startOfTurn = true;
+                rolled = false;
                 return "done";
             }
+            rolled = true;
             return "roll";
         }
 
@@ -89,11 +97,9 @@ public class AuroraBorealis implements BotAPI {
             // If you're in the cellar, we'll return done for now
             if (player.getToken().getRoom().toString().equals("Cellar")) {
                 startOfTurn = true;
+                rolled = false;
                 return "done";
             }
-            String room = player.getToken().getRoom().toString();
-            HashMap<String, String> roomMap = pathways.get(room);
-            path = roomMap.get("Cellar");
             i++;
 
             // If the first character in the path is 'p', we want to use the passageway
@@ -103,6 +109,7 @@ public class AuroraBorealis implements BotAPI {
                 return "passage";
             }
             // Otherwise, we want to start moving
+            rolled = true;
             return "roll";
         }
         // If we haven't rolled yet, we want to. Otherwise, we're done.
@@ -111,6 +118,7 @@ public class AuroraBorealis implements BotAPI {
             return "roll";
         } else {
             startOfTurn = true;
+            rolled = false;
             return "done";
         }
     }
@@ -376,6 +384,7 @@ public class AuroraBorealis implements BotAPI {
         }
 
         private String getUnseenPlayer() {
+            int loopCount = 0;
             Random rand = new Random();
             boolean found = false;
             String player = "";
@@ -384,11 +393,17 @@ public class AuroraBorealis implements BotAPI {
                 if (values.get(player).equals(" ")) {
                     found = true;
                 }
+                loopCount++;
+                if (loopCount > 200) {
+                    System.out.println(notes.getNotesString());
+                    throw new RuntimeException("Can't find it!");
+                }
             }
             return player;
         }
 
         private String getOwnedPlayer() {
+            int loopCount = 0;
             Random rand = new Random();
             boolean found = false;
             String player = "";
@@ -397,11 +412,17 @@ public class AuroraBorealis implements BotAPI {
                 if (values.get(player).equals("X")) {
                     found = true;
                 }
+                if (loopCount > 200) {
+                    System.out.println(notes.getNotesString());
+                    throw new RuntimeException("Can't find it!");
+                }
+                loopCount++;
             }
             return player;
         }
 
         private String getUnseenWeapon() {
+            int loopCount = 0;
             Random rand = new Random();
             boolean found = false;
             String weapon = "";
@@ -410,11 +431,17 @@ public class AuroraBorealis implements BotAPI {
                 if (values.get(player).equals(" ")) {
                     found = true;
                 }
+                if (loopCount > 200) {
+                    System.out.println(notes.getNotesString());
+                    throw new RuntimeException("Can't find it!");
+                }
+                loopCount++;
             }
             return weapon;
         }
 
         private String getOwnedWeapon() {
+            int loopCount = 0;
             Random rand = new Random();
             boolean found = false;
             String weapon = "";
@@ -423,11 +450,17 @@ public class AuroraBorealis implements BotAPI {
                 if (values.get(weapon).equals("X")) {
                     found = true;
                 }
+                if (loopCount > 200) {
+                    System.out.println(notes.getNotesString());
+                    throw new RuntimeException("Can't find it!");
+                }
+                loopCount++;
             }
             return weapon;
         }
 
         private String getUnseenRoom() {
+            int loopCount = 0;
             Random rand = new Random();
             boolean found = false;
             String room = "";
@@ -436,11 +469,17 @@ public class AuroraBorealis implements BotAPI {
                 if (values.get(room).equals(" ")) {
                     found = true;
                 }
+                if (loopCount > 200) {
+                    System.out.println(notes.getNotesString());
+                    throw new RuntimeException("Can't find it!");
+                }
+                loopCount++;
             }
             return room;
         }
 
         private String getOwnedRoom() {
+            int loopCount = 0;
             Random rand = new Random();
             boolean found = false;
             String room = "";
@@ -449,19 +488,36 @@ public class AuroraBorealis implements BotAPI {
                 if (values.get(room).equals("X")) {
                     found = true;
                 }
+                if (loopCount > 200) {
+                    System.out.println(notes.getNotesString());
+                    throw new RuntimeException("Can't find it!");
+                }
+                loopCount++;
             }
             return room;
         }
+
+        private boolean hasCardsRemaining(int requiredNumCards) {
+            int numCards = 0;
+            for (HashMap.Entry<String, String> entry : notes.values.entrySet()) {
+                if (entry.getValue().equals(" ")) {
+                    numCards++;
+                }
+            }
+            return requiredNumCards == numCards;
+        }
     }
 
-    private void checkLog() {
-        for (String s : log) {
-            if (s.contains("showed one card:")) {
-                System.out.println("aaah!");
-                String[] split = s.split(" ");
-                String card = split[split.length -2];
-                System.out.println(card);
+    private void pickNextRoom() {
+        Random rand = new Random();
+        boolean found = false;
+        String randomRoom = "";
+        while (!found) {
+            randomRoom = Names.ROOM_NAMES[rand.nextInt(9)];
+            if (pathways.get(player.getToken().getRoom().toString()).containsKey(randomRoom)) {
+                found = true;
             }
         }
+        path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
     }
 }
