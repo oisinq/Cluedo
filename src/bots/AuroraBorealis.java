@@ -3,6 +3,7 @@ package bots;
 import gameengine.*;
 import gameengine.Map;
 
+import javax.swing.*;
 import java.util.*;
 
 public class AuroraBorealis implements BotAPI {
@@ -30,6 +31,8 @@ public class AuroraBorealis implements BotAPI {
     private Notes notes;
     private boolean startOfTurn = true;
     private boolean askedQuestion = false;
+    private boolean accusationMode = false;
+    public static int turnCount = 0;
 
 
     public AuroraBorealis (Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
@@ -55,19 +58,54 @@ public class AuroraBorealis implements BotAPI {
             startOfTurn = false;
         }
 
-        if(player.getToken().isInRoom()) {
-            if (notes.hasCardsRemaining(3)) {
-                path = pathways.get(player.getToken().getRoom().toString()).get("Cellar");
-                if (i % 3 == 0) {
-                    i++;
-                    return "done";
-                } else if (i % 3 == 1) {
-                    i++;
-                    return "roll";
-                } else {
-                    i++;
+        if (accusationMode) {
+            if (player.getToken().isInRoom()) {
+                if (player.getToken().getRoom().toString().equals("Cellar")) {
                     return "accuse";
                 }
+                path = pathways.get(player.getToken().getRoom().toString()).get("Cellar");
+                if(usedPassage) {
+                    usedPassage = false;
+                    rolled = false;
+                    turnCount++;
+                    return "done";
+                }
+                if(path.length() != 0 && path.charAt(0) == 'p') {
+                    path = path.substring(1, path.length());
+                    usedPassage = true;
+                    rolled = true;
+                    return "passage";
+                }
+                rolled = true;
+                return "roll";
+            }
+            if (rolled) {
+                rolled = false;
+                turnCount++;
+                return "done";
+            } else {
+                return "roll";
+            }
+        }
+
+        if(player.getToken().isInRoom()) {
+            notes.onePlayerLeft();
+            notes.oneWeaponLeft();
+            notes.oneRoomLeft();
+            if (notes.hasCardsRemaining(3)) {
+                JOptionPane.showMessageDialog(null, "We know who did it!");
+                accusationMode = true;
+                path = pathways.get(player.getToken().getRoom().toString()).get("Cellar");
+                if (player.getToken().getRoom().toString().equals("Cellar")) {
+                    return "accuse";
+                }
+                if (rolled) {
+                    rolled = false;
+                    turnCount++;
+                    return "done";
+                }
+                rolled = true;
+                return "roll";
             } else {
                 pickNextRoom();
             }
@@ -85,6 +123,7 @@ public class AuroraBorealis implements BotAPI {
             }
             rolled = false;
             startOfTurn = true;
+            turnCount++;
             return "done";
         }
         // If you used a passageway, then we need to leave the new room
@@ -96,6 +135,7 @@ public class AuroraBorealis implements BotAPI {
                 l++;
                 startOfTurn = true;
                 rolled = false;
+                turnCount++;
                 return "done";
             }
             rolled = true;
@@ -108,6 +148,7 @@ public class AuroraBorealis implements BotAPI {
             if (player.getToken().getRoom().toString().equals("Cellar")) {
                 startOfTurn = true;
                 rolled = false;
+                turnCount++;
                 return "done";
             }
             i++;
@@ -129,6 +170,7 @@ public class AuroraBorealis implements BotAPI {
         } else {
             startOfTurn = true;
             rolled = false;
+            turnCount++;
             return "done";
         }
     }
@@ -157,6 +199,9 @@ public class AuroraBorealis implements BotAPI {
     }
 
     public String getSuspect() {
+        if (accusationMode) {
+            return notes.getEnvelopePlayer();
+        }
         // Add your code here
         if (notes.ownsCard(player.getToken().getRoom().toString())) {
             if (notes.hasEverySuspect()) {
@@ -171,7 +216,10 @@ public class AuroraBorealis implements BotAPI {
     }
 
     public String getWeapon() {
-        if (notes.hasEverySuspect()) {
+        if (accusationMode) {
+            return notes.getEnvelopeWeapon();
+        }
+        if (notes.hasEveryWeapon()) {
             return notes.getOwnedWeapon();
         }
         // Add your code here
@@ -179,6 +227,9 @@ public class AuroraBorealis implements BotAPI {
     }
 
     public String getRoom() {
+        if (accusationMode) {
+            return notes.getEnvelopeRoom();
+        }
         // Add your code here
         return notes.getOwnedRoom();
     }
@@ -204,10 +255,9 @@ public class AuroraBorealis implements BotAPI {
         // Add your code here
        for (String s : response) {
            if (s.contains("showed one card:")) {
-               System.out.println("aaah!");
-               String[] split = s.split(" ");
+               String[] split = s.split(":");
                String card = split[split.length -1];
-               card = card.substring(0, card.length()-1);
+               card = card.substring(1, card.length()-1);
                System.out.println(card);
                notes.addSeenCard(card);
            }
@@ -428,7 +478,7 @@ public class AuroraBorealis implements BotAPI {
             String player = "";
             while (!found) {
                 player = Names.SUSPECT_NAMES[rand.nextInt(6)];
-                if (values.get(player).equals("X")) {
+                if (values.get(player).equals("X") || values.get(player).equals("E")) {
                     found = true;
                 }
                 if (loopCount > 1000) {
@@ -438,6 +488,84 @@ public class AuroraBorealis implements BotAPI {
                 loopCount++;
             }
             return player;
+        }
+
+        private String getEnvelopePlayer() {
+            for (String name : Names.SUSPECT_NAMES) {
+                if (values.get(name).equals("E")) {
+                    return name;
+                }
+            }
+            return "";
+        }
+
+        private String getEnvelopeWeapon() {
+            for (String name : Names.WEAPON_NAMES) {
+                if (values.get(name).equals("E")) {
+                    return name;
+                }
+            }
+            return "";
+        }
+
+        private String getEnvelopeRoom() {
+            for (String name : Names.ROOM_CARD_NAMES) {
+                if (values.get(name).equals("E")) {
+                    return name;
+                }
+            }
+            return "";
+        }
+
+        private void onePlayerLeft() {
+            int count = 0;
+            Random rand = new Random();
+            String player;
+            String selection = "";
+            for (int i = 0; i < 6; i++) {
+               player = Names.SUSPECT_NAMES[i];
+               if (values.get(player).equals(" ")) {
+                   count++;
+                   selection = player;
+               }
+            }
+            if (count == 1) {
+                values.put(selection, "E");
+            }
+        }
+
+        private void oneWeaponLeft() {
+            int count = 0;
+            Random rand = new Random();
+            String weapon;
+            String selection = "";
+            for (int i = 0; i < Names.WEAPON_NAMES.length; i++) {
+                weapon = Names.WEAPON_NAMES[i];
+                if (values.get(weapon).equals(" ")) {
+                    count++;
+                    selection = weapon;
+                }
+            }
+            if (count == 1) {
+                values.put(selection, "E");
+            }
+        }
+
+        private void oneRoomLeft() {
+            int count = 0;
+            Random rand = new Random();
+            String room;
+            String selection = "";
+            for (int i = 0; i < Names.ROOM_CARD_NAMES.length; i++) {
+                room = Names.ROOM_CARD_NAMES[i];
+                if (values.get(room).equals(" ")) {
+                    count++;
+                    selection = room;
+                }
+            }
+            if (count == 1) {
+                values.put(selection, "E");
+            }
         }
 
         private String getUnseenWeapon() {
@@ -466,7 +594,7 @@ public class AuroraBorealis implements BotAPI {
             String weapon = "";
             while (!found) {
                 weapon = Names.WEAPON_NAMES[rand.nextInt(6)];
-                if (values.get(weapon).equals("X")) {
+                if (values.get(weapon).equals("X") || values.get(weapon).equals("E")) {
                     found = true;
                 }
                 if (loopCount > 1000) {
@@ -504,7 +632,7 @@ public class AuroraBorealis implements BotAPI {
             String room = "";
             while (!found) {
                 room = Names.ROOM_NAMES[rand.nextInt(9)];
-                if (values.get(room).equals("X")) {
+                if (values.get(room).equals("X")|| values.get(room).equals("E")) {
                     found = true;
                 }
                 if (loopCount > 1000) {
@@ -519,7 +647,7 @@ public class AuroraBorealis implements BotAPI {
         private boolean hasCardsRemaining(int requiredNumCards) {
             int numCards = 0;
             for (HashMap.Entry<String, String> entry : notes.values.entrySet()) {
-                if (entry.getValue().equals(" ")) {
+                if (entry.getValue().equals("E")) {
                     numCards++;
                 }
             }

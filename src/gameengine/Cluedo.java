@@ -1,5 +1,6 @@
 package gameengine;
 
+import bots.AuroraBorealis;
 import bots.BotAPI;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -12,7 +13,7 @@ public class Cluedo {
 
     private static final String[] ALL_BOT_NAMES = {"Bot"};
     private static final int NUM_PLAYERS = 3;
-    private static final int DELAY = 50;  // in milliseconds
+    private static final int DELAY = 20;  // in milliseconds
 
     private final Tokens tokens  = new Tokens();
     private final Players players = new Players();
@@ -246,6 +247,7 @@ public class Cluedo {
                     murderCards.contains(query.getRoom())) {
                 ui.displayAccuseResult(true);
                 ui.displayWinner(currentPlayer, deck.getMurderCards());
+                System.out.println("It took " + currentPlayer + " " + AuroraBorealis.turnCount / bots.length + " turns to win.");
                 turnOver = true;
                 gameOver = true;
             } else {
