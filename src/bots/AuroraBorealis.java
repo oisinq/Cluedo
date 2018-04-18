@@ -260,6 +260,7 @@ public class AuroraBorealis implements BotAPI {
      */
     public void notifyResponse(Log response) {
         // Add your code here
+<<<<<<< HEAD
        for (String s : response) {
            if (s.contains("showed one card:")) {
                String[] split = s.split(":");
@@ -283,6 +284,34 @@ public class AuroraBorealis implements BotAPI {
 				questioning=false;
            }
        }
+=======
+        Iterator<String> iterator = response.iterator();
+        while (iterator.hasNext()) {
+            String s = iterator.next();
+            if (!iterator.hasNext()) {
+                if (s.contains("showed one card:")) {
+                    String[] split = s.split(":");
+                    String card = split[split.length -1];
+                    card = card.substring(1, card.length()-1);
+                    System.out.println(card);
+                    notes.addSeenCard(card);
+                }
+                else if(s.contains("did not show any cards."))
+                {
+                    getRoom();
+                    if (!notes.ownsCard(suspect)&&!notes.seenCard(suspect)) {
+                        notes.setFinal(suspect);
+                    }
+                    if (!notes.ownsCard(suspectWeapon)&&!notes.seenCard(suspectWeapon)) {
+                        notes.setFinal(suspectWeapon);
+                    }
+                    if (!notes.ownsCard(suspectRoom)&&!notes.seenCard(suspectRoom)) {
+                        notes.setFinal(suspectRoom);
+                    }
+                }
+            }
+        }
+>>>>>>> ee4df2e104f4b4960efa0f6ea2da8e012191b4b9
         System.out.println(notes.getNotesString());
     }
 
@@ -559,6 +588,9 @@ public class AuroraBorealis implements BotAPI {
                    count++;
                    selection = player;
                }
+                if (values.get(player).equals("E")) {
+                    return;
+                }
             }
             if (count == 1) {
                 values.put(selection, "E");
@@ -576,6 +608,9 @@ public class AuroraBorealis implements BotAPI {
                     count++;
                     selection = weapon;
                 }
+                if (values.get(weapon).equals("E")) {
+                    return;
+                }
             }
             if (count == 1) {
                 values.put(selection, "E");
@@ -592,6 +627,9 @@ public class AuroraBorealis implements BotAPI {
                 if (values.get(room).equals(" ")) {
                     count++;
                     selection = room;
+                }
+                if (values.get(room).equals("E")) {
+                    return;
                 }
             }
             if (count == 1) {
