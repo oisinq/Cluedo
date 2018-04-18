@@ -62,15 +62,11 @@ public class Bot implements BotAPI {
             movesLeft = dice.getTotal();
 //            System.out.println(findNearestDoor(currentPosition, 0));
         }
-
         try {
             sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
-
         if (map.isDoor(currentPosition, map.getNewPosition(player.getToken().getPosition(), "u"))) {
             movesLeft = 0;
             return "u";
@@ -84,7 +80,6 @@ public class Bot implements BotAPI {
             movesLeft = 0;
             return "l";
         }
-
         return "lol";
     }
 
