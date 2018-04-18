@@ -20,6 +20,9 @@ public class AuroraBorealis implements BotAPI {
     private Dice dice;
     private Log log;
     private Deck deck;
+    private String suspect="";
+    private String suspectWeapon="";
+    private String suspectRoom="";
 
     private boolean usedPassage = false;
     private boolean rolled = false;
@@ -212,7 +215,8 @@ public class AuroraBorealis implements BotAPI {
         if (notes.hasEverySuspect()) {
             return notes.getOwnedPlayer();
         }
-        return notes.getUnseenPlayer();
+        suspect=notes.getUnseenPlayer();
+        return suspect;
     }
 
     public String getWeapon() {
@@ -223,7 +227,8 @@ public class AuroraBorealis implements BotAPI {
             return notes.getOwnedWeapon();
         }
         // Add your code here
-        return notes.getUnseenWeapon();
+        suspectWeapon=notes.getUnseenWeapon();
+        return suspectWeapon;
     }
 
     public String getRoom() {
@@ -231,7 +236,8 @@ public class AuroraBorealis implements BotAPI {
             return notes.getEnvelopeRoom();
         }
         // Add your code here
-        return notes.getOwnedRoom();
+        suspectRoom=notes.getOwnedRoom();
+        return suspectRoom;
     }
 
     public String getDoor() {
@@ -260,6 +266,19 @@ public class AuroraBorealis implements BotAPI {
                card = card.substring(1, card.length()-1);
                System.out.println(card);
                notes.addSeenCard(card);
+           }
+           else if(s.contains("did not show any cards."))
+           {
+        	   getRoom();
+        	   if (!notes.ownsCard(suspect)&&!notes.seenCard(suspect)) {
+                   notes.setFinal(suspect);
+               }
+        	   if (!notes.ownsCard(suspectWeapon)&&!notes.seenCard(suspectWeapon)) {
+                   notes.setFinal(suspectWeapon);
+               }
+				if (!notes.ownsCard(suspectRoom)&&!notes.seenCard(suspectRoom)) {
+					notes.setFinal(suspectRoom);
+				}
            }
        }
         System.out.println(notes.getNotesString());
@@ -453,6 +472,10 @@ public class AuroraBorealis implements BotAPI {
         private boolean ownsCard(String cardName) {
             return values.get(cardName).equals("X");
         }
+        private boolean seenCard(String cardName)
+        {
+        	return values.get(cardName).equals("V");
+        }
 
         private String getUnseenPlayer() {
             int loopCount = 0;
@@ -517,6 +540,10 @@ public class AuroraBorealis implements BotAPI {
                 }
             }
             return "";
+        }
+        private void setFinal(String cardName)
+        {
+        	values.put(cardName, "E");
         }
 
         private void onePlayerLeft() {
