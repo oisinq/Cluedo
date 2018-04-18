@@ -23,7 +23,7 @@ public class AuroraBorealis implements BotAPI {
     private String suspect="";
     private String suspectWeapon="";
     private String suspectRoom="";
-
+    private boolean questioning = false;
     private boolean usedPassage = false;
     private boolean rolled = false;
     private int i = 0;
@@ -119,6 +119,7 @@ public class AuroraBorealis implements BotAPI {
             if (player.getToken().isInRoom()) {
                 if (!askedQuestion) {
                     askedQuestion = true;
+                    questioning=true;
                     return "question";
                 } else {
                     askedQuestion = false;
@@ -267,7 +268,7 @@ public class AuroraBorealis implements BotAPI {
                System.out.println(card);
                notes.addSeenCard(card);
            }
-           else if(s.contains("did not show any cards."))
+           else if(s.contains("did not show any cards.")&&questioning)
            {
         	   getRoom();
         	   if (!notes.ownsCard(suspect)&&!notes.seenCard(suspect)) {
@@ -279,6 +280,7 @@ public class AuroraBorealis implements BotAPI {
 				if (!notes.ownsCard(suspectRoom)&&!notes.seenCard(suspectRoom)) {
 					notes.setFinal(suspectRoom);
 				}
+				questioning=false;
            }
        }
         System.out.println(notes.getNotesString());
