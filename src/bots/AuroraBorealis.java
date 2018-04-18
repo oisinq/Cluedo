@@ -107,7 +107,7 @@ public class AuroraBorealis implements BotAPI {
                 rolled = true;
                 return "roll";
             } else {
-                pickNextRoom();
+                notes.pickNextRoom();
             }
         }
 
@@ -303,11 +303,13 @@ public class AuroraBorealis implements BotAPI {
         kitchen.put("Dining Room", "1ddrdrrrdddl");
         kitchen.put("Ballroom", "1drrruur");
         kitchen.put("Study", "p");
-        kitchen.put("Cellar", "puuullulllu");
+        
+        kitchen.put("Library", "puuullulllu");
 
         HashMap<String, String> ballRoom = new HashMap<>();
         ballRoom.put("Kitchen", "1lddlllu");
         ballRoom.put("Conservatory", "4rrru");
+        
         ballRoom.put("Cellar", "2ddddddddddrrru");
 
         HashMap<String, String> conservatory = new HashMap<>();
@@ -680,18 +682,28 @@ public class AuroraBorealis implements BotAPI {
             }
             return true;
         }
+        private void pickNextRoom() {
+            Random rand = new Random();
+            boolean found = false;
+            String randomRoom = "";
+            String holdRoom = "";
+            int count=0;
+            while (count<9&&!found) {
+            	
+            	holdRoom = Names.ROOM_NAMES[count];
+                if (pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom)&&values.get(Names.ROOM_CARD_NAMES[count]).equals(" ")) {
+                	randomRoom = Names.ROOM_NAMES[count];
+                	found=true;
+                }
+                else if(pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom))
+                {
+                	randomRoom = Names.ROOM_NAMES[count];
+                }
+                count++;
+            }
+            path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
+        }
     }
 
-    private void pickNextRoom() {
-        Random rand = new Random();
-        boolean found = false;
-        String randomRoom = "";
-        while (!found) {
-            randomRoom = Names.ROOM_NAMES[rand.nextInt(9)];
-            if (pathways.get(player.getToken().getRoom().toString()).containsKey(randomRoom)) {
-                found = true;
-            }
-        }
-        path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
-    }
+   
 }
