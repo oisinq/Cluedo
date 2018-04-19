@@ -331,7 +331,8 @@ public class AuroraBorealis implements BotAPI {
         kitchen.put("Study", "p");
         
         kitchen.put("Library", "puuullulllu");
-        kitchen.put("Cellar", "puuullulllu");
+        kitchen.put("Hall","pulll");//TODO Test this
+        kitchen.put("Cellar","puuullulllu");
 
         HashMap<String, String> ballRoom = new HashMap<>();
         ballRoom.put("Kitchen", "1lddlllu");
@@ -343,6 +344,7 @@ public class AuroraBorealis implements BotAPI {
         conservatory.put("Ballroom", "1dlll");
         conservatory.put("Billiard Room", "1dddlddr");
         conservatory.put("Lounge", "p");
+        conservatory.put("Dining Room", "puuu");
         conservatory.put("Cellar", "puurrrrrru");
 
         HashMap<String, String> billiardRoom = new HashMap<>();
@@ -352,10 +354,10 @@ public class AuroraBorealis implements BotAPI {
         billiardRoom.put("Cellar", "1ldddddlldddlllu");
 
         HashMap<String, String> library = new HashMap<>();
-        library.put("Billiard Room", "2urru");
         library.put("Hall", "1lldllld");
         library.put("Study", "1lddddrd");
         library.put("Cellar", "1lldlllu");
+        library.put("Billiard Room", "2urru");
 
         HashMap<String, String> study = new HashMap<>();
         study.put("Kitchen", "p");
@@ -372,6 +374,7 @@ public class AuroraBorealis implements BotAPI {
 
         HashMap<String, String> lounge = new HashMap<>();
         lounge.put("Conservatory", "p");
+        lounge.put("Ball Room","p1dlll");
         lounge.put("Dining Room", "1uuuu");
         lounge.put("Hall", "1uurrrrrd");
         lounge.put("Cellar", "1uurrrrrru");
@@ -393,6 +396,7 @@ public class AuroraBorealis implements BotAPI {
         pathways.put("Lounge", lounge);
         pathways.put("Dining Room", diningRoom);
     }
+
 
     /**
      * This is the notes class from our own version of Cluedo - we think it'll make tracking cards easier
@@ -732,10 +736,23 @@ public class AuroraBorealis implements BotAPI {
             String randomRoom = "";
             String holdRoom = "";
             int count=0;
+            boolean randPath=true;
             while (count<9&&!found) {
             	
             	holdRoom = Names.ROOM_NAMES[count];
-                if (pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom)&&values.get(Names.ROOM_CARD_NAMES[count]).equals(" ")) {
+            	/*if(pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom)&&values.get(Names.ROOM_CARD_NAMES[count]).equals("E")&&(getEnvelopeRoom()==""&&getEnvelopeRoom()!="")||(getEnvelopeRoom()!=""&&getEnvelopeRoom()==""))
+                {
+            		System.out.println("YOYOYOYOYOYOOYOYOYOYOYOYOO");
+                	randomRoom = Names.ROOM_NAMES[count];
+                	randPath=false;
+                }//TODO  check if this works */
+            	if(values.get(Names.ROOM_CARD_NAMES[count]).equals("E")&&((getEnvelopeRoom()==""&&getEnvelopeRoom()!="")||(getEnvelopeRoom()!=""&&getEnvelopeRoom()==""))){
+            		System.out.println("HELLO TESTING 123");
+            		path=pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]);
+            		randPath=false;
+            		
+            	}
+            	else if (pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom)&&values.get(Names.ROOM_CARD_NAMES[count]).equals(" ")) {
                 	randomRoom = Names.ROOM_NAMES[count];
                 	found=true;
                 }
@@ -745,7 +762,9 @@ public class AuroraBorealis implements BotAPI {
                 }
                 count++;
             }
+            if(randPath){
             path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
+            }
         }
     }
 
