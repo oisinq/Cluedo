@@ -23,7 +23,7 @@ public class AuroraBorealis implements BotAPI {
     private String suspect="";
     private String suspectWeapon="";
     private String suspectRoom="";
-    private boolean questioning = false;
+
     private boolean usedPassage = false;
     private boolean rolled = false;
     private int i = 0;
@@ -119,7 +119,6 @@ public class AuroraBorealis implements BotAPI {
             if (player.getToken().isInRoom()) {
                 if (!askedQuestion) {
                     askedQuestion = true;
-                    questioning=true;
                     return "question";
                 } else {
                     askedQuestion = false;
@@ -260,31 +259,6 @@ public class AuroraBorealis implements BotAPI {
      */
     public void notifyResponse(Log response) {
         // Add your code here
-<<<<<<< HEAD
-       for (String s : response) {
-           if (s.contains("showed one card:")) {
-               String[] split = s.split(":");
-               String card = split[split.length -1];
-               card = card.substring(1, card.length()-1);
-               System.out.println(card);
-               notes.addSeenCard(card);
-           }
-           else if(s.contains("did not show any cards.")&&questioning)
-           {
-        	   getRoom();
-        	   if (!notes.ownsCard(suspect)&&!notes.seenCard(suspect)) {
-                   notes.setFinal(suspect);
-               }
-        	   if (!notes.ownsCard(suspectWeapon)&&!notes.seenCard(suspectWeapon)) {
-                   notes.setFinal(suspectWeapon);
-               }
-				if (!notes.ownsCard(suspectRoom)&&!notes.seenCard(suspectRoom)) {
-					notes.setFinal(suspectRoom);
-				}
-				questioning=false;
-           }
-       }
-=======
         Iterator<String> iterator = response.iterator();
         while (iterator.hasNext()) {
             String s = iterator.next();
@@ -311,7 +285,6 @@ public class AuroraBorealis implements BotAPI {
                 }
             }
         }
->>>>>>> ee4df2e104f4b4960efa0f6ea2da8e012191b4b9
         System.out.println(notes.getNotesString());
     }
 
