@@ -90,6 +90,7 @@ public class AuroraBorealis implements BotAPI {
                 turnCount++;
                 return "done";
             } else {
+                rolled = true;
                 return "roll";
             }
         }
@@ -99,7 +100,7 @@ public class AuroraBorealis implements BotAPI {
             notes.oneWeaponLeft();
             notes.oneRoomLeft();
             if (notes.hasCardsRemaining(3)) {
-                JOptionPane.showMessageDialog(null, "We know who did it!");
+                JOptionPane.showMessageDialog(null,  player.getToken().getName() + " knows who did it!");
                 accusationMode = true;
                 path = pathways.get(player.getToken().getRoom().toString()).get("Cellar");
                 if (player.getToken().getRoom().toString().equals("Cellar")) {
@@ -330,6 +331,7 @@ public class AuroraBorealis implements BotAPI {
         kitchen.put("Study", "p");
         
         kitchen.put("Library", "puuullulllu");
+        kitchen.put("Cellar", "puuullulllu");
 
         HashMap<String, String> ballRoom = new HashMap<>();
         ballRoom.put("Kitchen", "1lddlllu");
