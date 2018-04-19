@@ -57,6 +57,9 @@ public class AuroraBorealis implements BotAPI {
     }
 
     public String getCommand() {
+        if (turnCount > 50) {
+            System.out.println("shawty");
+        }
         if (startOfTurn) {
             startOfTurn = false;
         }
@@ -270,9 +273,8 @@ public class AuroraBorealis implements BotAPI {
                     System.out.println(card);
                     notes.addSeenCard(card);
                 }
-                else if(s.contains("did not show any cards."))
-                {
-                    getRoom();
+                else if(s.contains("did not show any cards.")) {
+                    suspectRoom = player.getToken().getRoom().toString();
                     if (!notes.ownsCard(suspect)&&!notes.seenCard(suspect)) {
                         notes.setFinal(suspect);
                     }
