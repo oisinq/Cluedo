@@ -57,6 +57,9 @@ public class AuroraBorealis implements BotAPI {
     }
 
     public String getCommand() {
+        if (turnCount > 50) {
+            System.out.println("shawty");
+        }
         if (startOfTurn) {
             startOfTurn = false;
         }
@@ -87,6 +90,7 @@ public class AuroraBorealis implements BotAPI {
                 turnCount++;
                 return "done";
             } else {
+                rolled = true;
                 return "roll";
             }
         }
@@ -96,7 +100,7 @@ public class AuroraBorealis implements BotAPI {
             notes.oneWeaponLeft();
             notes.oneRoomLeft();
             if (notes.hasCardsRemaining(3)) {
-                JOptionPane.showMessageDialog(null, "We know who did it!");
+                JOptionPane.showMessageDialog(null,  player.getToken().getName() + " knows who did it!");
                 accusationMode = true;
                 path = pathways.get(player.getToken().getRoom().toString()).get("Cellar");
                 if (player.getToken().getRoom().toString().equals("Cellar")) {
@@ -270,9 +274,8 @@ public class AuroraBorealis implements BotAPI {
                     System.out.println(card);
                     notes.addSeenCard(card);
                 }
-                else if(s.contains("did not show any cards."))
-                {
-                    getRoom();
+                else if(s.contains("did not show any cards.")) {
+                    suspectRoom = player.getToken().getRoom().toString();
                     if (!notes.ownsCard(suspect)&&!notes.seenCard(suspect)) {
                         notes.setFinal(suspect);
                     }
@@ -328,6 +331,7 @@ public class AuroraBorealis implements BotAPI {
         kitchen.put("Study", "p");
         
         kitchen.put("Library", "puuullulllu");
+        kitchen.put("Cellar", "puuullulllu");
 
         HashMap<String, String> ballRoom = new HashMap<>();
         ballRoom.put("Kitchen", "1lddlllu");
