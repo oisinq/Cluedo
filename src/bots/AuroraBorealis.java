@@ -207,17 +207,21 @@ public class AuroraBorealis implements BotAPI {
 
     public String getSuspect() {
         if (accusationMode) {
-            return notes.getEnvelopePlayer();
+            suspect = notes.getEnvelopePlayer();
+            return suspect;
         }
         // Add your code here
         if (notes.ownsCard(player.getToken().getRoom().toString())) {
             if (notes.hasEverySuspect()) {
-                return notes.getOwnedPlayer();
+                suspect = notes.getOwnedPlayer();
+                return suspect;
             }
-            return notes.getUnseenPlayer();
+            suspect = notes.getUnseenPlayer();
+            return suspect;
         }
         if (notes.hasEverySuspect()) {
-            return notes.getOwnedPlayer();
+            suspect = notes.getOwnedPlayer();
+            return suspect;
         }
         suspect=notes.getUnseenPlayer();
         return suspect;
@@ -225,13 +229,15 @@ public class AuroraBorealis implements BotAPI {
 
     public String getWeapon() {
         if (accusationMode) {
-            return notes.getEnvelopeWeapon();
+            suspectWeapon = notes.getEnvelopeWeapon();
+            return suspectWeapon;
         }
         if (notes.hasEveryWeapon()) {
-            return notes.getOwnedWeapon();
+            suspectWeapon = notes.getOwnedWeapon();
+            return suspectWeapon;
         }
         // Add your code here
-        suspectWeapon=notes.getUnseenWeapon();
+        suspectWeapon = notes.getUnseenWeapon();
         return suspectWeapon;
     }
 
@@ -276,13 +282,13 @@ public class AuroraBorealis implements BotAPI {
                 }
                 else if(s.contains("did not show any cards.")) {
                     suspectRoom = player.getToken().getRoom().toString();
-                    if (!notes.ownsCard(suspect)&&!notes.seenCard(suspect)) {
+                    if (!notes.seenCard(suspect)&&!notes.ownsCard(suspect)) {
                         notes.setFinal(suspect);
                     }
-                    if (!notes.ownsCard(suspectWeapon)&&!notes.seenCard(suspectWeapon)) {
+                    if (!notes.seenCard(suspectWeapon)&&!notes.ownsCard(suspectWeapon)) {
                         notes.setFinal(suspectWeapon);
                     }
-                    if (!notes.ownsCard(suspectRoom)&&!notes.seenCard(suspectRoom)) {
+                    if (!notes.seenCard(suspectRoom)&&!notes.ownsCard(suspectRoom)) {
                         notes.setFinal(suspectRoom);
                     }
                 }
