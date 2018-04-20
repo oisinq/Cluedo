@@ -56,6 +56,10 @@ public class AuroraBorealis implements BotAPI {
         return "AuroraBorealis"; // must match the class name
     }
 
+    public String getVersion() {
+        return "0.1";   // change on a new release
+    }
+
     public String getCommand() {
         if (turnCount > 50) {
          //   System.out.println("shawty");
@@ -295,6 +299,23 @@ public class AuroraBorealis implements BotAPI {
             }
         }
     //    System.out.println(notes.getNotesString());
+    }
+
+
+    public void notifyPlayerName(String playerName) {
+        // Add your code here
+    }
+
+    public void notifyTurnOver(String playerName, String position) {
+        // Add your code here
+    }
+
+    public void notifyQuery(String playerName, String query) {
+        // Add your code here
+    }
+
+    public void notifyReply(String playerName, boolean cardShown) {
+        // Add your code here
     }
 
     /**
@@ -774,6 +795,10 @@ public class AuroraBorealis implements BotAPI {
             }
         }
     }
+<<<<<<< HEAD
 
    
 }
+=======
+}
+>>>>>>> 1514e52307742d69d5f564d4809327b3059c8782
