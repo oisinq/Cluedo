@@ -13,7 +13,7 @@ public class Cluedo {
 
     private static final String[] ALL_BOT_NAMES = {"Bot"};
     private static final int NUM_PLAYERS = 3;
-    private static final int DELAY = 20;  // in milliseconds
+    private static final int DELAY = 0;  // in milliseconds
 
     private final Tokens tokens  = new Tokens();
     private final Players players = new Players();
@@ -326,11 +326,11 @@ public class Cluedo {
                         break;
                     }
                 }
-                try {
-                    Thread.sleep(DELAY);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(DELAY);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
             } while (!turnOver);
             if (!gameOver) {
                 players.turnOver();
@@ -338,15 +338,35 @@ public class Cluedo {
         } while (!gameOver);
     }
 
+//    public static void main(String[] args) {
+//        Cluedo game = new Cluedo();
+//        game.announceTheGame();
+//        game.setupBots(args);
+//        game.dealCards();
+//        game.rollToStart();
+//        game.takeTurns();
+//        if (game.quit) {
+//            System.exit(0);
+//        }
+//    }
+
     public static void main(String[] args) {
-        Cluedo game = new Cluedo();
-        game.announceTheGame();
-        game.setupBots(args);
-        game.dealCards();
-        game.rollToStart();
-        game.takeTurns();
-        if (game.quit) {
-            System.exit(0);
+        int attempts = 0;
+        int total = 0;
+        for (int i = 0; i < 1000;i++) {
+            Cluedo game = new Cluedo();
+            game.announceTheGame();
+            game.setupBots(args);
+            game.dealCards();
+            game.rollToStart();
+            game.takeTurns();
+            if (game.quit) {
+                continue;
+            }
+            attempts++;
+            total += AuroraBorealis.turnCount;
+            AuroraBorealis.turnCount = 0;
+            System.out.println("Average of " + total/attempts/3 + " turns after " + attempts + " games");
         }
     }
 }

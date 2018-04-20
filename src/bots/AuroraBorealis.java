@@ -58,7 +58,7 @@ public class AuroraBorealis implements BotAPI {
 
     public String getCommand() {
         if (turnCount > 50) {
-            System.out.println("shawty");
+         //   System.out.println("shawty");
         }
         if (startOfTurn) {
             startOfTurn = false;
@@ -100,7 +100,7 @@ public class AuroraBorealis implements BotAPI {
             notes.oneWeaponLeft();
             notes.oneRoomLeft();
             if (notes.hasCardsRemaining(3)) {
-                JOptionPane.showMessageDialog(null,  player.getToken().getName() + " knows who did it!");
+                //JOptionPane.showMessageDialog(null,  player.getToken().getName() + " knows who did it!");
                 accusationMode = true;
                 path = pathways.get(player.getToken().getRoom().toString()).get("Cellar");
                 if (player.getToken().getRoom().toString().equals("Cellar")) {
@@ -271,7 +271,7 @@ public class AuroraBorealis implements BotAPI {
                     String[] split = s.split(":");
                     String card = split[split.length -1];
                     card = card.substring(1, card.length()-1);
-                    System.out.println(card);
+                //    System.out.println(card);
                     notes.addSeenCard(card);
                 }
                 else if(s.contains("did not show any cards.")) {
@@ -288,7 +288,7 @@ public class AuroraBorealis implements BotAPI {
                 }
             }
         }
-        System.out.println(notes.getNotesString());
+    //    System.out.println(notes.getNotesString());
     }
 
     /**
@@ -482,6 +482,7 @@ public class AuroraBorealis implements BotAPI {
         }
 
         private boolean ownsCard(String cardName) {
+            //System.out.println("Card: " + cardName);
             return values.get(cardName).equals("X");
         }
         private boolean seenCard(String cardName)
@@ -501,7 +502,7 @@ public class AuroraBorealis implements BotAPI {
                 }
                 loopCount++;
                 if (loopCount > 1000) {
-                    System.out.println(notes.getNotesString());
+                //    System.out.println(notes.getNotesString());
                     throw new RuntimeException("Can't find it!");
                 }
             }
@@ -519,7 +520,7 @@ public class AuroraBorealis implements BotAPI {
                     found = true;
                 }
                 if (loopCount > 1000) {
-                    System.out.println(notes.getNotesString());
+                //    System.out.println(notes.getNotesString());
                     throw new RuntimeException("Can't find it!");
                 }
                 loopCount++;
@@ -629,7 +630,7 @@ public class AuroraBorealis implements BotAPI {
                     found = true;
                 }
                 if (loopCount > 1000) {
-                    System.out.println(notes.getNotesString());
+                //    System.out.println(notes.getNotesString());
                     throw new RuntimeException("Can't find it!");
                 }
                 loopCount++;
@@ -648,7 +649,7 @@ public class AuroraBorealis implements BotAPI {
                     found = true;
                 }
                 if (loopCount > 1000) {
-                    System.out.println(notes.getNotesString());
+                 //   System.out.println(notes.getNotesString());
                     throw new RuntimeException("Can't find it!");
                 }
                 loopCount++;
@@ -667,7 +668,7 @@ public class AuroraBorealis implements BotAPI {
                     found = true;
                 }
                 if (loopCount > 1000) {
-                    System.out.println(notes.getNotesString());
+                 //   System.out.println(notes.getNotesString());
                     throw new RuntimeException("Can't find it!");
                 }
                 loopCount++;
@@ -686,7 +687,7 @@ public class AuroraBorealis implements BotAPI {
                     found = true;
                 }
                 if (loopCount > 1000) {
-                    System.out.println(notes.getNotesString());
+                //    System.out.println(notes.getNotesString());
                     throw new RuntimeException("Can't find it!");
                 }
                 loopCount++;
@@ -747,7 +748,7 @@ public class AuroraBorealis implements BotAPI {
                 	randPath=false;
                 }//TODO  check if this works */
             	if(values.get(Names.ROOM_CARD_NAMES[count]).equals("E")&&((getEnvelopeRoom()==""&&getEnvelopeRoom()!="")||(getEnvelopeRoom()!=""&&getEnvelopeRoom()==""))){
-            		System.out.println("HELLO TESTING 123");
+            	//	System.out.println("HELLO TESTING 123");
             		path=pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]);
             		randPath=false;
             		
