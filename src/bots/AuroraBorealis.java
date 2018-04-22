@@ -36,6 +36,7 @@ public class AuroraBorealis implements BotAPI {
     private boolean askedQuestion = false;
     private boolean accusationMode = false;
     public static int turnCount = 0;
+    private LinkedHashMap<String,String> shown;
 
 
     public AuroraBorealis (Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
@@ -264,7 +265,26 @@ public class AuroraBorealis implements BotAPI {
     }
 
     public String getCard(Cards matchingCards) {
-        // Add your code here
+        // Add your code here TODO
+    	//shownbefore.
+    	int i=0;
+    	for(Card p : matchingCards){//update to be a string somehow
+    		//System.out.println(shown.containsKey(p.toString())+"did this run 2");
+    		if(shown.get(p.toString())=="S"){//S for Shown
+    			//System.out.println("Second showinmg");
+    		return shown.get(p.toString());
+    		}
+    	}
+    	for(Card p : matchingCards){
+    	if(shown.get(p.toString())=="X"){//hasn't been shown yet
+    		//shown.put(p.toString(), "S"); //mark as shown
+    		shown.put(p.toString(), "S");
+    		System.out.println("first showing"+shown.get(p));
+    		return shown.get(p.toString()).toString();
+    	}
+    	}
+    	System.out.println("Hopefully doesn't go here");
+
         return matchingCards.get().toString();
     }
 
@@ -431,12 +451,15 @@ public class AuroraBorealis implements BotAPI {
     private class Notes {
 
         private LinkedHashMap<String, String> values;
+        //TODO part of this thingy
+        //format is , card name , owned by player , shown 
 
         Notes() {
             // I'm using a LinkedHashMap instead of a Map because I want to print off the values in the order they were added later
             // This makes it much easier to read when printing
             // I'm using a map because I think it's the best data structure to store each card and its corresponding status
             values = new LinkedHashMap<>();
+            shown= new LinkedHashMap<>();
 
             // I don't need to separate these strings, but I think it's easier to understand what's happening.
             // I may also need these separated later on
@@ -471,6 +494,9 @@ public class AuroraBorealis implements BotAPI {
         public void addOwnedCards() {
             for (Card c : player.getCards()) {
                 values.put(c.toString(), "X");
+            } 
+            for (Card c : player.getCards()) {
+                shown.put(c.toString(), "X");
             }
         }
 
