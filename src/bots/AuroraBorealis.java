@@ -271,16 +271,16 @@ public class AuroraBorealis implements BotAPI {
     	for(Card p : matchingCards){//update to be a string somehow
     		//System.out.println(shown.containsKey(p.toString())+"did this run 2");
     		if(shown.get(p.toString())=="S"){//S for Shown
-    			//System.out.println("Second showinmg");
-    		return shown.get(p.toString());
+    			System.out.println("Second showing " + p.toString());
+    		return p.toString();
     		}
     	}
     	for(Card p : matchingCards){
     	if(shown.get(p.toString())=="X"){//hasn't been shown yet
     		//shown.put(p.toString(), "S"); //mark as shown
     		shown.put(p.toString(), "S");
-    		System.out.println("first showing"+shown.get(p));
-    		return shown.get(p.toString()).toString();
+    		System.out.println("first showing "+p.toString());
+    		return p.toString();
     	}
     	}
     	System.out.println("Hopefully doesn't go here");
