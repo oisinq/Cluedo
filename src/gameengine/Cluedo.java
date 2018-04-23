@@ -39,8 +39,8 @@ public class Cluedo {
         Collections.shuffle(suspectNames);
         if (args.length<NUM_PLAYERS) {
             botNames[0] = "AuroraBorealis";
-            botNames[1] = "AuroraBorealis";
-            botNames[2] = "AuroraBorealis";
+            botNames[1] = "Bot2";
+            botNames[2] = "Bot2";
         } else {
             for (int i=0; i<NUM_PLAYERS; i++) {
                 boolean found = false;
@@ -94,7 +94,7 @@ public class Cluedo {
 
     private void rollToStart() {
         players.shuffle();
-        ui.displayPlayerShuffle();;
+        ui.displayPlayerShuffle();
         Players playersToRoll = new Players(players), playersWithHighRoll = new Players();
         boolean tie = false;
         do {
@@ -344,11 +344,11 @@ public class Cluedo {
                         break;
                     }
                 }
-//                try {
-//                    Thread.sleep(DELAY);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    Thread.sleep(DELAY);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             } while (!turnOver);
             if (!gameOver) {
                 players.turnOver();
