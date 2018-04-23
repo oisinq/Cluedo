@@ -215,6 +215,9 @@ public class AuroraBorealis implements BotAPI {
             return suspect;
         }
         // Add your code here
+        if(notes.oneRoomLeft())
+        {
+        
         if (notes.ownsCard(player.getToken().getRoom().toString())) {
             if (notes.hasEverySuspect()) {
                 suspect = notes.getOwnedPlayer();
@@ -228,6 +231,10 @@ public class AuroraBorealis implements BotAPI {
             return suspect;
         }
         suspect=notes.getUnseenPlayer();
+        }
+        else {
+        	suspect=notes.getOwnedPlayer();
+        }
         return suspect;
     }
 
@@ -236,14 +243,26 @@ public class AuroraBorealis implements BotAPI {
             suspectWeapon = notes.getEnvelopeWeapon();
             return suspectWeapon;
         }
+        if(notes.oneRoomLeft())
+        {
+        	
+        
         if (notes.hasEveryWeapon()) {
             suspectWeapon = notes.getOwnedWeapon();
             return suspectWeapon;
         }
         // Add your code here
         suspectWeapon = notes.getUnseenWeapon();
-        return suspectWeapon;
     }
+    
+    else
+    {
+    	suspectWeapon=notes.getOwnedWeapon();
+       
+    }
+        return suspectWeapon;
+}
+
 
     public String getRoom() {
         if (accusationMode) {
@@ -547,8 +566,7 @@ public class AuroraBorealis implements BotAPI {
                     found = true;
                 }
                 if (loopCount > 1000) {
-                //    System.out.println(notes.getNotesString());
-                    throw new RuntimeException("Can't find it!");
+                return player;
                 }
                 loopCount++;
             }
@@ -626,7 +644,7 @@ public class AuroraBorealis implements BotAPI {
             }
         }
 
-        private void oneRoomLeft() {
+        private Boolean oneRoomLeft() {
             int count = 0;
             Random rand = new Random();
             String room;
@@ -638,12 +656,14 @@ public class AuroraBorealis implements BotAPI {
                     selection = room;
                 }
                 if (values.get(room).equals("E")) {
-                    return;
+                    return true;
                 }
             }
             if (count == 1) {
                 values.put(selection, "E");
+                return true;
             }
+            return false;
         }
 
         private String getUnseenWeapon() {
@@ -676,8 +696,7 @@ public class AuroraBorealis implements BotAPI {
                     found = true;
                 }
                 if (loopCount > 1000) {
-                 //   System.out.println(notes.getNotesString());
-                    throw new RuntimeException("Can't find it!");
+                 return weapon;
                 }
                 loopCount++;
             }
@@ -795,10 +814,9 @@ public class AuroraBorealis implements BotAPI {
             }
         }
     }
-<<<<<<< HEAD
 
    
 }
-=======
-}
->>>>>>> 1514e52307742d69d5f564d4809327b3059c8782
+
+
+
