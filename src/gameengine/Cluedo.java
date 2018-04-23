@@ -94,7 +94,7 @@ public class Cluedo {
 
     private void rollToStart() {
         players.shuffle();
-        ui.displayPlayerShuffle();;
+        ui.displayPlayerShuffle();
         Players playersToRoll = new Players(players), playersWithHighRoll = new Players();
         boolean tie = false;
         do {

@@ -278,14 +278,14 @@ public class AuroraBorealis implements BotAPI {
         //shownbefore.
         for (Card p : matchingCards) {//update to be a string somehow
             //System.out.println(shown.containsKey(p.toString())+"did this run 2");
-            if (shown.get(p.toString()) == "S") {//S for Shown
+            if (shown.get(p.toString()).equals("S")) {//S for Shown
                 System.out.println("Second showing " + p.toString());
                 return p.toString();
             }
         }
 
         for (Card p : matchingCards) {
-            if (shown.get(p.toString()) == "X") {//hasn't been shown yet
+            if (shown.get(p.toString()).equals("X")) {//hasn't been shown yet
                 //shown.put(p.toString(), "S"); //mark as shown
                 shown.put(p.toString(), "S");
                 System.out.println("first showing " + p.toString());
@@ -491,13 +491,13 @@ public class AuroraBorealis implements BotAPI {
         /**
          * This is called before the notes are printed - it makes sure the LinkedHashMap is up-to-date
          */
-        public void addSharedCards() {
+        private void addSharedCards() {
             for (Card c : deck.getSharedCards()) {
                 values.put(c.toString(), "A");
             }
         }
 
-        public void addOwnedCards() {
+        private void addOwnedCards() {
             for (Card c : player.getCards()) {
                 values.put(c.toString(), "X");
             }
@@ -509,7 +509,7 @@ public class AuroraBorealis implements BotAPI {
         /**
          * If we find a card in questioning, it's added here
          */
-        public void addSeenCard(String cardName) {
+        private void addSeenCard(String cardName) {
             values.put(cardName, "V");
         }
 
@@ -517,7 +517,7 @@ public class AuroraBorealis implements BotAPI {
             return values;
         }
 
-        public String getNotesString() {
+        private String getNotesString() {
             StringBuilder s = new StringBuilder();
             int i = 0;
 
@@ -626,7 +626,6 @@ public class AuroraBorealis implements BotAPI {
 
         private void onePlayerLeft() {
             int count = 0;
-            Random rand = new Random();
             String player;
             String selection = "";
             for (int i = 0; i < 6; i++) {
@@ -646,7 +645,6 @@ public class AuroraBorealis implements BotAPI {
 
         private void oneWeaponLeft() {
             int count = 0;
-            Random rand = new Random();
             String weapon;
             String selection = "";
             for (int i = 0; i < Names.WEAPON_NAMES.length; i++) {
@@ -666,7 +664,6 @@ public class AuroraBorealis implements BotAPI {
 
         private void oneRoomLeft() {
             int count = 0;
-            Random rand = new Random();
             String room;
             String selection = "";
             for (int i = 0; i < Names.ROOM_CARD_NAMES.length; i++) {
@@ -714,7 +711,6 @@ public class AuroraBorealis implements BotAPI {
                     found = true;
                 }
                 if (loopCount > 1000) {
-                    //   System.out.println(notes.getNotesString());
                     throw new RuntimeException("Can't find it!");
                 }
                 loopCount++;
@@ -798,10 +794,9 @@ public class AuroraBorealis implements BotAPI {
         }
 
         private void pickNextRoom() {
-            Random rand = new Random();
             boolean found = false;
             String randomRoom = "";
-            String holdRoom = "";
+            String holdRoom;
             int count = 0;
             boolean randPath = true;
             while (count < 9 && !found) {
@@ -813,7 +808,7 @@ public class AuroraBorealis implements BotAPI {
                 	randomRoom = Names.ROOM_NAMES[count];
                 	randPath=false;
                 }//TODO  check if this works */
-                if (values.get(Names.ROOM_CARD_NAMES[count]).equals("E") && ((getEnvelopeRoom() == "" && getEnvelopeRoom() != "") || (getEnvelopeRoom() != "" && getEnvelopeRoom() == ""))) {
+                if (values.get(Names.ROOM_CARD_NAMES[count]).equals("E") && ((getEnvelopeRoom().equals("") && !getEnvelopeRoom().equals("")) || (!getEnvelopeRoom().equals("") && getEnvelopeRoom().equals("")))) {
                     //	System.out.println("HELLO TESTING 123");
                     path = pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]);
                     randPath = false;
