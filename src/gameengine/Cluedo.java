@@ -344,11 +344,11 @@ public class Cluedo {
                         break;
                     }
                 }
-//                try {
-//                    Thread.sleep(DELAY);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    Thread.sleep(DELAY);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             } while (!turnOver);
             if (!gameOver) {
                 players.turnOver();
