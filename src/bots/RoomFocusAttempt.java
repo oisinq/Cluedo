@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Random;
 
-public class AuroraBorealis implements BotAPI {
+public class RoomFocusAttempt implements BotAPI {
 
     // The public API of Bot must not change
     // This is ONLY class that you can edit in the program
@@ -16,6 +16,7 @@ public class AuroraBorealis implements BotAPI {
     // Bot may not alter the state of the board or the player objects
     // It may only inspect the state of the board and the player objects
 
+    private boolean foundRoom = false;
     public static int turnCount = 0;
     private Player player;
     private PlayersInfo playersInfo;
@@ -37,7 +38,7 @@ public class AuroraBorealis implements BotAPI {
     private boolean askedQuestion = false;
     private boolean accusationMode = false;
 
-    public AuroraBorealis(Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
+    public RoomFocusAttempt(Player player, PlayersInfo playersInfo, Map map, Dice dice, Log log, Deck deck) {
         this.player = player;
         this.playersInfo = playersInfo;
         this.map = map;
@@ -53,7 +54,7 @@ public class AuroraBorealis implements BotAPI {
     }
 
     public String getName() {
-        return "AuroraBorealis"; // must match the class name
+        return "RoomFocusAttempt"; // must match the class name
     }
 
     public String getVersion() {
@@ -61,6 +62,22 @@ public class AuroraBorealis implements BotAPI {
     }
 
     public String getCommand() {
+        if (notes.oneRoomLeft() && !foundRoom) {
+            foundRoom = true;
+           JOptionPane.showMessageDialog(null, "Found the room - it's " + notes.getEnvelopeRoom());
+        //    System.out.println(notes.getNotesString());
+        }
+
+        if (notes.oneWeaponLeft()) {
+            //JOptionPane.showMessageDialog(null, "Found the weapon - it's " + notes.getEnvelopeWeapon());
+        //    System.out.println(notes.getNotesString());
+        }
+
+        if (notes.onePlayerLeft()) {
+        //    JOptionPane.showMessageDialog(null, "Found the player - it's " + notes.getEnvelopePlayer());
+        //    System.out.println(notes.getNotesString());
+        }
+
         // If we know what's in the envelope, we use this code
         if (accusationMode) {
             // If you're in a room, we accuse if it's the cellar or we get the path to the cellar
@@ -110,8 +127,13 @@ public class AuroraBorealis implements BotAPI {
                 rolled = true;
                 return "roll";
             } else {
+                path = "";
                 // If you don't know the room, we pick the next room
                 notes.pickNextRoom();
+
+                if (path.equals("")) {
+                    notes.pickNextRoomOld();
+                }
             }
         }
 
@@ -189,7 +211,6 @@ public class AuroraBorealis implements BotAPI {
         }
 
         // We take the first character from the path string as the move, and remove it from the start of path
-        System.out.println("the front"+path);
         String move = path.substring(0, 1);
         path = path.substring(1, path.length());
 
@@ -205,7 +226,7 @@ public class AuroraBorealis implements BotAPI {
             return suspect;
         }
         // Add your code here
-        if (notes.ownsCard(player.getToken().getRoom().toString())) {
+        if (notes.ownsCard(player.getToken().getRoom().toString()) || notes.seenCard(player.getToken().getRoom().toString())) {
             if (notes.hasEverySuspect()) {
                 suspect = notes.getOwnedPlayer();
                 return suspect;
@@ -213,12 +234,19 @@ public class AuroraBorealis implements BotAPI {
             suspect = notes.getUnseenPlayer();
             return suspect;
         }
+
         if (notes.hasEverySuspect()) {
             suspect = notes.getOwnedPlayer();
             return suspect;
         }
-        suspect = notes.getUnseenPlayer();
-        return suspect;
+
+        try {
+            suspect = notes.getOwnedPlayer();
+            return suspect;
+        } catch (RuntimeException e) {
+            suspect = notes.getUnseenPlayer();
+            return suspect;
+        }
     }
 
     /**
@@ -229,13 +257,27 @@ public class AuroraBorealis implements BotAPI {
             suspectWeapon = notes.getEnvelopeWeapon();
             return suspectWeapon;
         }
+        if (notes.ownsCard(player.getToken().getRoom().toString()) || notes.seenCard(player.getToken().getRoom().toString())) {
+            if (notes.hasEveryWeapon()) {
+                suspectWeapon = notes.getOwnedWeapon();
+                return suspectWeapon;
+            }
+            suspectWeapon = notes.getUnseenWeapon();
+            return suspectWeapon;
+        }
         if (notes.hasEveryWeapon()) {
             suspectWeapon = notes.getOwnedWeapon();
             return suspectWeapon;
         }
         // Add your code here
-        suspectWeapon = notes.getUnseenWeapon();
-        return suspectWeapon;
+        try {
+            suspectWeapon = notes.getOwnedWeapon();
+            return suspectWeapon;
+        } catch (RuntimeException e) {
+            suspectWeapon = notes.getUnseenWeapon();
+            return suspectWeapon;
+        }
+
     }
 
     /**
@@ -390,11 +432,13 @@ public class AuroraBorealis implements BotAPI {
         kitchen.put("Library", "puuullulllu");
         kitchen.put("Hall", "pulll");//TODO Test this
         kitchen.put("Cellar", "puuullulllu");
+        kitchen.put("Kitchen", "du");
 
         HashMap<String, String> ballRoom = new HashMap<>();
         ballRoom.put("Kitchen", "1lddlllu");
         ballRoom.put("Conservatory", "4rrru");
         ballRoom.put("Cellar", "2ddddddddddrrru");
+        ballRoom.put("Ballroom", "2du");
 
         HashMap<String, String> conservatory = new HashMap<>();
         conservatory.put("Ballroom", "dlll");
@@ -402,24 +446,28 @@ public class AuroraBorealis implements BotAPI {
         conservatory.put("Lounge", "p");
         conservatory.put("Dining Room", "puuu");
         conservatory.put("Cellar", "puurrrrrru");
+        conservatory.put("Conservatory", "du");
 
         HashMap<String, String> billiardRoom = new HashMap<>();
         billiardRoom.put("Ballroom", "1luuuull");
         billiardRoom.put("Conservatory", "1luuuuru");
         billiardRoom.put("Library", "2dlld");
         billiardRoom.put("Cellar", "1ldddddlldddlllu");
+        billiardRoom.put("Billiard Room", "1lr");
 
         HashMap<String, String> library = new HashMap<>();
         library.put("Hall", "1lldllld");
         library.put("Study", "1lddddrd");
         library.put("Cellar", "1lldlllu");
         library.put("Billiard Room", "2urru");
+        library.put("Library", "1lr");
 
         HashMap<String, String> study = new HashMap<>();
         study.put("Kitchen", "p");
         study.put("Library", "uuuluur");
         study.put("Hall", "ulll");
         study.put("Cellar", "uuulullllu");
+        study.put("Study", "ud");
 
         HashMap<String, String> hall = new HashMap<>();
         hall.put("Lounge", "1ullldlld");
@@ -427,6 +475,7 @@ public class AuroraBorealis implements BotAPI {
         hall.put("Study", "3rrrd");
         hall.put("Library", "3ruuurur");
         hall.put("Cellar", "2uu");
+        hall.put("Hall", "2ud");
 
         HashMap<String, String> lounge = new HashMap<>();
         lounge.put("Conservatory", "p");
@@ -434,6 +483,7 @@ public class AuroraBorealis implements BotAPI {
         lounge.put("Dining Room", "uuuu");
         lounge.put("Hall", "uurrrrrd");
         lounge.put("Cellar", "uurrrrrru");
+        lounge.put("Lounge", "ud");
 
         HashMap<String, String> diningRoom = new HashMap<>();
         diningRoom.put("Lounge", "1dddd");
@@ -441,6 +491,7 @@ public class AuroraBorealis implements BotAPI {
         diningRoom.put("Hall", "1ddrrrrrd");
         diningRoom.put("Kitchen", "2ruuullluluu");
         diningRoom.put("Cellar", "1ddrrrrrru");
+        diningRoom.put("Dining Room", "1du");
 
         pathways.put("Kitchen", kitchen);
         pathways.put("Ballroom", ballRoom);
@@ -620,12 +671,42 @@ public class AuroraBorealis implements BotAPI {
         }
 
         private void checkOneLeft() {
-            onePlayerLeft();
-            oneWeaponLeft();
-            oneRoomLeft();
+            if (onePlayerLeft()) {
+                fillBlankPlayers();
+            }
+            if (oneWeaponLeft()) {
+                fillBlankWeapons();
+            }
+            if (oneRoomLeft()) {
+                fillBlankRooms();
+            }
         }
 
-        private void onePlayerLeft() {
+        private void fillBlankPlayers() {
+            for (String name : Names.SUSPECT_NAMES) {
+                if (values.get(name).equals(" ")) {
+                    values.put(name, "V");
+                }
+            }
+        }
+
+        private void fillBlankWeapons() {
+            for (String name : Names.WEAPON_NAMES) {
+                if (values.get(name).equals(" ")) {
+                    values.put(name, "V");
+                }
+            }
+        }
+
+        private void fillBlankRooms() {
+            for (String name : Names.ROOM_CARD_NAMES) {
+                if (values.get(name).equals(" ")) {
+                    values.put(name, "V");
+                }
+            }
+        }
+
+        private boolean onePlayerLeft() {
             int count = 0;
             String player;
             String selection = "";
@@ -636,15 +717,17 @@ public class AuroraBorealis implements BotAPI {
                     selection = player;
                 }
                 if (values.get(player).equals("E")) {
-                    return;
+                    return true;
                 }
             }
             if (count == 1) {
                 values.put(selection, "E");
+                return true;
             }
+            return false;
         }
 
-        private void oneWeaponLeft() {
+        private boolean oneWeaponLeft() {
             int count = 0;
             String weapon;
             String selection = "";
@@ -655,15 +738,17 @@ public class AuroraBorealis implements BotAPI {
                     selection = weapon;
                 }
                 if (values.get(weapon).equals("E")) {
-                    return;
+                    return true;
                 }
             }
             if (count == 1) {
                 values.put(selection, "E");
+                return true;
             }
+            return false;
         }
 
-        private void oneRoomLeft() {
+        private boolean oneRoomLeft() {
             int count = 0;
             String room;
             String selection = "";
@@ -674,12 +759,14 @@ public class AuroraBorealis implements BotAPI {
                     selection = room;
                 }
                 if (values.get(room).equals("E")) {
-                    return;
+                    return true;
                 }
             }
             if (count == 1) {
                 values.put(selection, "E");
+                return true;
             }
+            return false;
         }
 
         private String getUnseenWeapon() {
@@ -712,6 +799,7 @@ public class AuroraBorealis implements BotAPI {
                     found = true;
                 }
                 if (loopCount > 1000) {
+                 //   System.out.println(notes.getNotesString());
                     throw new RuntimeException("Can't find it!");
                 }
                 loopCount++;
@@ -730,7 +818,7 @@ public class AuroraBorealis implements BotAPI {
                     found = true;
                 }
                 if (loopCount > 1000) {
-                    //   System.out.println(notes.getNotesString());
+                 //   System.out.println(notes.getNotesString());
                     throw new RuntimeException("Can't find it!");
                 }
                 loopCount++;
@@ -796,10 +884,10 @@ public class AuroraBorealis implements BotAPI {
 
         private void pickNextRoom() {
             boolean found = false;
-       
+
             String currentRoom = player.getToken().getRoom().toString();
             int count = 0;
-          
+
             String holdRoom;
             boolean priority1=false;
             boolean priority2=false;
@@ -807,41 +895,62 @@ public class AuroraBorealis implements BotAPI {
             boolean priority4=false;
 
             int diceHold = dice.getTotal();
-            
+
             while (count < 9 && !found) {
                 holdRoom = Names.ROOM_CARD_NAMES[count];
-                if(pathways.containsKey(holdRoom))
+                if(pathways.get(currentRoom).containsKey(holdRoom))
                 {
-                	int store = (pathways.get(currentRoom).get(holdRoom)).length();
-            	//Found the envelope room and can move to it
-                if (values.get(holdRoom).equals("E") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold) {
-                    path = pathways.get(currentRoom).get(holdRoom);
-                    found = true;
-                } 
-                //These two statements are for when the envelope room is found but we can't move to it in one turn
-                else if (values.get(holdRoom).equals("E") && store > diceHold) {
-                    priority1=true;
-                } 
-                else if (values.get(holdRoom).equals("X") && store <= diceHold && priority1) {
-                	 path = pathways.get(currentRoom).get(holdRoom);
-                	 priority2=true;
-                	 found=true;
-                }//Closest room we can move to that we havent seen 
-                else if (values.get(holdRoom).equals(" ") && store <= diceHold && !priority2 && !priority1) {
-                	 path = pathways.get(currentRoom).get(holdRoom);
-                	 priority3=true;
-                }//A room we havent seen.. Last resort
-                else if (values.get(holdRoom).equals(" ") && pathways.get(currentRoom).get(holdRoom).length() > diceHold && !priority3 && !priority2 && !priority1) {
-                	 path = pathways.get(currentRoom).get(holdRoom);
-                }
-                else if(!priority3 && !priority2 && !priority1&&!priority4)
-                {
-               	 path = pathways.get(currentRoom).get(holdRoom);
+                    int store = (pathways.get(currentRoom).get(holdRoom)).length();
+                    //Found the envelope room and can move to it
+                    if (values.get(holdRoom).equals("E") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold) {
+                        path = pathways.get(currentRoom).get(holdRoom);
+                        found = true;
+                    }
+                    //These two statements are for when the envelope room is found but we can't move to it in one turn
+                    else if (values.get(holdRoom).equals("E") && store > diceHold) {
+                        priority1=true;
+                    }
+                    else if (values.get(holdRoom).equals("X") && store <= diceHold && priority1) {
+                        path = pathways.get(currentRoom).get(holdRoom);
+                        priority2=true;
 
-                }
+                    }//Closest room we can move to that we havent seen
+                    else if (values.get(holdRoom).equals(" ") && store <= diceHold && !priority2 && !priority1) {
+                        path = pathways.get(currentRoom).get(holdRoom);
+                        priority3=true;
+                    }//A room we havent seen.. Last resort
+                    else if (values.get(holdRoom).equals(" ") && pathways.get(currentRoom).get(holdRoom).length() > diceHold && !priority3 && !priority2 && !priority1) {
+                        path = pathways.get(currentRoom).get(holdRoom);
+                        priority4=true;
+                    }
+                    else if(!priority3 && !priority2 && !priority1&&!priority4) {
+                        path = pathways.get(currentRoom).get(holdRoom);
+                    }
                 }
                 count++;
             }
+        }
+
+        private void pickNextRoomOld() {
+            Random rand = new Random();
+            boolean found = false;
+            String randomRoom = "";
+            String holdRoom = "";
+            int count=0;
+            while (count<9&&!found) {
+
+                holdRoom = Names.ROOM_NAMES[count];
+                if (pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom)&&values.get(Names.ROOM_CARD_NAMES[count]).equals(" ")) {
+                    randomRoom = Names.ROOM_NAMES[count];
+                    found=true;
+                }
+                else if(pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom))
+                {
+                    randomRoom = Names.ROOM_NAMES[count];
+                }
+                count++;
+            }
+            path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
         }
     }
 }
