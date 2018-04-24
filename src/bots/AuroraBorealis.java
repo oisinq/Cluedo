@@ -189,6 +189,7 @@ public class AuroraBorealis implements BotAPI {
         }
 
         // We take the first character from the path string as the move, and remove it from the start of path
+        System.out.println("the front"+path);
         String move = path.substring(0, 1);
         path = path.substring(1, path.length());
 
@@ -795,40 +796,48 @@ public class AuroraBorealis implements BotAPI {
 
         private void pickNextRoom() {
             boolean found = false;
-            String randomRoom = "";
+       
             String currentRoom = player.getToken().getRoom().toString();
             int count = 0;
-            boolean randPath = true;
+          
             String holdRoom;
             boolean priority1=false;
             boolean priority2=false;
             boolean priority3=false;
+            boolean priority4=false;
+
             int diceHold = dice.getTotal();
             
             while (count < 9 && !found) {
                 holdRoom = Names.ROOM_CARD_NAMES[count];
-                if(pathways.containsValue(holdRoom))
+                if(pathways.containsKey(holdRoom))
                 {
+                	int store = (pathways.get(currentRoom).get(holdRoom)).length();
             	//Found the envelope room and can move to it
                 if (values.get(holdRoom).equals("E") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold) {
                     path = pathways.get(currentRoom).get(holdRoom);
                     found = true;
                 } 
                 //These two statements are for when the envelope room is found but we can't move to it in one turn
-                else if (values.get(holdRoom).equals("E") && pathways.get(currentRoom).get(holdRoom).length() > diceHold) {
+                else if (values.get(holdRoom).equals("E") && store > diceHold) {
                     priority1=true;
                 } 
-                else if (values.get(holdRoom).equals("X") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold && priority1) {
+                else if (values.get(holdRoom).equals("X") && store <= diceHold && priority1) {
                 	 path = pathways.get(currentRoom).get(holdRoom);
                 	 priority2=true;
+                	 found=true;
                 }//Closest room we can move to that we havent seen 
-                else if (values.get(holdRoom).equals(" ") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold && !priority2 && !priority1) {
+                else if (values.get(holdRoom).equals(" ") && store <= diceHold && !priority2 && !priority1) {
                 	 path = pathways.get(currentRoom).get(holdRoom);
                 	 priority3=true;
                 }//A room we havent seen.. Last resort
                 else if (values.get(holdRoom).equals(" ") && pathways.get(currentRoom).get(holdRoom).length() > diceHold && !priority3 && !priority2 && !priority1) {
                 	 path = pathways.get(currentRoom).get(holdRoom);
-                	randomRoom = holdRoom;
+                }
+                else if(!priority3 && !priority2 && !priority1&&!priority4)
+                {
+               	 path = pathways.get(currentRoom).get(holdRoom);
+
                 }
                 }
                 count++;
