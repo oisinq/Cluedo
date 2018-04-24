@@ -799,31 +799,37 @@ public class AuroraBorealis implements BotAPI {
             String holdRoom;
             int count = 0;
             boolean randPath = true;
+            boolean priority1=false;
+            boolean priority2=false;
+            boolean priority3=false;
+            int diceHold = dice.getTotal();
             while (count < 9 && !found) {
 
                 holdRoom = Names.ROOM_NAMES[count];
-            	/*if(pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom)&&values.get(Names.ROOM_CARD_NAMES[count]).equals("E")&&(getEnvelopeRoom()==""&&getEnvelopeRoom()!="")||(getEnvelopeRoom()!=""&&getEnvelopeRoom()==""))
-                {
-            		System.out.println("YOYOYOYOYOYOOYOYOYOYOYOYOO");
-                	randomRoom = Names.ROOM_NAMES[count];
-                	randPath=false;
-                }//TODO  check if this works */
-                if (values.get(Names.ROOM_CARD_NAMES[count]).equals("E") && ((getEnvelopeRoom().equals("") && !getEnvelopeRoom().equals("")) || (!getEnvelopeRoom().equals("") && getEnvelopeRoom().equals("")))) {
-                    //	System.out.println("HELLO TESTING 123");
+            	//Found the envelope room and can move to it
+                if (values.get(Names.ROOM_CARD_NAMES[count]).equals("E") &&pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]).length() <= diceHold)
+                { 
                     path = pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]);
-                    randPath = false;
-
-                } else if (pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom) && values.get(Names.ROOM_CARD_NAMES[count]).equals(" ")) {
-                    randomRoom = Names.ROOM_NAMES[count];
                     found = true;
-                } else if (pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom)) {
+                } 
+                //These two statements are for Murder room found but can't move to it in one turn
+                else if (values.get(Names.ROOM_CARD_NAMES[count]).equals("E") &&pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]).length() > diceHold) {
+                    priority1=true;
+                } 
+                else if (values.get(Names.ROOM_CARD_NAMES[count]).equals("X") &&pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]).length() <= diceHold &&priority1) {
+                    randomRoom = Names.ROOM_NAMES[count];
+                    priority2=true;
+                }//Closest room we can move to that we havent seen 
+                else if (values.get(Names.ROOM_CARD_NAMES[count]).equals(" ") &&pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]).length() <= diceHold &&!priority2&&!priority1) {
+                    randomRoom = Names.ROOM_NAMES[count];
+                    priority3=true;
+                }//A room we havent seen.. Last resort
+                else if (values.get(Names.ROOM_CARD_NAMES[count]).equals(" ") &&pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]).length() > diceHold &&!priority3&&!priority2&&!priority1) {
                     randomRoom = Names.ROOM_NAMES[count];
                 }
                 count++;
             }
-            if (randPath) {
-                path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
-            }
+           
         }
     }
 }
