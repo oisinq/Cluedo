@@ -3,6 +3,7 @@ package bots;
 import gameengine.*;
 
 import javax.swing.*;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -425,14 +426,14 @@ public class RoomFocusAttempt implements BotAPI {
      * Adds all the possible pathways to the hashmap
      */
     private void initialisePathways() {
-        HashMap<String, String> kitchen = new HashMap<>();
+    	HashMap<String, String> kitchen = new HashMap<>();
         kitchen.put("Dining Room", "ddrdrrrdddl");
         kitchen.put("Ballroom", "drrruur");
         kitchen.put("Study", "p");
         kitchen.put("Library", "puuullulllu");
         kitchen.put("Hall", "pulll");//TODO Test this
         kitchen.put("Cellar", "puuullulllu");
-        kitchen.put("Kitchen", "du");
+        kitchen.put("Kitchen","dduu");
 
         HashMap<String, String> ballRoom = new HashMap<>();
         ballRoom.put("Kitchen", "1lddlllu");
@@ -446,21 +447,21 @@ public class RoomFocusAttempt implements BotAPI {
         conservatory.put("Lounge", "p");
         conservatory.put("Dining Room", "puuu");
         conservatory.put("Cellar", "puurrrrrru");
-        conservatory.put("Conservatory", "du");
+       conservatory.put("Conservatory","du");
 
-        HashMap<String, String> billiardRoom = new HashMap<>();
+       HashMap<String, String> billiardRoom = new HashMap<>();
         billiardRoom.put("Ballroom", "1luuuull");
         billiardRoom.put("Conservatory", "1luuuuru");
         billiardRoom.put("Library", "2dlld");
         billiardRoom.put("Cellar", "1ldddddlldddlllu");
-        billiardRoom.put("Billiard Room", "1lr");
+        billiardRoom.put("Billiard Room","1lrr");
 
         HashMap<String, String> library = new HashMap<>();
         library.put("Hall", "1lldllld");
         library.put("Study", "1lddddrd");
         library.put("Cellar", "1lldlllu");
         library.put("Billiard Room", "2urru");
-        library.put("Library", "1lr");
+        library.put("Library","1lr");
 
         HashMap<String, String> study = new HashMap<>();
         study.put("Kitchen", "p");
@@ -475,7 +476,7 @@ public class RoomFocusAttempt implements BotAPI {
         hall.put("Study", "3rrrd");
         hall.put("Library", "3ruuurur");
         hall.put("Cellar", "2uu");
-        hall.put("Hall", "2ud");
+        hall.put("Hall","2ud");
 
         HashMap<String, String> lounge = new HashMap<>();
         lounge.put("Conservatory", "p");
@@ -483,7 +484,7 @@ public class RoomFocusAttempt implements BotAPI {
         lounge.put("Dining Room", "uuuu");
         lounge.put("Hall", "uurrrrrd");
         lounge.put("Cellar", "uurrrrrru");
-        lounge.put("Lounge", "ud");
+        lounge.put("Lounge","ud");
 
         HashMap<String, String> diningRoom = new HashMap<>();
         diningRoom.put("Lounge", "1dddd");
@@ -491,8 +492,8 @@ public class RoomFocusAttempt implements BotAPI {
         diningRoom.put("Hall", "1ddrrrrrd");
         diningRoom.put("Kitchen", "2ruuullluluu");
         diningRoom.put("Cellar", "1ddrrrrrru");
-        diningRoom.put("Dining Room", "1du");
-
+        diningRoom.put("Dining Room","1du");
+        
         pathways.put("Kitchen", kitchen);
         pathways.put("Ballroom", ballRoom);
         pathways.put("Conservatory", conservatory);
@@ -898,8 +899,8 @@ public class RoomFocusAttempt implements BotAPI {
 
             while (count < 9 && !found) {
                 holdRoom = Names.ROOM_CARD_NAMES[count];
-                if(pathways.get(currentRoom).containsKey(holdRoom))
-                {
+
+                if(pathways.get(currentRoom).containsKey(holdRoom)) {
                     int store = (pathways.get(currentRoom).get(holdRoom)).length();
                     //Found the envelope room and can move to it
                     if (values.get(holdRoom).equals("E") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold) {
