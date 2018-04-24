@@ -189,7 +189,8 @@ public class AuroraBorealis implements BotAPI {
         }
 
         // We take the first character from the path string as the move, and remove it from the start of path
-        System.out.println("the front"+path);
+
+        
         String move = path.substring(0, 1);
         path = path.substring(1, path.length());
 
@@ -810,7 +811,7 @@ public class AuroraBorealis implements BotAPI {
             
             while (count < 9 && !found) {
                 holdRoom = Names.ROOM_CARD_NAMES[count];
-                if(pathways.containsKey(holdRoom))
+                if(pathways.get(currentRoom).containsKey(holdRoom))
                 {
                 	int store = (pathways.get(currentRoom).get(holdRoom)).length();
             	//Found the envelope room and can move to it
@@ -825,7 +826,7 @@ public class AuroraBorealis implements BotAPI {
                 else if (values.get(holdRoom).equals("X") && store <= diceHold && priority1) {
                 	 path = pathways.get(currentRoom).get(holdRoom);
                 	 priority2=true;
-                	 found=true;
+                	 
                 }//Closest room we can move to that we havent seen 
                 else if (values.get(holdRoom).equals(" ") && store <= diceHold && !priority2 && !priority1) {
                 	 path = pathways.get(currentRoom).get(holdRoom);
@@ -833,6 +834,7 @@ public class AuroraBorealis implements BotAPI {
                 }//A room we havent seen.. Last resort
                 else if (values.get(holdRoom).equals(" ") && pathways.get(currentRoom).get(holdRoom).length() > diceHold && !priority3 && !priority2 && !priority1) {
                 	 path = pathways.get(currentRoom).get(holdRoom);
+                	 priority4=true;
                 }
                 else if(!priority3 && !priority2 && !priority1&&!priority4)
                 {
