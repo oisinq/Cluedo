@@ -799,7 +799,7 @@ public class AuroraBorealis implements BotAPI {
             String currentRoom = player.getToken().getRoom().toString();
             int count = 0;
             boolean randPath = true;
-<<<<<<< HEAD
+            String holdRoom = "";
             boolean priority1=false;
             boolean priority2=false;
             boolean priority3=false;
@@ -831,7 +831,6 @@ public class AuroraBorealis implements BotAPI {
                 count++;
             }
            
-=======
 
             while (count < 9 && !found) {
                 String selectedRoom = Names.ROOM_CARD_NAMES[count];
@@ -855,7 +854,6 @@ public class AuroraBorealis implements BotAPI {
                 }
                 path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
             }
->>>>>>> cf9231fb4d1e973f42d9f70d9f32bc3c8b251d51
         }
     }
 }
