@@ -819,15 +819,16 @@ public class AuroraBorealis implements BotAPI {
                     priority1=true;
                 } 
                 else if (values.get(holdRoom).equals("X") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold && priority1) {
-                    randomRoom = holdRoom;
-                    priority2=true;
+                	 path = pathways.get(currentRoom).get(holdRoom);
+                	 priority2=true;
                 }//Closest room we can move to that we havent seen 
                 else if (values.get(holdRoom).equals(" ") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold && !priority2 && !priority1) {
-                    randomRoom = holdRoom;
-                    priority3=true;
+                	 path = pathways.get(currentRoom).get(holdRoom);
+                	 priority3=true;
                 }//A room we havent seen.. Last resort
                 else if (values.get(holdRoom).equals(" ") && pathways.get(currentRoom).get(holdRoom).length() > diceHold && !priority3 && !priority2 && !priority1) {
-                    randomRoom = holdRoom;
+                	 path = pathways.get(currentRoom).get(holdRoom);
+                	randomRoom = holdRoom;
                 }
                 }
                 count++;
