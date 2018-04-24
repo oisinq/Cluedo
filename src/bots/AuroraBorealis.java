@@ -109,7 +109,11 @@ public class AuroraBorealis implements BotAPI {
                 return "roll";
             } else {
                 // If you don't know the room, we pick the next room
+                path = "";
                 notes.pickNextRoom();
+                if (path == null) {
+                    notes.pickNextRoomRandom();
+                }
             }
         }
 
@@ -826,6 +830,31 @@ public class AuroraBorealis implements BotAPI {
                 }
                 count++;
             }
+            if (path.equals("") || path == null) {
+                pickNextRoomRandom();
+            }
+        }
+
+        private void pickNextRoomRandom() {
+            Random rand = new Random();
+            boolean found = false;
+            String randomRoom = "";
+            String holdRoom = "";
+            int count=0;
+            while (count<9&&!found) {
+
+                holdRoom = Names.ROOM_NAMES[count];
+                if (pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom)&&values.get(Names.ROOM_CARD_NAMES[count]).equals(" ")) {
+                    randomRoom = Names.ROOM_NAMES[count];
+                    found=true;
+                }
+                else if(pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom))
+                {
+                    randomRoom = Names.ROOM_NAMES[count];
+                }
+                count++;
+            }
+            path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
         }
     }
 }
