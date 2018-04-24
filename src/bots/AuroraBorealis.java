@@ -799,60 +799,38 @@ public class AuroraBorealis implements BotAPI {
             String currentRoom = player.getToken().getRoom().toString();
             int count = 0;
             boolean randPath = true;
-            String holdRoom = "";
+            String holdRoom;
             boolean priority1=false;
             boolean priority2=false;
             boolean priority3=false;
             int diceHold = dice.getTotal();
+            
             while (count < 9 && !found) {
-
-                holdRoom = Names.ROOM_NAMES[count];
+                holdRoom = Names.ROOM_CARD_NAMES[count];
+                if(pathways.containsValue(holdRoom))
+                {
             	//Found the envelope room and can move to it
-                if (values.get(Names.ROOM_CARD_NAMES[count]).equals("E") &&pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]).length() <= diceHold)
-                { 
-                    path = pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]);
+                if (values.get(holdRoom).equals("E") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold) {
+                    path = pathways.get(currentRoom).get(holdRoom);
                     found = true;
                 } 
-                //These two statements are for Murder room found but can't move to it in one turn
-                else if (values.get(Names.ROOM_CARD_NAMES[count]).equals("E") &&pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]).length() > diceHold) {
+                //These two statements are for when the envelope room is found but we can't move to it in one turn
+                else if (values.get(holdRoom).equals("E") && pathways.get(currentRoom).get(holdRoom).length() > diceHold) {
                     priority1=true;
                 } 
-                else if (values.get(Names.ROOM_CARD_NAMES[count]).equals("X") &&pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]).length() <= diceHold &&priority1) {
-                    randomRoom = Names.ROOM_NAMES[count];
+                else if (values.get(holdRoom).equals("X") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold && priority1) {
+                    randomRoom = holdRoom;
                     priority2=true;
                 }//Closest room we can move to that we havent seen 
-                else if (values.get(Names.ROOM_CARD_NAMES[count]).equals(" ") &&pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]).length() <= diceHold &&!priority2&&!priority1) {
-                    randomRoom = Names.ROOM_NAMES[count];
+                else if (values.get(holdRoom).equals(" ") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold && !priority2 && !priority1) {
+                    randomRoom = holdRoom;
                     priority3=true;
                 }//A room we havent seen.. Last resort
-                else if (values.get(Names.ROOM_CARD_NAMES[count]).equals(" ") &&pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]).length() > diceHold &&!priority3&&!priority2&&!priority1) {
-                    randomRoom = Names.ROOM_NAMES[count];
+                else if (values.get(holdRoom).equals(" ") && pathways.get(currentRoom).get(holdRoom).length() > diceHold && !priority3 && !priority2 && !priority1) {
+                    randomRoom = holdRoom;
+                }
                 }
                 count++;
-            }
-           
-
-            while (count < 9 && !found) {
-                String selectedRoom = Names.ROOM_CARD_NAMES[count];
-
-                if (pathways.get(currentRoom).containsKey(selectedRoom) && values.get(selectedRoom).equals(" ")) {
-                    randomRoom = selectedRoom;
-                    path = pathways.get(currentRoom).get(randomRoom);
-                    found = true;
-                    randPath = false;
-                    return;
-                }
-                count++;
-            }
-            if (randPath) {
-                while (!found) {
-                    Random rand = new Random();
-                    randomRoom = Names.ROOM_NAMES[rand.nextInt(9)];
-                    if (pathways.get(player.getToken().getRoom().toString()).containsKey(randomRoom)) {
-                        found = true;
-                    }
-                }
-                path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
             }
         }
     }
