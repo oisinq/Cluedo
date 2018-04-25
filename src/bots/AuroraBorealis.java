@@ -443,7 +443,7 @@ public class AuroraBorealis implements BotAPI {
         diningRoom.put("Hall", "1ddrrrrrd");
         diningRoom.put("Kitchen", "2ruuullluluu");
         diningRoom.put("Cellar", "1ddrrrrrru");
-        diningRoom.put("Dining Room", "1du");
+        diningRoom.put("Dining Room", "2rl");
 
         pathways.put("Kitchen", kitchen);
         pathways.put("Ballroom", ballRoom);
@@ -796,11 +796,7 @@ public class AuroraBorealis implements BotAPI {
 
             while (count < 9 && !found) {
                 holdRoom = Names.ROOM_CARD_NAMES[count];
-                if (values.get(Names.ROOM_CARD_NAMES[count]).equals("E") && ((getEnvelopeWeapon().equals("") &&
-                    !getEnvelopePlayer().equals("")) || (!getEnvelopeWeapon().equals("") && getEnvelopePlayer().equals("")))) {
-                    path = pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[count]);
-
-                } else if (pathways.get(currentRoom).containsKey(holdRoom)) {
+                if (pathways.get(currentRoom).containsKey(holdRoom)) {
                     int store = (pathways.get(currentRoom).get(holdRoom)).length();
                     //Found the envelope room and can move to it
                     if (values.get(holdRoom).equals("E") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold) {
@@ -830,7 +826,7 @@ public class AuroraBorealis implements BotAPI {
                 }
                 count++;
             }
-            if (path.equals("") || path == null) {
+            if (path == null || path.equals("")) {
                 pickNextRoomRandom();
             }
         }
