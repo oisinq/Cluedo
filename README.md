@@ -1,26 +1,8 @@
-# Cluedo Project - Aurora Borealis
+# Cluedo Bot - Aurora Borealis
 
-Java implementation of the Cluedo board game made for COMP20050.
+Bot for our Cluedo boardgame.
 
-![Cluedo logo](https://www.emeraldhobbies.com.au/media/catalog/category/Cluedo-Logo-copy1.jpg)
-
-
-## Installing
-
-You can compile the code using your IDE of choice, or download the .jar file from the [releases section](https://github.com/UCD-COMP20050/auroraBorealis/releases)
-
-### How To Play:
-
-The game is based off this [rule book](https://www.hasbro.com/common/documents/dad2885d1c4311ddbd0b0800200c9a66/2BFAEC9E5056900B102C3859E9AC6332.pdf). Help in-game can be accessed by typing "help".
-
-## Screenshots
-
-![Winning screenshot](resources/screenshot_start.png)
-
-![Winning screenshot](resources/screenshot_popup.png)
-
-![Winning screenshot](resources/screenshot_win.png)
-
+Note: we had to use the lecturer's own version of the game for compatibility reasons - that's why the code is different. Our code is in the AuroraBorealis class.
 
 ### Authors
 
