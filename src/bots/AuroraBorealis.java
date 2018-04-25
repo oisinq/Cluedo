@@ -71,6 +71,8 @@ public class AuroraBorealis implements BotAPI {
                     usedPassage = false;
                     return doneCommand();
                 }
+
+
                 // This means we want to use a passageway
                 if (path.length() != 0 && path.charAt(0) == 'p') {
                     path = path.substring(1, path.length());
@@ -139,6 +141,10 @@ public class AuroraBorealis implements BotAPI {
             // If you're in the cellar, we'll return done for now
             if (player.getToken().getRoom().toString().equals("Cellar")) {
                 return doneCommand();
+            }
+
+            if (path == null) {
+                notes.pickNextRoomRandom();
             }
 
             // If the first character in the path is 'p', we want to use the passageway
@@ -821,7 +827,7 @@ public class AuroraBorealis implements BotAPI {
                         path = pathways.get(currentRoom).get(holdRoom);
                         priority4 = true;
                     } else if (!priority3 && !priority2 && !priority1 && !priority4) {
-                        if (!currentRoom.equals(holdRoom)) {
+                        if (currentRoom.equals(holdRoom)) {
                            pickNextRoomRandom();
                         }
 
@@ -840,20 +846,29 @@ public class AuroraBorealis implements BotAPI {
             String randomRoom = "";
             String holdRoom = "";
             int count=0;
-            while (count<9&&!found) {
-
-                holdRoom = Names.ROOM_NAMES[count];
-                if (pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom)&&values.get(Names.ROOM_CARD_NAMES[count]).equals(" ")) {
-                    randomRoom = Names.ROOM_NAMES[count];
-                    found=true;
+            while (count<9 && !found) {
+                holdRoom = Names.ROOM_CARD_NAMES[count];
+                if (pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom) && values.get(holdRoom).equals(" ")) {
+                    randomRoom = holdRoom;
+                    found = true;
                 }
-                else if(pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom))
-                {
-                    randomRoom = Names.ROOM_NAMES[count];
+                else if(pathways.get(player.getToken().getRoom().toString()).containsKey(holdRoom)) {
+                    randomRoom = holdRoom;
                 }
                 count++;
             }
-            path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
+
+            if (found) {
+                path = pathways.get(player.getToken().getRoom().toString()).get(randomRoom);
+            } else {
+                while (!found) {
+                    int randomInt = rand.nextInt(9);
+                    if (pathways.get(player.getToken().getRoom().toString()).containsKey(Names.ROOM_CARD_NAMES[randomInt])) {
+                        path = pathways.get(player.getToken().getRoom().toString()).get(Names.ROOM_CARD_NAMES[randomInt]);
+                        found = true;
+                    }
+                }
+            }
         }
     }
 }
