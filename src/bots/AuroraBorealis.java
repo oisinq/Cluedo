@@ -798,6 +798,7 @@ public class AuroraBorealis implements BotAPI {
                 holdRoom = Names.ROOM_CARD_NAMES[count];
                 if (pathways.get(currentRoom).containsKey(holdRoom)) {
                     int store = (pathways.get(currentRoom).get(holdRoom)).length();
+
                     //Found the envelope room and can move to it
                     if (values.get(holdRoom).equals("E") && pathways.get(currentRoom).get(holdRoom).length() <= diceHold) {
                         path = pathways.get(currentRoom).get(holdRoom);
@@ -820,7 +821,9 @@ public class AuroraBorealis implements BotAPI {
                         path = pathways.get(currentRoom).get(holdRoom);
                         priority4 = true;
                     } else if (!priority3 && !priority2 && !priority1 && !priority4) {
-                        path = pathways.get(currentRoom).get(holdRoom);
+                        if (!currentRoom.equals(holdRoom)) {
+                            path = pathways.get(currentRoom).get(holdRoom);
+                        }
 
                     }
                 }
