@@ -822,7 +822,7 @@ public class AuroraBorealis implements BotAPI {
                         priority4 = true;
                     } else if (!priority3 && !priority2 && !priority1 && !priority4) {
                         if (!currentRoom.equals(holdRoom)) {
-                            path = pathways.get(currentRoom).get(holdRoom);
+                           pickNextRoomRandom();
                         }
 
                     }
