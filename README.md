@@ -1,6 +1,8 @@
 # Cluedo Project - Aurora Borealis
 
-Java implementation of the Cluedo board game made for COMP20050.
+Java implementation of the Cluedo board game made for COMP20050. We received an A+ for each sprint of this project.
+
+### Note: We also created a bot that can intelligently play the game, which is available in the "bot" branch
 
 ![Cluedo logo](https://www.emeraldhobbies.com.au/media/catalog/category/Cluedo-Logo-copy1.jpg)
 
